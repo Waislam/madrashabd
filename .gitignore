@@ -3,7 +3,6 @@
 !.dockerignore
 !.github
 !.gitignore
-!.nvmrc
 !.pylintrc
 !.vscode
 *.log
@@ -28,6 +27,3 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
-# Exported results file
-django-queries-results.html
