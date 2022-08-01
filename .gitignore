@@ -27,3 +27,16 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+
+
+migrations/
+
+db.sqlite3
+db.sqlite3-journal
+*.so
+.idea
+*.idea
+.idea/workspace.xml
+.vscode
+.bash_history
+.PyCharm2018.
