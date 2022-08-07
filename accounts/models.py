@@ -1,5 +1,15 @@
+'''
+1. Address
+2. Role Model
+3. Custom Manager
+4. Madrasha object
+5. Madrasha user List
+
+'''
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from PIL import Image
+from django.template.defaultfilters import slugify
 
 # Create your models here.
 
@@ -57,11 +67,16 @@ class Address(models.Model):
     def __str__(self):
         return self.division.name
 
-# ============================== 3. Role Model ==========================
+# ============================== 2. Role Model ==========================
 
 
 class Role(models.Model):
     role_name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.role_name
+
+# =========================== 3. Custom Manager ===================
 
 
 class OurUserManager(BaseUserManager):
@@ -112,7 +127,7 @@ class CustomUser(AbstractBaseUser):
         ordering = ['-pk']
 
     def __str__(self):
-        return self.username
+        return self.phone
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
@@ -124,7 +139,7 @@ class CustomUser(AbstractBaseUser):
         # Simplest possible answer: Yes, always
         return True
 
-# ============================= Madrasha object =================
+# ============================= 4. Madrasha object =================
 
 
 MADRASHA_STATUS = (
@@ -137,32 +152,48 @@ class Madrasha(models.Model):
     name = models.CharField(max_length=255)
     madrasha_id = models.CharField(unique=True, max_length=30, blank=True)
     madrasha_address = models.ForeignKey(Address, on_delete=models.SET_NULL, related_name='madrasha_address', null=True)
-    madrasha_logo = models.ImageField(upload_to='madrasha/logo/')
+    madrasha_logo = models.ImageField(upload_to='madrasha/logo/')  # it should have custom method to resize
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.CharField(max_length=100)
     updated_by = models.CharField(max_length=100)
     active_status = models.CharField(max_length=10, default='Inactive', choices=MADRASHA_STATUS)
+    slug = models.SlugField(unique=True, blank=True)
 
     def generate_madrasha_id(self):
         starting = 100
-        last_madrasha = self.objects.last()
-        last_madrasha_id = int(last_madrasha.id)
+        last_madrasha = Madrasha.objects.last()
         if last_madrasha:
-            new_id = last_madrasha_id + 1
+            last_madrasha_id = int(last_madrasha.madrasha_id)
         else:
-            new_id = starting + 1
-        generated_id = str(new_id)
+            last_madrasha_id = starting
+        generated_id = str(last_madrasha_id+1)
         return generated_id
+
+    def resize_logo_image(self):
+        img = Image.open(self.madrasha_logo.path)
+        if img.height > 100 and img.width > 100:
+            required_size = (100, 100)
+            img.thumbnail(required_size)
+            img.save(self.madrasha_logo.path)
 
     def save(self, *args, **kwargs):
         if not self.madrasha_id:
             self.madrasha_id = self.generate_madrasha_id()
+
+        if not self.slug:
+            self.slug = slugify(self.madrasha_id)
         super(Madrasha, self).save(*args, **kwargs)
+        self.resize_logo_image()
 
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['-madrasha_id']
+
+
+# ====================== 5. Madrasha user List ================================
 
 class MadrashaUserListing(models.Model):
     user = models.ForeignKey(CustomUser, related_name='users', on_delete=models.PROTECT)
