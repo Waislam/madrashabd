@@ -6,7 +6,9 @@ from .views import (
     PostCodeList,
     AddressDetail,
     MadrashaView,
-    MadrashaDetailView
+    MadrashaDetailView,
+    MadrashaDetail,
+    MadrashaList
 )
 
 urlpatterns = [
@@ -17,5 +19,7 @@ urlpatterns = [
 
     path('address/<int:pk>/', AddressDetail.as_view()),
     path('madrasha/', MadrashaView.as_view()),
-    path('madrasha/detail/<slug:slug>/', MadrashaDetailView.as_view()),
+    # path('madrasha/detail/<slug:slug>/', MadrashaDetailView.as_view()),
+    path('madrasha/data/<slug:slug>/', MadrashaDetail.as_view()),
+    path('madrasha-list/', MadrashaList.as_view()),
 ]

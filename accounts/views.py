@@ -3,7 +3,6 @@
 2. individual address
 3. MadrashaView
 '''
-
 from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
@@ -12,6 +11,8 @@ from django.http import JsonResponse, Http404
 from .models import *
 from .serializers import AddressSerializer, MadrashaSerializer
 from rest_framework import status
+from rest_framework import mixins
+from rest_framework import generics
 
 # Create your views here.
 
@@ -120,5 +121,31 @@ class MadrashaDetailView(APIView):
             serializer.save()
             return Response({'status': True, 'message': 'Madrasha has been updated'})
 
+
+class MadrashaList(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
+    queryset = Madrasha.objects.all()
+    serializer_class = MadrashaSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class MadrashaDetail(mixins.RetrieveModelMixin,
+                    mixins.UpdateModelMixin,
+                    generics.GenericAPIView):
+    queryset = Madrasha.objects.all()
+    serializer_class = MadrashaSerializer
+    lookup_field = 'slug'
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
 
 

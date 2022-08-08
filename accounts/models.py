@@ -158,7 +158,7 @@ class Madrasha(models.Model):
     created_by = models.CharField(max_length=100)
     updated_by = models.CharField(max_length=100)
     active_status = models.CharField(max_length=10, default='Inactive', choices=MADRASHA_STATUS)
-    slug = models.SlugField(unique=True, blank=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
 
     def generate_madrasha_id(self):
         starting = 100
@@ -171,20 +171,21 @@ class Madrasha(models.Model):
         return generated_id
 
     def resize_logo_image(self):
-        img = Image.open(self.madrasha_logo.path)
-        if img.height > 100 and img.width > 100:
-            required_size = (100, 100)
-            img.thumbnail(required_size)
-            img.save(self.madrasha_logo.path)
+        if self.madrasha_logo:
+            img = Image.open(self.madrasha_logo.path)
+            if img.height > 100 and img.width > 100:
+                required_size = (100, 100)
+                img.thumbnail(required_size)
+                img.save(self.madrasha_logo.path)
 
-    def save(self, *args, **kwargs):
-        if not self.madrasha_id:
-            self.madrasha_id = self.generate_madrasha_id()
-
-        if not self.slug:
-            self.slug = slugify(self.madrasha_id)
-        super(Madrasha, self).save(*args, **kwargs)
-        self.resize_logo_image()
+    # def save(self, *args, **kwargs):
+    #     if not self.madrasha_id:
+    #         self.madrasha_id = self.generate_madrasha_id()
+    #
+    #     if not self.slug:
+    #         self.slug = slugify("1004")
+    #     super(Madrasha, self).save(*args, **kwargs)
+    #     self.resize_logo_image()
 
     def __str__(self):
         return self.name
