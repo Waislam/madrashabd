@@ -4,7 +4,9 @@ from .views import (
     ThanaList,
     PostOfficeList,
     PostCodeList,
-    AddressDetail
+    AddressDetail,
+    MadrashaView,
+    MadrashaDetailView
 )
 
 urlpatterns = [
@@ -14,6 +16,6 @@ urlpatterns = [
     path('post-code/', PostCodeList.as_view()),
 
     path('address/<int:pk>/', AddressDetail.as_view()),
-    # path('madrasha/', MadrashaView.as_view()),
-    # path('madrasha/detail/<slug:slug>/', MadrashaDetailView.as_view()),
+    path('madrasha/', MadrashaView.as_view()),
+    path('madrasha/detail/<slug:slug>/', MadrashaDetailView.as_view()),
 ]

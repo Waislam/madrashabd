@@ -152,7 +152,7 @@ class Madrasha(models.Model):
     name = models.CharField(max_length=255)
     madrasha_id = models.CharField(unique=True, max_length=30, blank=True)
     madrasha_address = models.ForeignKey(Address, on_delete=models.SET_NULL, related_name='madrasha_address', null=True)
-    madrasha_logo = models.ImageField(upload_to='madrasha/logo/')  # it should have custom method to resize
+    madrasha_logo = models.ImageField(upload_to='madrasha/logo/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.CharField(max_length=100)
