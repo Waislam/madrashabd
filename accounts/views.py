@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from django.http import JsonResponse, Http404
 from .models import *
 from .serializers import AddressSerializer, MadrashaSerializer
+from rest_framework import status
 
 # Create your views here.
 
@@ -74,16 +75,50 @@ class AddressDetail(APIView):
 
 
 # ===================== 3. MadrashaView ============
-#
-# class MadrashaView(ListCreateAPIView):
-#     queryset = Madrasha.objects.all()
-#     serializer_class = MadrashaSerializer
-#
-#
-# class MadrashaDetailView(RetrieveUpdateDestroyAPIView):
-#     serializer_class = MadrashaSerializer
-#     lookup_url_kwarg = 'slug'
-#     queryset = Madrasha.objects.all()
+
+class MadrashaView(APIView):
+
+    def get(self, request, formate=None):
+        """
+        Madrasha List api
+        """
+        madrshas = Madrasha.objects.all()
+        serializer = MadrashaSerializer(madrshas, many=True)
+        return Response({'status': True, 'data': serializer.data})
+
+    def post(self, request, formate=None):
+        """
+        Create Madrasha api
+        """
+        serializer = MadrashaSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status': True, 'message': 'Madrasha has been created', 'data': serializer.data})
+        return Response({'status': False, 'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MadrashaDetailView(APIView):
+
+    def get_object(self, slug):
+        """ get single madrasha obj"""
+        try:
+            return Madrasha.objects.get(slug=slug)
+        except Madrasha.DoesNotExist:
+            return Http404
+
+    def get(self, request, slug, formate=None):
+        """ Single Madrasha detail view api"""
+        madrasha = self.get_object(slug)
+        serializer = MadrashaSerializer(madrasha)
+        return Response({'status': True, 'data': serializer.data})
+
+    def put(self, request, slug, formate=None):
+        """ update madrasha api"""
+        madrasha = self.get_object(slug)
+        serializer = MadrashaSerializer(madrasha, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status': True, 'message': 'Madrasha has been updated'})
 
 
 

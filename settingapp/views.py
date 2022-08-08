@@ -1,4 +1,4 @@
-'''
+"""
 1. Department
 2. Designation
 3. MadrashaClasses
@@ -8,7 +8,7 @@
 7. Fees
 8. Session
 9. Exam rules
-'''
+"""
 from django.shortcuts import render
 from django.http import Http404
 from rest_framework.views import APIView
@@ -40,6 +40,7 @@ class DepartmentView(APIView):
         departments = Department.objects.all()
         serializer = DepartmentSerializer(departments, many=True)
         return Response(serializer.data)
+
 
 class DepartmentDetailview(APIView):
     """ department detail, update and delete"""

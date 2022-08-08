@@ -68,7 +68,17 @@ class MadrashaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Madrasha
-        fields = ('id', 'name', 'madrasha_id', 'madrasha_address', 'madrasha_logo', 'created_by', 'updated_by', 'active_status', 'slug')
+        fields = ('id', 'name', 'madrasha_id', 'madrasha_address', 'created_by', 'updated_by', 'active_status', 'slug')
+
+    # def create(self, validated_data):
+    #     print(validated_data)
+    #     tracks_data = validated_data.pop('madrasha_address')
+    #     # aalbum = M.objects.create(**validated_data)
+    #     # for track_data in tracks_data:
+    #     #     Track.objects.create(album=album, **track_data)
+    #     # return album4
+    #     print(tracks_data)
+    #     return tracks_data
 
 
 # ================== 3. User ============
