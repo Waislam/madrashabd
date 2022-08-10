@@ -92,23 +92,22 @@ class MadrashaSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance.name = validated_data.get('name')
-        instance.address = validated_data.get('madrasha_address')
 
-        # Get madrasha address
-        madrasha_address = Address.objects.get(pk=instance.madrasha_address.pk)
+        # Get madrasha instance
+        madrasha_address = instance.madrasha_address
 
         # Save madrasha address
-        madrasha_address.division = validated_data.get('madrasha_address').get('division')
-        madrasha_address.district = validated_data.get('madrasha_address').get('district')
-        madrasha_address.post_office = validated_data.get('madrasha_address').get('post_office')
-        madrasha_address.post_code = validated_data.get('madrasha_address').get('post_code')
-        madrasha_address.thana = validated_data.get('madrasha_address').get('thana')
-        madrasha_address.address_info = validated_data.get('madrasha_address').get('address_info')
+        madrasha_address.division = validated_data.get('madrasha_address').get('division', instance.madrasha_address.division)
+        madrasha_address.district = validated_data.get('madrasha_address').get('district', instance.madrasha_address.district)
+        madrasha_address.post_office = validated_data.get('madrasha_address').get('post_office', instance.madrasha_address.post_office)
+        madrasha_address.post_code = validated_data.get('madrasha_address').get('post_code', instance.madrasha_address.post_code)
+        madrasha_address.thana = validated_data.get('madrasha_address').get('thana', instance.madrasha_address.thana)
+        madrasha_address.address_info = validated_data.get('madrasha_address').get('address_info', instance.madrasha_address.address_info)
         madrasha_address.save()
 
-        instance.created_by = validated_data.get('created_by')
-        instance.updated_by = validated_data.get('updated_by')
-        instance.active_status = validated_data.get('active_status')
+        instance.created_by = validated_data.get('created_by', instance.created_by)
+        instance.updated_by = validated_data.get('updated_by', instance.updated_by)
+        instance.active_status = validated_data.get('active_status', instance.active_status)
         instance.save()
 
         return instance
