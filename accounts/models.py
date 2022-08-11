@@ -162,7 +162,8 @@ class Madrasha(models.Model):
 
     def generate_madrasha_id(self):
         starting = 100
-        last_madrasha = Madrasha.objects.last()
+        # shob = Madrasha.objects.all()
+        last_madrasha = Madrasha.objects.latest('madrasha_id')
         if last_madrasha:
             last_madrasha_id = int(last_madrasha.madrasha_id)
         else:
@@ -171,15 +172,17 @@ class Madrasha(models.Model):
         return generated_id
 
     def resize_logo_image(self):
-        img = Image.open(self.madrasha_logo.path)
-        if img.height > 100 and img.width > 100:
-            required_size = (100, 100)
-            img.thumbnail(required_size)
-            img.save(self.madrasha_logo.path)
+        if self.madrasha_logo:
+            img = Image.open(self.madrasha_logo.path)
+            if img.height > 100 and img.width > 100:
+                required_size = (100, 100)
+                img.thumbnail(required_size)
+                img.save(self.madrasha_logo.path)
 
     def save(self, *args, **kwargs):
         if not self.madrasha_id:
             self.madrasha_id = self.generate_madrasha_id()
+            print(self.madrasha_id)
 
         if not self.slug:
             self.slug = slugify(self.madrasha_id)

@@ -14,50 +14,45 @@ from accounts.models import (Division, District, Thana, PostOffice, PostCode, Ad
 
 
 class DivisionSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Division
-        fields = '__all__'
+        fields = ['pk']
 
 
 class DistrictSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = District
-        fields = '__all__'
+        fields = ['pk']
 
 
 class ThanaSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Thana
-        fields = '__all__'
+        fields = ['pk']
 
 
 class PostOfficeSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = PostOffice
-        fields = '__all__'
+        fields = ['pk']
 
 
 class PostCodeSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = PostCode
-        fields = '__all__'
+        fields = ['pk']
 
 
 class AddressSerializer(serializers.ModelSerializer):
-    division = DivisionSerializer()
-    district = DistrictSerializer()
-    thana = ThanaSerializer()
-    post_office = PostOfficeSerializer()
-    post_code = PostCodeSerializer()
+    # division = DivisionSerializer()
+    # district = DistrictSerializer()
+    # thana = ThanaSerializer()
+    # post_office = PostOfficeSerializer()
+    # post_code = PostCodeSerializer()
 
     class Meta:
         model = Address
-        fields = ('id', 'division', 'district', 'thana', 'post_office', 'post_code', 'address_info')
+        fields = ['id', 'division', 'district', 'thana', 'post_office', 'post_code', 'address_info']
 
 
 # ============ 2. madrasha serializer =============
@@ -68,21 +63,49 @@ class MadrashaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Madrasha
-        fields = ('id', 'name', 'madrasha_id', 'madrasha_address', 'created_by', 'updated_by', 'active_status', 'slug')
+        fields = ['id', 'name', 'madrasha_id', 'madrasha_address', 'created_by', 'updated_by', 'active_status', 'slug']
 
-    # def create(self, validated_data):
-    #     print(validated_data)
-    #     tracks_data = validated_data.pop('madrasha_address')
-    #     # aalbum = M.objects.create(**validated_data)
-    #     # for track_data in tracks_data:
-    #     #     Track.objects.create(album=album, **track_data)
-    #     # return album4
-    #     print(tracks_data)
-    #     return tracks_data
+    def create(self, validated_data):
+        address_data = validated_data['madrasha_address']
+        madrasha_name = validated_data['name']
+        created_by = validated_data['created_by']
+        updated_by = validated_data['updated_by']
+        # address = AddressSerializer.create(AddressSerializer(), validated_data=address_data)
+        address = Address.objects.create(**address_data)
 
+        madrasha = Madrasha.objects.create(madrasha_address=address,
+                                           name=madrasha_name,
+                                           created_by=created_by,
+                                           updated_by=updated_by)
+        return madrasha
+
+    def update(self, instance, validated_data):
+        """
+        1. get the current instance name
+        2. get the nested and save the obj
+        3. get other fields of instance and save it
+        """
+        instance.name = validated_data.get('name')
+
+        # Get madrasha instance
+        madrasha_address = instance.madrasha_address
+
+        # Save madrasha address
+        madrasha_address.division = validated_data.get('madrasha_address').get('division', instance.madrasha_address.division)
+        madrasha_address.district = validated_data.get('madrasha_address').get('district', instance.madrasha_address.district)
+        madrasha_address.post_office = validated_data.get('madrasha_address').get('post_office', instance.madrasha_address.post_office)
+        madrasha_address.post_code = validated_data.get('madrasha_address').get('post_code', instance.madrasha_address.post_code)
+        madrasha_address.thana = validated_data.get('madrasha_address').get('thana', instance.madrasha_address.thana)
+        madrasha_address.address_info = validated_data.get('madrasha_address').get('address_info', instance.madrasha_address.address_info)
+        madrasha_address.save()
+        # get other fields of instance and save it
+        instance.created_by = validated_data.get('created_by', instance.created_by)
+        instance.updated_by = validated_data.get('updated_by', instance.updated_by)
+        instance.active_status = validated_data.get('active_status', instance.active_status)
+        instance.save()
+        return instance
 
 # ================== 3. User ============
-
 
 
 # ================== 4.  ============
