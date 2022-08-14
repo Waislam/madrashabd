@@ -64,8 +64,9 @@ class Address(models.Model):
     post_code = models.ForeignKey(PostCode, on_delete=models.SET_NULL, blank=True, null=True, related_name='post_cods')
     address_info = models.TextField()
 
-    def __str__(self):
-        return self.division.name
+    # def __str__(self):
+    # #commented when got error of name valu during viewing individual student profile in admin
+    #     return self.division.name
 
 # ============================== 2. Role Model ==========================
 

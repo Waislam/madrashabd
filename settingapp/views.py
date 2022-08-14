@@ -482,9 +482,9 @@ class ExamRulesDetailview(APIView):
         except ExamRules.DoesNotExist:
             raise Http404
 
-    def get(self, request, slug, formate=None):
+    def get(self, request, pk, formate=None):
         """details veiw for single obj"""
-        exam_rule = self.get_object(slug)
+        exam_rule = self.get_object(pk)
         serializer = ExamRulesSerializer(exam_rule)
         return Response(serializer.data)
 
