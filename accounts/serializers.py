@@ -63,7 +63,7 @@ class MadrashaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Madrasha
-        fields = ['id', 'name', 'madrasha_id', 'madrasha_address', 'created_by', 'updated_by', 'active_status', 'slug']
+        fields = ['id', 'name', 'madrasha_id', 'madrasha_address', 'madrasha_logo', 'created_by', 'updated_by', 'active_status', 'slug']
 
     def create(self, validated_data):
         address_data = validated_data['madrasha_address']

@@ -4,9 +4,10 @@
 3. StudentSerializer
 """
 
-from rest_framework  import serializers
+from rest_framework import serializers
 from .models import Student, AcademicFess, Parent
 from accounts.models import Division, District, Thana, PostOffice, PostCode, Address
+
 
 # ======= 1. address serializer ================
 
@@ -42,19 +43,19 @@ class PostCodeSerializer(serializers.ModelSerializer):
 
 
 class AddressSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Address
         fields = ['id', 'division', 'district', 'thana', 'post_office', 'post_code', 'address_info']
+
 
 # ================= 2. ParentSerializer =====================
 
 
 class ParentSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Parent
-        fields = ['id', 'parent_name', 'parent_date_of_birth', 'parent_nid', 'occupation', 'organization_with_designation',
+        fields = ['id', 'parent_name', 'parent_date_of_birth', 'parent_nid', 'occupation',
+                  'organization_with_designation',
                   'education', 'contact_number', 'parent_email']
 
 
@@ -69,13 +70,16 @@ class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['id', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate', 'student_nid', 'passport_number', 'nationality',
-                  'religion', 'gender', 'present_address', 'permanent_address', 'father_info', 'mother_info',
-                  'guardian_name', 'guardian_relation', 'guardian_occupation', 'yearly_income', 'guardian_contact',
+        fields = ['id', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate', 'student_nid',
+                  'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
+                  'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
+                  'yearly_income', 'guardian_contact',
                   'guardian_email', 'other_contact_person', 'other_contact_person_relation',
-                  'other_contact_person_contact', 'sibling_id', 'previous_institution_name', 'previous_institution_contact',
+                  'other_contact_person_contact', 'sibling_id', 'previous_institution_name',
+                  'previous_institution_contact',
                   'previous_started_at', 'previous_ending_at', 'previous_ending_class', 'previous_ending_result',
-                  'board_exam_name', 'board_exam_registration', 'board_exam_roll', 'board_exam_result', 'admitted_department',
+                  'board_exam_name', 'board_exam_registration', 'board_exam_roll', 'board_exam_result',
+                  'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
                   'slug']
@@ -113,7 +117,7 @@ class StudentSerializer(serializers.ModelSerializer):
             varname.division = validated_data.get(validated_value).get('division', varname.division)
             varname.district = validated_data.get(validated_value).get('district', varname.district)
             varname.thana = validated_data.get(validated_value).get('thana', varname.thana)
-            varname.post_office = validated_data.get(validated_value).get('post_office',  varname.post_office)
+            varname.post_office = validated_data.get(validated_value).get('post_office', varname.post_office)
             varname.post_code = validated_data.get(validated_value).get('post_code', varname.post_code)
             varname.address_info = validated_data.get(validated_value).get('address_info', varname.address_info)
             output = varname.save()
