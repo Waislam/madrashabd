@@ -5,18 +5,21 @@ from .serializers import StudentSerializer
 from rest_framework.views import APIView
 from rest_framework import status
 from .models import Student
+from .pagination import CustomPagination
 
 
 # Create your views here.
 
 
-class StudentView(APIView):
+class StudentView(APIView, CustomPagination):
     """ Student Create and list view """
     def get(self, request, formate=None):
         """method to show the list of Students """
         students = Student.objects.all()
-        serializer = StudentSerializer(students, many=True)
-        return Response({'status': True, 'data': serializer.data})
+        result = self.paginate_queryset(students, request, view=self)
+        serializer = StudentSerializer(result, many=True)
+        # return Response({'status': True, 'data': serializer.data})
+        return self.get_paginated_response(serializer.data)
 
     def post(self, request, formate=None):
         """Method to create student api """

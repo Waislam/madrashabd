@@ -6,7 +6,8 @@ from .views import (
     PostCodeList,
     AddressDetail,
     MadrashaView,
-    MadrashaDetailView
+    MadrashaDetailView,
+    UserRegistrationView
 )
 
 urlpatterns = [
@@ -18,4 +19,5 @@ urlpatterns = [
     path('address/<int:pk>/', AddressDetail.as_view()),
     path('madrasha/', MadrashaView.as_view()),
     path('madrasha/detail/<slug:slug>/', MadrashaDetailView.as_view()),
+    path('madrasha-admin/', UserRegistrationView.as_view()),
 ]

@@ -72,6 +72,7 @@ class Address(models.Model):
 
 
 class Role(models.Model):
+    """admin, staff, teacher, student"""
     role_name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
@@ -96,7 +97,7 @@ class OurUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, phone, password=None, **extra_fields):
-        user = self.create_user(phone, password, is_staff=True, is_admin=True, **extra_fields)
+        user = self.create_user(phone, password, is_staff=True, is_admin=True, is_superuser=True, **extra_fields)
         return user
 
     def create_staffuser(self, phone, password=None, **extra_fields):
@@ -105,11 +106,11 @@ class OurUserManager(BaseUserManager):
 
 
 class CustomUser(AbstractBaseUser):
-    username = models.CharField( unique=True, max_length=50)
+    username = models.CharField(unique=True, max_length=50)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15, unique=True)  # need to modify this one
-    email = models.EmailField(unique=True, blank=True)
+    email = models.EmailField(unique=True, blank=True, null=True) # addded null true during user creation django.db.utils.IntegrityError: UNIQUE constraint failed: accounts_customuser.email
     role = models.ForeignKey(Role, on_delete=models.PROTECT, related_name='user_roles', null=True, blank=True)
     avatar = models.ImageField(upload_to='user-image', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)

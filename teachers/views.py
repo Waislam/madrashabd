@@ -5,17 +5,20 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Teacher
+from students.pagination import CustomPagination
 
 # Create your views here.
 
 
-class TeacherView(APIView):
+class TeacherView(APIView, CustomPagination):
     """to create and list teacher obj"""
     def get(self, request, formate=None):
         """get list of teachers"""
         teachers = Teacher.objects.all()
-        serializer = TeacherSerializer(teachers, many=True)
-        return Response({'status': True, 'data': serializer.data})
+        result = self.paginate_queryset(teachers, request, view=self)
+        serializer = TeacherSerializer(result, many=True)
+        # return Response({'status': True, 'data': serializer.data})
+        return self.get_paginated_response(serializer.data)
 
     def post(self, request, formate=None):
         """to create teacher obj"""

@@ -2,6 +2,7 @@
 1.dependent drop down for address
 2. individual address
 3. MadrashaView
+4. UserRegistration
 '''
 
 from django.shortcuts import render
@@ -10,8 +11,9 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.response import Response
 from django.http import JsonResponse, Http404
 from .models import *
-from .serializers import AddressSerializer, MadrashaSerializer
+from .serializers import AddressSerializer, MadrashaSerializer, RegistrationSerializer
 from rest_framework import status
+
 
 # Create your views here.
 
@@ -121,4 +123,14 @@ class MadrashaDetailView(APIView):
             return Response({'status': True, 'message': 'Madrasha has been updated'})
 
 
+# ======================== 4. UserRegistration ================
 
+
+class UserRegistrationView(APIView):
+    """Create and get user"""
+    def post(self, request, formate=None):
+        serializer = RegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status': True, 'data': serializer.data})
+        return Response({'status': False, 'message': serializer.errors})

@@ -7,7 +7,7 @@
 """
 from rest_framework import serializers
 from accounts.models import (Division, District, Thana, PostOffice, PostCode, Address,
-                             Madrasha)
+                             Madrasha, CustomUser, MadrashaUserListing)
 
 
 # ======= 1. address serializer ================
@@ -106,6 +106,29 @@ class MadrashaSerializer(serializers.ModelSerializer):
         return instance
 
 # ================== 3. User ============
+class RegistrationSerializer(serializers.ModelSerializer):
+    password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
+
+    class Meta:
+        model = CustomUser
+        fields = ['phone', 'password', 'password2', 'role']
+        extra_kwargs = {
+            'password': {'write_only': True}
+        }
+
+    def save(self, **kwargs):
+        phone = self.validated_data['phone']
+        role = self.validated_data['role']
+        password = self.validated_data['password']
+        password2 = self.validated_data['password2']
+
+        user = CustomUser(phone=phone, role=role, username=phone)
+        if password != password2:
+            raise serializers.ValidationError({'message': 'password must match'})
+        user.set_password(password)
+        user.save()
+        MadrashaUserListing.objects.create(user=user, madrasha_id='103')
+        return user
 
 
 # ================== 4.  ============
