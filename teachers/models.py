@@ -4,9 +4,10 @@ from django.contrib.auth import get_user_model
 from accounts.models import Address
 from settingapp.models import Department, Designation
 from django.template.defaultfilters import slugify
+from datetime import datetime, date
 # Create your models here.
 
-# User = settings.AUTHAUTH_USER_MODEL
+# User = settings.AUTH_USER_MODEL
 User = get_user_model()
 
 GENDER_CHOICE = (
@@ -27,25 +28,29 @@ NATIONALITY_CHOICE = (
     ('indian', 'Indian'),
     ('other', 'Other')
 )
+
+
 class Education(models.Model):
     degree_name = models.CharField(max_length=255, blank=True, null=True)
     institution_name = models.CharField(max_length=255, blank=True, null=True)
     passing_year = models.CharField(max_length=255, blank=True, null=True)
     result = models.CharField(max_length=255, blank=True, null=True)
 
-    def __str__(self):
-        return self.degree_name
+    # def __str__(self):
+    # __str__ returned non-string (type NoneType)
+    #     return self.degree_name
 
 
 class Skill(models.Model):
     skill_name = models.CharField(max_length=255, blank=True, null=True)
 
-    def __str__(self):
-        return self.skill_name
+    # def __str__(self):
+    # __str__ returned non-string (type NoneType) "error"
+    #     return self.skill_name
 
 
 class Teacher(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='teachers')
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='teachers', blank=True, null=True)
     teacher_id = models.CharField(max_length=20, unique=True, blank=True)  # auto incremented and generated
     father_name = models.CharField(max_length=150, blank=True, null=True)
     mother_name = models.CharField(max_length=150, blank=True, null=True)
@@ -61,11 +66,11 @@ class Teacher(models.Model):
     nid = models.CharField(max_length=200)
     birth_certificate = models.CharField(max_length=255)
     nationality = models.CharField(max_length=20, default='bangladeshi', choices=NATIONALITY_CHOICE)
-    blood_group = models.CharField(max_length=15)
+    blood_group = models.CharField(max_length=15, blank=True)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, related_name='department_teachers', blank=True, null=True)
     designation = models.ForeignKey(Designation, on_delete=models.SET_NULL, related_name='designated_teachers', blank=True, null=True)
-    starting_date = models.DateField()
-    ending_date = models.DateField()
+    starting_date = models.DateField(default=date.today)
+    ending_date = models.DateField(blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
 
     def generate_teacher_id(self):

@@ -10,8 +10,14 @@ from .views import (
     MadrashaClassGroupDetailview,
     ShiftView,
     ShiftDetailview,
+    SessionView,
+    SessionDetailview,
     BooksView,
-    BooksDetailview
+    BooksDetailview,
+    FeesView,
+    FeesDetailview,
+    ExamRulesView,
+    ExamRulesDetailview
 )
 
 urlpatterns = [
@@ -25,7 +31,14 @@ urlpatterns = [
     path('group/detail/<slug:slug>/', MadrashaClassGroupDetailview.as_view()),
     path('shift/', ShiftView.as_view()),
     path('shift/detail/<slug:slug>/', ShiftDetailview.as_view()),
+    path('session/', SessionView.as_view()),
+    path('session/detail/<slug:slug>/', SessionDetailview.as_view()),
+
     path('books/', BooksView.as_view()),
     path('books/detail/<slug:slug>/', BooksDetailview.as_view()),
+    path('fees/', FeesView.as_view()),
+    path('fees/detail/<slug:slug>/', FeesDetailview.as_view()),
+    path('exam-rules/', ExamRulesView.as_view()),
+    path('exam-rules/detail/<slug:slug>/', ExamRulesDetailview.as_view()),
 
 ]

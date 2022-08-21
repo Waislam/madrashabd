@@ -28,8 +28,10 @@ ENV/
 env.bak/
 venv.bak/
 
-_migrations/*
-!_migrations/__init__.py
+
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
 
 db.sqlite3
 db.sqlite3-journal

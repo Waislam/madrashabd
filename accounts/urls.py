@@ -6,10 +6,13 @@ from .views import (
     PostCodeList,
     AddressDetail,
     MadrashaView,
-    MadrashaDetailView
+    MadrashaDetailView,
+    UserRegistrationView,
+    CustomAuthToken
 )
 
 urlpatterns = [
+    path('api-token-auth/', CustomAuthToken.as_view()),
     path('district/', DistrictList.as_view()),
     path('thana/', ThanaList.as_view()),
     path('post-office/', PostOfficeList.as_view()),
@@ -18,4 +21,5 @@ urlpatterns = [
     path('address/<int:pk>/', AddressDetail.as_view()),
     path('madrasha/', MadrashaView.as_view()),
     path('madrasha/detail/<slug:slug>/', MadrashaDetailView.as_view()),
+    path('madrasha-admin/', UserRegistrationView.as_view()),
 ]

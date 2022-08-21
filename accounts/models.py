@@ -10,6 +10,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from PIL import Image
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import PermissionsMixin
 
 # Create your models here.
 
@@ -64,13 +65,15 @@ class Address(models.Model):
     post_code = models.ForeignKey(PostCode, on_delete=models.SET_NULL, blank=True, null=True, related_name='post_cods')
     address_info = models.TextField()
 
-    def __str__(self):
-        return self.division.name
+    # def __str__(self):
+    # #commented when got error of name valu during viewing individual student profile in admin
+    #     return self.division.name
 
 # ============================== 2. Role Model ==========================
 
 
 class Role(models.Model):
+    """admin, staff, teacher, student"""
     role_name = models.CharField(max_length=200, unique=True)
 
     def __str__(self):
@@ -95,7 +98,7 @@ class OurUserManager(BaseUserManager):
         return user
 
     def create_superuser(self, phone, password=None, **extra_fields):
-        user = self.create_user(phone, password, is_staff=True, is_admin=True, **extra_fields)
+        user = self.create_user(phone, password, is_staff=True, is_admin=True, is_superuser=True, **extra_fields)
         return user
 
     def create_staffuser(self, phone, password=None, **extra_fields):
@@ -103,12 +106,12 @@ class OurUserManager(BaseUserManager):
         return user
 
 
-class CustomUser(AbstractBaseUser):
-    username = models.CharField( unique=True, max_length=50)
+class CustomUser(PermissionsMixin, AbstractBaseUser):
+    username = models.CharField(unique=True, max_length=50)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15, unique=True)  # need to modify this one
-    email = models.EmailField(unique=True, blank=True)
+    email = models.EmailField(unique=True, blank=True, null=True) # addded null true during user creation django.db.utils.IntegrityError: UNIQUE constraint failed: accounts_customuser.email
     role = models.ForeignKey(Role, on_delete=models.PROTECT, related_name='user_roles', null=True, blank=True)
     avatar = models.ImageField(upload_to='user-image', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -150,7 +153,7 @@ MADRASHA_STATUS = (
 
 class Madrasha(models.Model):
     name = models.CharField(max_length=255)
-    madrasha_id = models.CharField(unique=True, max_length=30, blank=True)
+    madrasha_code = models.CharField(unique=True, max_length=30, blank=True)
     madrasha_address = models.ForeignKey(Address, on_delete=models.SET_NULL, related_name='madrasha_address', null=True)
     madrasha_logo = models.ImageField(upload_to='madrasha/logo/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -160,29 +163,32 @@ class Madrasha(models.Model):
     active_status = models.CharField(max_length=10, default='Inactive', choices=MADRASHA_STATUS)
     slug = models.SlugField(unique=True, blank=True)
 
-    def generate_madrasha_id(self):
+    def generate_madrasha_code(self):
         starting = 100
-        last_madrasha = Madrasha.objects.last()
+        # shob = Madrasha.objects.all()
+        last_madrasha = Madrasha.objects.latest('madrasha_code')
         if last_madrasha:
-            last_madrasha_id = int(last_madrasha.madrasha_id)
+            last_madrasha_code = int(last_madrasha.madrasha_code)
         else:
-            last_madrasha_id = starting
-        generated_id = str(last_madrasha_id+1)
-        return generated_id
+            last_madrasha_code = starting
+        generated_code = str(last_madrasha_code+1)
+        return generated_code
 
     def resize_logo_image(self):
-        img = Image.open(self.madrasha_logo.path)
-        if img.height > 100 and img.width > 100:
-            required_size = (100, 100)
-            img.thumbnail(required_size)
-            img.save(self.madrasha_logo.path)
+        if self.madrasha_logo:
+            img = Image.open(self.madrasha_logo.path)
+            if img.height > 100 and img.width > 100:
+                required_size = (100, 100)
+                img.thumbnail(required_size)
+                img.save(self.madrasha_logo.path)
 
     def save(self, *args, **kwargs):
-        if not self.madrasha_id:
-            self.madrasha_id = self.generate_madrasha_id()
+        if not self.madrasha_code:
+            self.madrasha_code = self.generate_madrasha_code()
+            print(self.madrasha_code)
 
         if not self.slug:
-            self.slug = slugify(self.madrasha_id)
+            self.slug = slugify(self.madrasha_code)
         super(Madrasha, self).save(*args, **kwargs)
         self.resize_logo_image()
 
@@ -190,7 +196,7 @@ class Madrasha(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['-madrasha_id']
+        ordering = ['-madrasha_code']
 
 
 # ====================== 5. Madrasha user List ================================
@@ -198,3 +204,7 @@ class Madrasha(models.Model):
 class MadrashaUserListing(models.Model):
     user = models.ForeignKey(CustomUser, related_name='users', on_delete=models.PROTECT)
     madrasha = models.ForeignKey(Madrasha, related_name='madrashas', on_delete=models.PROTECT)
+
+    class Meta:
+        unique_together = [['user', 'madrasha']]
+        ordering = ['pk']

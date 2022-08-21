@@ -2,16 +2,20 @@
 1.dependent drop down for address
 2. individual address
 3. MadrashaView
+4. UserRegistration
 '''
 
 from django.shortcuts import render
+from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from django.http import JsonResponse, Http404
 from .models import *
-from .serializers import AddressSerializer, MadrashaSerializer
+from .serializers import AddressSerializer, MadrashaSerializer, RegistrationSerializer
 from rest_framework import status
+
 
 # Create your views here.
 
@@ -121,4 +125,30 @@ class MadrashaDetailView(APIView):
             return Response({'status': True, 'message': 'Madrasha has been updated'})
 
 
+# ======================== 4. UserRegistration ================
 
+
+class UserRegistrationView(APIView):
+    """Create and get user"""
+    def post(self, request, formate=None):
+        serializer = RegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status': True, 'data': serializer.data})
+        return Response({'status': False, 'message': serializer.errors})
+
+
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'phone': user.phone
+        })

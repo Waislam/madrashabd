@@ -50,7 +50,7 @@ class DepartmentDetailview(APIView):
         try:
             return Department.objects.get(slug=slug)
         except Department.DoesNotExist:
-            return Http404
+            raise Http404
 
     def get(self, request, slug, formate=None):
         """details veiw for single obj"""
@@ -63,7 +63,8 @@ class DepartmentDetailview(APIView):
         department = self.get_object(slug)
         serializer = DepartmentSerializer(department, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            slug = serializer.validated_data['name']
+            serializer.save(slug=slug)
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -102,7 +103,7 @@ class DesignationDetailview(APIView):
         try:
             return Designation.objects.get(slug=slug)
         except Designation.DoesNotExist:
-            return Http404
+            raise Http404
 
     def get(self, request, slug, formate=None):
         """details view for single obj"""
@@ -115,7 +116,8 @@ class DesignationDetailview(APIView):
         designation = self.get_object(slug)
         serializer = DesignationSerializer(designation, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            slug = serializer.validated_data['name']
+            serializer.save(slug=slug)
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -155,7 +157,7 @@ class MadrashaClassesDetailview(APIView):
         try:
             return MadrashaClasses.objects.get(slug=slug)
         except MadrashaClasses.DoesNotExist:
-            return Http404
+            raise Http404
 
     def get(self, request, slug, formate=None):
         """details veiw for single obj"""
@@ -168,7 +170,8 @@ class MadrashaClassesDetailview(APIView):
         madrashaclass = self.get_object(slug)
         serializer = ClassSerializer(madrashaclass, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            slug = serializer.validated_data['name']
+            serializer.save(slug=slug)
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -220,7 +223,8 @@ class MadrashaClassGroupDetailview(APIView):
         madrashagroup = self.get_object(slug)
         serializer = ClassGroupSerializer(madrashagroup, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            slug = serializer.validated_data['name']
+            serializer.save(slug=slug)
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -273,7 +277,8 @@ class ShiftDetailview(APIView):
         shift = self.get_object(slug)
         serializer = ShiftSerializer(shift, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            slug = serializer.validated_data['name']
+            serializer.save(slug=slug)
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -313,7 +318,7 @@ class BooksDetailview(APIView):
         try:
             return Books.objects.get(slug=slug)
         except Books.DoesNotExist:
-            return Http404
+            raise Http404
 
     def get(self, request, slug, formate=None):
         """details veiw for single obj"""
@@ -326,7 +331,8 @@ class BooksDetailview(APIView):
         book = self.get_object(slug)
         serializer = BooksSerializer(book, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            slug = serializer.validated_data['name']
+            serializer.save(slug=slug)
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -366,7 +372,7 @@ class FeesDetailview(APIView):
         try:
             return Fees.objects.get(slug=slug)
         except Fees.DoesNotExist:
-            return Http404
+            raise Http404
 
     def get(self, request, slug, formate=None):
         """details veiw for single obj"""
@@ -379,7 +385,8 @@ class FeesDetailview(APIView):
         fee = self.get_object(slug)
         serializer = FeesSerializer(fee, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            slug = serializer.validated_data['name']
+            serializer.save(slug=slug)
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -419,7 +426,7 @@ class SessionDetailview(APIView):
         try:
             return Session.objects.get(slug=slug)
         except Session.DoesNotExist:
-            return Http404
+            raise Http404
 
     def get(self, request, slug, formate=None):
         """details veiw for single obj"""
@@ -432,7 +439,8 @@ class SessionDetailview(APIView):
         session = self.get_object(slug)
         serializer = SessionSerializer(session, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            slug = serializer.validated_data['name']
+            serializer.save(slug=slug)
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -466,17 +474,17 @@ class ExamRulesView(APIView):
 class ExamRulesDetailview(APIView):
     """ Session detail, update and delete"""
 
-    def get_object(self, slug):
+    def get_object(self, pk):
         """get single Session obj"""
 
         try:
-            return ExamRules.objects.get(slug=slug)
+            return ExamRules.objects.get(pk=pk)
         except ExamRules.DoesNotExist:
-            return Http404
+            raise Http404
 
-    def get(self, request, slug, formate=None):
+    def get(self, request, pk, formate=None):
         """details veiw for single obj"""
-        exam_rule = self.get_object(slug)
+        exam_rule = self.get_object(pk)
         serializer = ExamRulesSerializer(exam_rule)
         return Response(serializer.data)
 
@@ -485,7 +493,8 @@ class ExamRulesDetailview(APIView):
         exam_rule = self.get_object(slug)
         serializer = ExamRulesSerializer(exam_rule, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            slug = serializer.validated_data['name']
+            serializer.save(slug=slug)
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 

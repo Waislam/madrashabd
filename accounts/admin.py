@@ -1,6 +1,9 @@
 from django.contrib import admin
+from django.contrib.auth.models import Group
+
 from .models import *
-# Register your models here.
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 
 @admin.register(Address)
@@ -20,12 +23,13 @@ admin.site.register(PostCode)
 
 admin.site.register(Role)
 
-admin.site.register(CustomUser)
+# admin.site.register(CustomUser)
+admin.site.register(User)
 
 
 @admin.register(Madrasha)
 class MadrashaModel(admin.ModelAdmin):
-    list_display = ('name', 'madrasha_id', 'madrasha_address', 'madrasha_logo', 'created_at', 'updated_at', 'created_by', 'updated_by', 'active_status')
+    list_display = ('name', 'madrasha_code', 'madrasha_address', 'madrasha_logo', 'created_at', 'updated_at', 'created_by', 'updated_by', 'active_status')
 
 
 @admin.register(MadrashaUserListing)
