@@ -6,46 +6,8 @@
 
 from rest_framework import serializers
 from .models import Student, AcademicFess, Parent
-from accounts.models import Division, District, Thana, PostOffice, PostCode, Address
-
-
-# ======= 1. address serializer ================
-
-
-class DivisionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Division
-        fields = ['pk']
-
-
-class DistrictSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = District
-        fields = ['pk']
-
-
-class ThanaSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Thana
-        fields = ['pk']
-
-
-class PostOfficeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PostOffice
-        fields = ['pk']
-
-
-class PostCodeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = PostCode
-        fields = ['pk']
-
-
-class AddressSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Address
-        fields = ['id', 'division', 'district', 'thana', 'post_office', 'post_code', 'address_info']
+from accounts.models import Address
+from accounts.serializers import AddressSerializer
 
 
 # ================= 2. ParentSerializer =====================

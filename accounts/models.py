@@ -10,6 +10,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from PIL import Image
 from django.template.defaultfilters import slugify
+from django.contrib.auth.models import PermissionsMixin
 
 # Create your models here.
 
@@ -105,7 +106,7 @@ class OurUserManager(BaseUserManager):
         return user
 
 
-class CustomUser(AbstractBaseUser):
+class CustomUser(PermissionsMixin, AbstractBaseUser):
     username = models.CharField(unique=True, max_length=50)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
@@ -152,7 +153,7 @@ MADRASHA_STATUS = (
 
 class Madrasha(models.Model):
     name = models.CharField(max_length=255)
-    madrasha_id = models.CharField(unique=True, max_length=30, blank=True)
+    madrasha_code = models.CharField(unique=True, max_length=30, blank=True)
     madrasha_address = models.ForeignKey(Address, on_delete=models.SET_NULL, related_name='madrasha_address', null=True)
     madrasha_logo = models.ImageField(upload_to='madrasha/logo/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -162,16 +163,16 @@ class Madrasha(models.Model):
     active_status = models.CharField(max_length=10, default='Inactive', choices=MADRASHA_STATUS)
     slug = models.SlugField(unique=True, blank=True)
 
-    def generate_madrasha_id(self):
+    def generate_madrasha_code(self):
         starting = 100
         # shob = Madrasha.objects.all()
-        last_madrasha = Madrasha.objects.latest('madrasha_id')
+        last_madrasha = Madrasha.objects.latest('madrasha_code')
         if last_madrasha:
-            last_madrasha_id = int(last_madrasha.madrasha_id)
+            last_madrasha_code = int(last_madrasha.madrasha_code)
         else:
-            last_madrasha_id = starting
-        generated_id = str(last_madrasha_id+1)
-        return generated_id
+            last_madrasha_code = starting
+        generated_code = str(last_madrasha_code+1)
+        return generated_code
 
     def resize_logo_image(self):
         if self.madrasha_logo:
@@ -182,12 +183,12 @@ class Madrasha(models.Model):
                 img.save(self.madrasha_logo.path)
 
     def save(self, *args, **kwargs):
-        if not self.madrasha_id:
-            self.madrasha_id = self.generate_madrasha_id()
-            print(self.madrasha_id)
+        if not self.madrasha_code:
+            self.madrasha_code = self.generate_madrasha_code()
+            print(self.madrasha_code)
 
         if not self.slug:
-            self.slug = slugify(self.madrasha_id)
+            self.slug = slugify(self.madrasha_code)
         super(Madrasha, self).save(*args, **kwargs)
         self.resize_logo_image()
 
@@ -195,7 +196,7 @@ class Madrasha(models.Model):
         return self.name
 
     class Meta:
-        ordering = ['-madrasha_id']
+        ordering = ['-madrasha_code']
 
 
 # ====================== 5. Madrasha user List ================================
@@ -203,3 +204,7 @@ class Madrasha(models.Model):
 class MadrashaUserListing(models.Model):
     user = models.ForeignKey(CustomUser, related_name='users', on_delete=models.PROTECT)
     madrasha = models.ForeignKey(Madrasha, related_name='madrashas', on_delete=models.PROTECT)
+
+    class Meta:
+        unique_together = [['user', 'madrasha']]
+        ordering = ['pk']

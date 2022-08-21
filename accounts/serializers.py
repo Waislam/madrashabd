@@ -44,11 +44,6 @@ class PostCodeSerializer(serializers.ModelSerializer):
 
 
 class AddressSerializer(serializers.ModelSerializer):
-    # division = DivisionSerializer()
-    # district = DistrictSerializer()
-    # thana = ThanaSerializer()
-    # post_office = PostOfficeSerializer()
-    # post_code = PostCodeSerializer()
 
     class Meta:
         model = Address
@@ -70,7 +65,7 @@ class MadrashaSerializer(serializers.ModelSerializer):
         madrasha_name = validated_data['name']
         created_by = validated_data['created_by']
         updated_by = validated_data['updated_by']
-        # address = AddressSerializer.create(AddressSerializer(), validated_data=address_data)
+
         address = Address.objects.create(**address_data)
 
         madrasha = Madrasha.objects.create(madrasha_address=address,
@@ -106,6 +101,8 @@ class MadrashaSerializer(serializers.ModelSerializer):
         return instance
 
 # ================== 3. User ============
+
+
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
 
@@ -127,7 +124,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'message': 'password must match'})
         user.set_password(password)
         user.save()
-        MadrashaUserListing.objects.create(user=user, madrasha_id='103')
+        MadrashaUserListing.objects.create(user=user, madrasha_id=5)
         return user
 
 
