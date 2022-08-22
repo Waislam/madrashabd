@@ -2,7 +2,7 @@
 1. address serializer
 2. madrasha serializer
 3. User
-4. User
+4. MadrashaUserlisting
 
 """
 from rest_framework import serializers
@@ -100,8 +100,8 @@ class MadrashaSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
 
-# ================== 3. User ============
 
+# ================== 3. User ============
 
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
@@ -128,4 +128,10 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
-# ================== 4.  ============
+# ================== 4. MadrashaUserlisting  ============
+
+class MadrashaUserListingSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = MadrashaUserListing
+        fields = ['user', 'madrasha']

@@ -3,31 +3,34 @@ from django.http import Http404
 from rest_framework.response import Response
 from .serializers import StudentSerializer
 from rest_framework.views import APIView
+from rest_framework import mixins, generics
 from rest_framework import status
 from .models import Student
 from .pagination import CustomPagination
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+from .filters import StudentFilter
 
 
 # Create your views here.
 
-
-class StudentView(APIView, CustomPagination):
+class StudentView(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  generics.GenericAPIView):
     """ Student Create and list view """
-    def get(self, request, formate=None):
-        """method to show the list of Students """
-        students = Student.objects.all()
-        result = self.paginate_queryset(students, request, view=self)
-        serializer = StudentSerializer(result, many=True)
-        # return Response({'status': True, 'data': serializer.data})
-        return self.get_paginated_response(serializer.data)
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = StudentFilter
+    search_fields = ['student_id']
 
-    def post(self, request, formate=None):
-        """Method to create student api """
-        serializer = StudentSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'status': True, 'message': 'Student has been created'})
-        return Response({'status': False, 'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, *args, **kwargs):
+        """method to show the list of Students """
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        """Method to create student obj """
+        return self.create(request, *args, **kwargs)
 
 
 class StudentDetailView(APIView):
