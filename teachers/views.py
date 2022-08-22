@@ -6,27 +6,31 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Teacher
 from students.pagination import CustomPagination
+from .filters import TeacherFilter
+from rest_framework.filters import SearchFilter
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.generics import mixins, GenericAPIView
 
 # Create your views here.
 
 
-class TeacherView(APIView, CustomPagination):
-    """to create and list teacher obj"""
-    def get(self, request, formate=None):
-        """get list of teachers"""
-        teachers = Teacher.objects.all()
-        result = self.paginate_queryset(teachers, request, view=self)
-        serializer = TeacherSerializer(result, many=True)
-        # return Response({'status': True, 'data': serializer.data})
-        return self.get_paginated_response(serializer.data)
+class TeacherView(mixins.ListModelMixin,
+                  mixins.CreateModelMixin,
+                  GenericAPIView):
+    """ teacher Create and list view """
+    queryset = Teacher.objects.all()
+    serializer_class = TeacherSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = TeacherFilter
+    search_fields = ['teacher_id']
 
-    def post(self, request, formate=None):
-        """to create teacher obj"""
-        serializer = TeacherSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({'status': True, 'data': serializer.data})
-        return Response({'status': False, 'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+    def get(self, request, *args, **kwargs):
+        """method to show the list of Teacher """
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        """Method to create Teacher obj """
+        return self.create(request, *args, **kwargs)
 
 
 class TeacherDetailView(APIView):

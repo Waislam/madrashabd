@@ -3,6 +3,8 @@
 2. individual address
 3. MadrashaView
 4. UserRegistration
+5. TokenAuthentication
+6. MadrashaUserListing
 '''
 
 from django.shortcuts import render
@@ -13,9 +15,11 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.response import Response
 from django.http import JsonResponse, Http404
 from .models import *
-from .serializers import AddressSerializer, MadrashaSerializer, RegistrationSerializer
+from .serializers import AddressSerializer, MadrashaSerializer, RegistrationSerializer, MadrashaUserListingSerializer
 from rest_framework import status
-
+from rest_framework.generics import mixins, GenericAPIView
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
 
 # Create your views here.
 
@@ -127,7 +131,6 @@ class MadrashaDetailView(APIView):
 
 # ======================== 4. UserRegistration ================
 
-
 class UserRegistrationView(APIView):
     """Create and get user"""
     def post(self, request, formate=None):
@@ -138,6 +141,7 @@ class UserRegistrationView(APIView):
         return Response({'status': False, 'message': serializer.errors})
 
 
+# ==================== 5. TokenAuthentication ===================
 class CustomAuthToken(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
@@ -152,3 +156,18 @@ class CustomAuthToken(ObtainAuthToken):
             'user_id': user.pk,
             'phone': user.phone
         })
+
+
+# =========================== 6. MadrashaUserListing =============================
+class MadrashaUserListingView(mixins.ListModelMixin,
+                              GenericAPIView):
+    """api view for Madrashauser listing"""
+    queryset = MadrashaUserListing.objects.all()
+    serializer_class = MadrashaUserListingSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['user', 'madrasha']
+    search_fields = ['user']
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
