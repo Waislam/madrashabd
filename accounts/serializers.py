@@ -3,6 +3,7 @@
 2. madrasha serializer
 3. User
 4. MadrashaUserlisting
+5. AvatarUpdateSerializer
 
 """
 from rest_framework import serializers
@@ -135,3 +136,18 @@ class MadrashaUserListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = MadrashaUserListing
         fields = ['user', 'madrasha']
+
+
+# =================== 5. AvatarUpdateSerializer =================
+class AvatarUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CustomUser
+        fields =['avatar']
+
+    def update(self, instance, validated_data):
+
+        instance.avatar = validated_data.get('avatar', instance.avatar)
+        instance.pk = validated_data.get('user_id', instance.pk)
+        instance.save()
+        return instance

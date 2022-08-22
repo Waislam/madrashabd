@@ -9,7 +9,8 @@ from .views import (
     MadrashaDetailView,
     UserRegistrationView,
     CustomAuthToken,
-    MadrashaUserListingView
+    MadrashaUserListingView,
+    AvatarUpdateView
 )
 
 urlpatterns = [
@@ -24,4 +25,6 @@ urlpatterns = [
     path('madrasha/detail/<slug:slug>/', MadrashaDetailView.as_view()),
     path('madrasha-admin/', UserRegistrationView.as_view()),
     path('mu-listing/', MadrashaUserListingView.as_view()),  # madrashauser listing
+    path('avatar/<int:pk>/', AvatarUpdateView.as_view()),
+
 ]
