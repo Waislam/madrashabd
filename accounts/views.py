@@ -5,6 +5,7 @@
 4. UserRegistration
 5. TokenAuthentication
 6. MadrashaUserListing
+7. AvatarUpdateView
 '''
 
 from django.shortcuts import render
@@ -15,7 +16,9 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.response import Response
 from django.http import JsonResponse, Http404
 from .models import *
-from .serializers import AddressSerializer, MadrashaSerializer, RegistrationSerializer, MadrashaUserListingSerializer
+from .serializers import (AddressSerializer, MadrashaSerializer, RegistrationSerializer, MadrashaUserListingSerializer,
+                          AvatarUpdateSerializer)
+
 from rest_framework import status
 from rest_framework.generics import mixins, GenericAPIView
 from django_filters.rest_framework import DjangoFilterBackend
@@ -171,3 +174,21 @@ class MadrashaUserListingView(mixins.ListModelMixin,
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
+
+# ================== 7. AvatarUpdateView ===========
+class AvatarUpdateView(APIView):
+    """avatar update api for user"""
+    def get_object(self, pk):
+        """get the user object"""
+        try:
+            return CustomUser.objects.get(pk=pk)
+        except CustomUser.DoesNotExist:
+            raise Http404
+
+    def put(self, request, pk, formate=None):
+        user = self.get_object(pk)
+        serializer = AvatarUpdateSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'status': True, 'message': 'img updated successfully'})
+        return Response({'status': False, 'message': serializer.data})
