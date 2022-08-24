@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # 3rd party app
     'corsheaders',
-    'drf_yasg',
+    'drf_yasg',  # for swagger
     'django_filters',
     # project app
     'accounts',
