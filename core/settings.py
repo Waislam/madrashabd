@@ -32,7 +32,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     # 3rd party app
     'corsheaders',
-    'drf_yasg',
+    'drf_yasg',  # for swagger
     'django_filters',
     # project app
     'accounts',
@@ -51,6 +51,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # for corsheaders
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = 'core.urls'

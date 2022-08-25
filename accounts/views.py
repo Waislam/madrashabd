@@ -23,7 +23,9 @@ from rest_framework import status
 from rest_framework.generics import mixins, GenericAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
+from django.contrib.auth import get_user_model
 
+User = get_user_model()
 # Create your views here.
 
 #  ====================================== 1.dependent drop down for address ==========================
@@ -145,7 +147,15 @@ class UserRegistrationView(APIView):
 
 
 # ==================== 5. TokenAuthentication ===================
-class CustomAuthToken(ObtainAuthToken):
+class CustomAuthToken(ObtainAuthToken, APIView):
+    def get(self, request, formate=None):
+        """get the user id using token"""
+        token = request.COOKIES.get('token')
+        user_id = Token.objects.get(key=token).customuser_id
+        user = User.objects.get(id=user_id)
+        if user.exists():
+            return Response({'user': user})
+
 
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,

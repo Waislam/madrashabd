@@ -27,4 +27,5 @@ urlpatterns = [
     path('mu-listing/', MadrashaUserListingView.as_view()),  # madrashauser listing
     path('avatar/<int:pk>/', AvatarUpdateView.as_view()),
 
+
 ]
