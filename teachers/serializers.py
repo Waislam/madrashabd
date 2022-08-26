@@ -24,7 +24,6 @@ class TeacherSerializer(serializers.ModelSerializer):
     education = EducationSerializer()
     skill = SkillSerializer()
 
-
     class Meta:
         model = Teacher
         fields = ['id', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
@@ -33,10 +32,10 @@ class TeacherSerializer(serializers.ModelSerializer):
                   'designation', 'starting_date', 'ending_date', 'slug']
 
     def create(self, validated_data):
-        present_address = validated_data['present_address']
-        permanent_address = validated_data['permanent_address']
-        education = validated_data['education']
-        skill = validated_data['skill']
+        present_address = validated_data.pop('present_address')  # need to pop to avoid multiple value assingment for same field
+        permanent_address = validated_data.pop('permanent_address')
+        education = validated_data.pop('education')
+        skill = validated_data.pop('skill')
 
         present_address_obj = Address.objects.create(**present_address)
         permanent_address_obj = Address.objects.create(**permanent_address)
@@ -45,13 +44,11 @@ class TeacherSerializer(serializers.ModelSerializer):
         skill_obj = Skill.objects.create(**skill)
 
         # now create teacher obj
-        phone_home = validated_data['phone_home']
-        nid = validated_data['nid']
-        birth_certificate = validated_data['birth_certificate']
 
-        teacher = Teacher.objects.create(phone_home=phone_home, nid=nid, birth_certificate=birth_certificate,
+        teacher = Teacher.objects.create(
                                          present_address=present_address_obj, permanent_address=permanent_address_obj,
-                                         education=education_obj, skill=skill_obj)
+                                         education=education_obj, skill=skill_obj, **validated_data
+                                        )
         return teacher
 
     def update(self, instance, validated_data):

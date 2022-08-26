@@ -32,7 +32,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['id', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate', 'student_nid',
+        fields = ['id', 'user', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate', 'student_nid',
                   'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
                   'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
                   'yearly_income', 'guardian_contact',
@@ -47,13 +47,10 @@ class StudentSerializer(serializers.ModelSerializer):
                   'slug']
 
     def create(self, validated_data):
-        present_address = validated_data['present_address']
-        permanent_address = validated_data['present_address']
-        father_info = validated_data['father_info']
-        mother_info = validated_data['father_info']
-
-        date_of_birth = validated_data['date_of_birth']
-        admitted_department = validated_data['admitted_department']
+        present_address = validated_data.pop('present_address')
+        permanent_address = validated_data.pop('permanent_address')
+        father_info = validated_data.pop('father_info')
+        mother_info = validated_data.pop('mother_info')
 
         # create address object
         present_address_obj = Address.objects.create(**present_address)
@@ -63,9 +60,9 @@ class StudentSerializer(serializers.ModelSerializer):
         father_info_obj = Parent.objects.create(**father_info)
         mother_info_obj = Parent.objects.create(**mother_info)
 
-        student = Student.objects.create(date_of_birth=date_of_birth, admitted_department=admitted_department,
-                                         present_address=present_address_obj, permanent_address=permanent_address_obj,
-                                         father_info=father_info_obj, mother_info=mother_info_obj)
+        student = Student.objects.create(present_address=present_address_obj, permanent_address=permanent_address_obj,
+                                         father_info=father_info_obj, mother_info=mother_info_obj, **validated_data
+                                        )
         return student
 
     def update(self, instance, validated_data):
@@ -107,3 +104,4 @@ class StudentSerializer(serializers.ModelSerializer):
         instance.admitted_department = validated_data.get('admitted_department', instance.admitted_department)
         instance.save()
         return instance
+
