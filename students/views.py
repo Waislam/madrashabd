@@ -29,14 +29,19 @@ class StudentView(mixins.ListModelMixin,
     # def check_permissions(self):
     #     pass
 
+    def get_serializer_class(self):
+        if self.request.method == 'get':
+            return StudentListSerializer
+        return StudentSerializer
+
     def get(self, request, *args, **kwargs):
         """method to show the list of Students """
-        self.serializer_class = StudentListSerializer
+        # self.serializer_class = StudentListSerializer
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """Method to create student obj """
-        self.serializer_class = StudentSerializer
+        # self.serializer_class = StudentSerializer
         return self.create(request, *args, **kwargs)
 
 

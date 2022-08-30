@@ -1,0 +1,10 @@
+[
+{
+    "model": "accounts.district",
+    "pk": 1,
+    "fields": {
+        "name": "Mymensingh",
+        "division": 1
+    }
+}
+]
