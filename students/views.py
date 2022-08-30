@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import Http404
 from rest_framework.response import Response
-from .serializers import StudentSerializer
+from .serializers import StudentSerializer, StudentListSerializer
 from rest_framework.views import APIView
 from rest_framework import mixins, generics
 from rest_framework import status
@@ -10,6 +10,8 @@ from .pagination import CustomPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from .filters import StudentFilter
+from rest_framework.permissions import IsAuthenticated
+from .permissions import IsMadrashaAdmin
 
 
 # Create your views here.
@@ -19,17 +21,22 @@ class StudentView(mixins.ListModelMixin,
                   generics.GenericAPIView):
     """ Student Create and list view """
     queryset = Student.objects.all()
-    serializer_class = StudentSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = StudentFilter
     search_fields = ['student_id']
+    permission_classes = [IsMadrashaAdmin]
+
+    # def check_permissions(self):
+    #     pass
 
     def get(self, request, *args, **kwargs):
         """method to show the list of Students """
+        self.serializer_class = StudentListSerializer
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """Method to create student obj """
+        self.serializer_class = StudentSerializer
         return self.create(request, *args, **kwargs)
 
 

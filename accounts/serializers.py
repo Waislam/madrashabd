@@ -59,7 +59,7 @@ class MadrashaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Madrasha
-        fields = ['id', 'name', 'madrasha_id', 'madrasha_address', 'madrasha_logo', 'created_by', 'updated_by', 'active_status', 'slug']
+        fields = ['id', 'name', 'madrasha_code', 'madrasha_address', 'madrasha_logo', 'created_by', 'updated_by', 'active_status', 'slug']
 
     def create(self, validated_data):
         address_data = validated_data['madrasha_address']
@@ -125,7 +125,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({'message': 'password must match'})
         user.set_password(password)
         user.save()
-        MadrashaUserListing.objects.create(user=user, madrasha_id=5)
+        MadrashaUserListing.objects.create(user=user, madrasha_id=1)
         return user
 
 
@@ -151,3 +151,11 @@ class AvatarUpdateSerializer(serializers.ModelSerializer):
         instance.pk = validated_data.get('user_id', instance.pk)
         instance.save()
         return instance
+
+
+# ============ 2. customuser serializer =============
+class CustomUserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CustomUser
+        fields = "__all__"

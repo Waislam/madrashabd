@@ -141,5 +141,10 @@ except ImportError:
 
 
 REST_FRAMEWORK = {
-    'DEFAULT_PAGINATION_CLASS': 'students.pagination.CustomPagination', # for custom pagination in mixin
+    # for custom pagination in mixin
+    'DEFAULT_PAGINATION_CLASS': 'students.pagination.CustomPagination',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+    ],
+
 }

@@ -135,6 +135,7 @@ class CustomUser(PermissionsMixin, AbstractBaseUser):
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
         # Simplest possible answer: Yes, always
+
         return True
 
     def has_module_perms(self, app_label):
@@ -166,13 +167,17 @@ class Madrasha(models.Model):
     def generate_madrasha_code(self):
         starting = 100
         # shob = Madrasha.objects.all()
-        last_madrasha = Madrasha.objects.latest('madrasha_code')
-        if last_madrasha:
-            last_madrasha_code = int(last_madrasha.madrasha_code)
-        else:
-            last_madrasha_code = starting
-        generated_code = str(last_madrasha_code+1)
-        return generated_code
+        try:
+            last_madrasha = Madrasha.objects.latest('madrasha_code')
+            if last_madrasha:
+                last_madrasha_code = int(last_madrasha.madrasha_code)
+            else:
+                last_madrasha_code = starting
+            generated_code = str(last_madrasha_code+1)
+            return generated_code
+        except:
+
+            return starting
 
     def resize_logo_image(self):
         if self.madrasha_logo:
