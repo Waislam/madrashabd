@@ -1,0 +1,10 @@
+[
+{
+    "model": "accounts.thana",
+    "pk": 1,
+    "fields": {
+        "name": "Gouripur",
+        "district": 1
+    }
+}
+]

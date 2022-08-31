@@ -12,8 +12,6 @@ class MadrashaAdminPermission(BasePermission):
             user_madrasha_id = request.user.madrasha.madrasha_id
             user = request.user
             # if user.exits()
-
-
             return True
         return False
 

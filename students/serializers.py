@@ -7,7 +7,7 @@
 from rest_framework import serializers
 from .models import Student, AcademicFess, Parent
 from accounts.models import Address
-from accounts.serializers import AddressSerializer
+from accounts.serializers import AddressSerializer, CustomUserSerializer
 
 
 # ================= 2. ParentSerializer =====================
@@ -23,6 +23,29 @@ class ParentSerializer(serializers.ModelSerializer):
 
 # ================= 3. StudentSerializer =====================
 
+class StudentListSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer()
+    present_address = AddressSerializer()
+    permanent_address = AddressSerializer()
+    father_info = ParentSerializer()
+    mother_info = ParentSerializer()
+
+    class Meta:
+        model = Student
+        fields = ['id', 'user', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
+                  'student_nid',
+                  'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
+                  'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
+                  'yearly_income', 'guardian_contact',
+                  'guardian_email', 'other_contact_person', 'other_contact_person_relation',
+                  'other_contact_person_contact', 'sibling_id', 'previous_institution_name',
+                  'previous_institution_contact',
+                  'previous_started_at', 'previous_ending_at', 'previous_ending_class', 'previous_ending_result',
+                  'board_exam_name', 'board_exam_registration', 'board_exam_roll', 'board_exam_result',
+                  'admitted_department',
+                  'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
+                  'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
+                  'slug']
 
 class StudentSerializer(serializers.ModelSerializer):
     present_address = AddressSerializer()
