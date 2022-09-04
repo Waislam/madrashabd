@@ -24,13 +24,13 @@ class StudentView(mixins.ListModelMixin,
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = StudentFilter
     search_fields = ['student_id']
-    permission_classes = [IsMadrashaAdmin]
+    # permission_classes = [IsMadrashaAdmin]
 
     # def check_permissions(self):
     #     pass
 
     def get_serializer_class(self):
-        if self.request.method == 'get':
+        if self.request.method == 'GET':
             return StudentListSerializer
         return StudentSerializer
 
