@@ -81,8 +81,22 @@ class TeacherSerializer(serializers.ModelSerializer):
         skill.skill_name = validated_data.get('skill').get('skill_name', skill.skill_name)
         skill.save()
 
+        # get instance fields
+        instance.father_name = validated_data.get('father_name', instance.father_name)
+        instance.mother_name = validated_data.get('mother_name', instance.mother_name)
+        instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
+        instance.religion = validated_data.get('religion', instance.religion)
+        instance.marital_status = validated_data.get('marital_status', instance.marital_status)
         instance.phone_home = validated_data.get('phone_home', instance.phone_home)
         instance.nid = validated_data.get('nid', instance.nid)
         instance.birth_certificate = validated_data.get('birth_certificate', instance.birth_certificate)
+        instance.nationality = validated_data.get('nationality', instance.nationality)
+        instance.blood_group = validated_data.get('blood_group', instance.blood_group)
+        instance.department = validated_data.get('department', instance.department)
+        instance.designation = validated_data.get('designation', instance.designation)
+        instance.starting_date = validated_data.get('starting_date', instance.starting_date)
+        instance.ending_date = validated_data.get('ending_date', instance.ending_date)
+        instance.slug = validated_data.get('slug', instance.slug)
+
         instance.save()
         return instance
