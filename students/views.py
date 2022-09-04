@@ -24,7 +24,7 @@ class StudentView(mixins.ListModelMixin,
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = StudentFilter
     search_fields = ['student_id']
-    permission_classes = [IsMadrashaAdmin]
+    # permission_classes = [IsMadrashaAdmin]
 
     # def check_permissions(self):
     #     pass

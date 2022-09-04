@@ -1,0 +1,12 @@
+[
+{
+    "model": "settingapp.department",
+    "pk": 1,
+    "fields": {
+        "name": "department1",
+        "is_active": true,
+        "slug": "amader-madrasha",
+        "madrasha": 1
+    }
+}
+]
