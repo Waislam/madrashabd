@@ -156,7 +156,6 @@ class CustomAuthToken(ObtainAuthToken, APIView):
         if user.exists():
             return Response({'user': user})
 
-
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
                                            context={'request': request})

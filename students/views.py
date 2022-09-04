@@ -30,7 +30,7 @@ class StudentView(mixins.ListModelMixin,
     #     pass
 
     def get_serializer_class(self):
-        if self.request.method == 'get':
+        if self.request.method == 'GET':
             return StudentListSerializer
         return StudentSerializer
 
