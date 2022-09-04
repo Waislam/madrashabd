@@ -42,3 +42,5 @@ db.sqlite3-journal
 .vscode
 .bash_history
 .PyCharm2018.
+
+transactions/

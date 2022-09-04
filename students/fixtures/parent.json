@@ -1,0 +1,30 @@
+[
+{
+    "model": "students.parent",
+    "pk": 1,
+    "fields": {
+        "parent_name": "father name",
+        "parent_date_of_birth": "1988-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+},
+{
+    "model": "students.parent",
+    "pk": 2,
+    "fields": {
+        "parent_name": "mother name",
+        "parent_date_of_birth": "1990-05-15",
+        "parent_nid": "654654654654",
+        "occupation": "teacher",
+        "organization_with_designation": "organization name, podobi",
+        "education": "literate",
+        "contact_number": "01725563915",
+        "parent_email": "example@email.com"
+    }
+}
+]

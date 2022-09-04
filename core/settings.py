@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'settingapp',
     'teachers',
     'students',
+    # 'transactions',
 ]
 
 MIDDLEWARE = [

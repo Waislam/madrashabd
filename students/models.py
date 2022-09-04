@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 from teachers.models import RELIGION_CHOICE, GENDER_CHOICE, NATIONALITY_CHOICE
-from accounts.models import Address
+from accounts.models import Address, Madrasha
 from settingapp.models import *
 # Create your models here.
 User = get_user_model()
@@ -57,7 +57,8 @@ class Parent(models.Model):
 
 
 class Student(models.Model):
-    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='students', null=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='user_students', null=True)
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.SET_NULL, related_name='madrasha_students', null=True)
     student_id = models.CharField(max_length=255, unique=True, blank=True)
     student_roll_id = models.CharField(max_length=255, unique=True, blank=True, null=True)
     date_of_birth = models.DateField()

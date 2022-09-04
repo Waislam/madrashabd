@@ -5,14 +5,6 @@ from django.template.defaultfilters import  slugify
 # Create your models here.
 
 
-# class Status(models.Model):
-#     is_active = models.BooleanField(default=True)
-#     is_deleted = models.BooleanField(default=False)
-#
-#     def __str__(self):
-#         return self.is_active
-
-
 class Department(models.Model):
     name = models.CharField(max_length=150, unique=True, blank=True)
     is_active = models.BooleanField(default=True)
