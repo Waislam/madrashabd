@@ -7,6 +7,7 @@
 6. MadrashaUserListing
 7. AvatarUpdateView
 '''
+import json
 
 from django.shortcuts import render
 from rest_framework.authtoken.models import Token
@@ -16,14 +17,21 @@ from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIV
 from rest_framework.response import Response
 from django.http import JsonResponse, Http404
 from .models import *
-from .serializers import (AddressSerializer, MadrashaSerializer, RegistrationSerializer, MadrashaUserListingSerializer,
-                          AvatarUpdateSerializer)
+from .serializers import (
+    AddressSerializer,
+    MadrashaSerializer,
+    RegistrationSerializer,
+    MadrashaUserListingSerializer,
+    AvatarUpdateSerializer,
+    CustomUserSerializer
+)
 
 from rest_framework import status
 from rest_framework.generics import mixins, GenericAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from django.contrib.auth import get_user_model
+from django.forms.models import model_to_dict
 
 User = get_user_model()
 # Create your views here.
@@ -162,12 +170,15 @@ class CustomAuthToken(ObtainAuthToken, APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-
-        return Response({
-            'token': token.key,
-            'user_id': user.pk,
-            'phone': user.phone
-        })
+        user_data = CustomUser.objects.get(pk=user.pk)
+        user_serializer = CustomUserSerializer(user_data, data=model_to_dict(user_data))
+        if user_serializer.is_valid():
+            return Response({
+                'token': token.key,
+                'user_id': user.pk,
+                'phone': user.phone,
+                'user': user_serializer.data
+            })
 
 
 # =========================== 6. MadrashaUserListing =============================
