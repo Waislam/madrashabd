@@ -23,61 +23,72 @@ from .serializers import (
     RegistrationSerializer,
     MadrashaUserListingSerializer,
     AvatarUpdateSerializer,
-    CustomUserSerializer
+    CustomUserSerializer,
+    DistrictSerializer,
+    DivisionSerializer,
+    ThanaSerializer,
+    PostOfficeSerializer,
+    PostCodeSerializer
 )
 
 from rest_framework import status
-from rest_framework.generics import mixins, GenericAPIView
+from rest_framework.generics import mixins, GenericAPIView, ListAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from django.contrib.auth import get_user_model
 from django.forms.models import model_to_dict
 
 User = get_user_model()
+
+
 # Create your views here.
 
 #  ====================================== 1.dependent drop down for address ==========================
 
 
-class DistrictList(APIView):
-    def post(self, request):
-        division = request.data['division']
-        district = {}
-        if division:
-            districts = Division.objects.get(id=division).districts.all()
-            district = {d.name:d.id for d in districts}
-        return JsonResponse(data=district, safe=False)
+class DistrictListView(ListAPIView):
+    queryset = District.objects.all()
+    serializer_class = DistrictSerializer
 
 
-class ThanaList(APIView):
-    def post(self, request):
-        district = request.data['district']
-        thana = {}
-        if district:
-            thanas = District.objects.get(id=district).thanas.all()
-            thana = {d.name:d.id for d in thanas}
-        return JsonResponse(data=thana, safe=False)
+class DivisionListView(ListAPIView):
+    queryset = Division.objects.all()
+    serializer_class = DivisionSerializer
 
 
-class PostOfficeList(APIView):
-    def post(self, request):
-        district = request.data['district']
-        post_office = {}
-        if district:
-            post_offices = District.objects.get(id=district).postoffices.all()
-            post_office = {d.name:d.id for d in post_offices}
-        return JsonResponse(data=post_office, safe=False)
+class ThanaListView(ListAPIView):
+    queryset = Thana.objects.all()
+    serializer_class = ThanaSerializer
 
 
-class PostCodeList(APIView):
-    def post(self, request):
-        post_office = request.data['post_office']  # here post_code is the var from form
-        post_code = {}
-        if post_office:
-            post_codes = PostOffice.objects.get(id=post_office).postcodess.all()
-            post_code = {d.name:d.id for d in post_codes}
-        return JsonResponse(data=post_code, safe=False)
+# class PostOfficeList(APIView):
+#     def post(self, request):
+#         district = request.data['district']
+#         post_office = {}
+#         if district:
+#             post_offices = District.objects.get(id=district).postoffices.all()
+#             post_office = {d.name: d.id for d in post_offices}
+#         return JsonResponse(data=post_office, safe=False)
 
+
+class PostOfficeListView(ListAPIView):
+    queryset = PostOffice.objects.all()
+    serializer_class = PostOfficeSerializer
+
+
+# class PostCodeList(APIView):
+#     def post(self, request):
+#         post_office = request.data['post_office']  # here post_code is the var from form
+#         post_code = {}
+#         if post_office:
+#             post_codes = PostCode.objects.get(id=post_office).postcodess.all()
+#             post_code = {d.name: d.id for d in post_codes}
+#         return JsonResponse(data=post_code, safe=False)
+
+
+class PostCodeListView(ListAPIView):
+    queryset = PostCode.objects.all()
+    serializer_class = PostCodeSerializer
 
 # ==================== 2. individual address ============
 
@@ -146,6 +157,7 @@ class MadrashaDetailView(APIView):
 
 class UserRegistrationView(APIView):
     """Create and get user"""
+
     def post(self, request, formate=None):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
@@ -198,6 +210,7 @@ class MadrashaUserListingView(mixins.ListModelMixin,
 # ================== 7. AvatarUpdateView ===========
 class AvatarUpdateView(APIView):
     """avatar update api for user"""
+
     def get_object(self, pk):
         """get the user object"""
         try:
