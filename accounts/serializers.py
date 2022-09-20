@@ -17,31 +17,50 @@ from accounts.models import (Division, District, Thana, PostOffice, PostCode, Ad
 class DivisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Division
-        fields = ['pk']
+        fields = [
+            'pk',
+            'name'
+        ]
 
 
 class DistrictSerializer(serializers.ModelSerializer):
     class Meta:
         model = District
-        fields = ['pk']
+        fields = [
+            'pk',
+            'name',
+            'division'
+        ]
 
 
 class ThanaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Thana
-        fields = ['pk']
+        fields = [
+            'pk',
+            'name',
+            'district'
+        ]
 
 
 class PostOfficeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostOffice
-        fields = ['pk']
+        fields = [
+            'pk',
+            'name',
+            'district'
+        ]
 
 
 class PostCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostCode
-        fields = ['pk']
+        fields = [
+            'pk',
+            'name',
+            'post_office'
+        ]
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -158,4 +177,4 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        exclude = ["password"]
+        exclude = ["password", 'avatar']
