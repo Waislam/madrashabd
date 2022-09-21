@@ -52,6 +52,7 @@ class StudentSerializer(serializers.ModelSerializer):
     permanent_address = AddressSerializer()
     father_info = ParentSerializer()
     mother_info = ParentSerializer()
+    # user = serializers.SerializerMethodField("user_first_name")
 
     class Meta:
         model = Student
@@ -68,6 +69,9 @@ class StudentSerializer(serializers.ModelSerializer):
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
                   'slug']
+    # def user_first_name(self, obj):
+    #     first_name = obj.user.first_name
+    #     return first_name
 
     def create(self, validated_data):
         present_address = validated_data.pop('present_address')
