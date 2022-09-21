@@ -21,6 +21,12 @@ class ParentSerializer(serializers.ModelSerializer):
                   'education', 'contact_number', 'parent_email']
 
 
+class EducationSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model =
+
+
 # ================= 3. StudentSerializer =====================
 
 class StudentListSerializer(serializers.ModelSerializer):
