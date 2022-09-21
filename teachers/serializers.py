@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Teacher, Education, Skill
 from students.serializers import AddressSerializer
 from accounts.models import Address
+from settingapp.serializers import DepartmentSerializer, DesignationSerializer
 
 
 class EducationSerializer(serializers.ModelSerializer):
@@ -23,6 +24,8 @@ class TeacherSerializer(serializers.ModelSerializer):
     permanent_address = AddressSerializer()
     education = EducationSerializer()
     skill = SkillSerializer()
+    department = DepartmentSerializer()
+    designation = DesignationSerializer()
 
     class Meta:
         model = Teacher
