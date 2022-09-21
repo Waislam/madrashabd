@@ -17,31 +17,70 @@ from accounts.models import (Division, District, Thana, PostOffice, PostCode, Ad
 class DivisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Division
+<<<<<<< HEAD
         fields = ['name']
+=======
+        fields = [
+            'pk',
+            'name'
+        ]
+>>>>>>> dc7380983bef02cf4a50ab6ddc54f61ab462ec18
 
 
 class DistrictSerializer(serializers.ModelSerializer):
     class Meta:
         model = District
+<<<<<<< HEAD
         fields = ['name']
+=======
+        fields = [
+            'pk',
+            'name',
+            'division'
+        ]
+>>>>>>> dc7380983bef02cf4a50ab6ddc54f61ab462ec18
 
 
 class ThanaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Thana
+<<<<<<< HEAD
         fields = ['name']
+=======
+        fields = [
+            'pk',
+            'name',
+            'district'
+        ]
+>>>>>>> dc7380983bef02cf4a50ab6ddc54f61ab462ec18
 
 
 class PostOfficeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostOffice
+<<<<<<< HEAD
         fields = ['name']
+=======
+        fields = [
+            'pk',
+            'name',
+            'district'
+        ]
+>>>>>>> dc7380983bef02cf4a50ab6ddc54f61ab462ec18
 
 
 class PostCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostCode
+<<<<<<< HEAD
         fields = ['name']
+=======
+        fields = [
+            'pk',
+            'name',
+            'post_office'
+        ]
+>>>>>>> dc7380983bef02cf4a50ab6ddc54f61ab462ec18
 
 
 class AddressSerializer(serializers.ModelSerializer):
@@ -189,5 +228,4 @@ class CustomUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        exclude = ["password"]
-
+        exclude = ["password", 'avatar']
