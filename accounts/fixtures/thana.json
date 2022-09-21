@@ -3790,5 +3790,325 @@
         "name": "BB. Bridge (West)",
         "district": 52
     }
+},
+{
+    "model": "accounts.thana",
+    "pk": 475,
+    "fields": {
+        "name": "Birampur",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 476,
+    "fields": {
+        "name": "Birganj",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 477,
+    "fields": {
+        "name": "Biral",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 478,
+    "fields": {
+        "name": "Bochaganj",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 479,
+    "fields": {
+        "name": "Chirirbandar",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 480,
+    "fields": {
+        "name": "Fulbari",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 481,
+    "fields": {
+        "name": "Ghoraghat",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 482,
+    "fields": {
+        "name": "Hakimpur",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 483,
+    "fields": {
+        "name": "Kaharole",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 484,
+    "fields": {
+        "name": "Khansama",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 485,
+    "fields": {
+        "name": "Dinajpur Sadar",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 486,
+    "fields": {
+        "name": "Nawabganj",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 487,
+    "fields": {
+        "name": "Parbatipur",
+        "district": 53
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 488,
+    "fields": {
+        "name": "Fulchhari",
+        "district": 54
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 489,
+    "fields": {
+        "name": "Gaibandha Sadar",
+        "district": 54
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 490,
+    "fields": {
+        "name": "Gobindaganj",
+        "district": 54
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 491,
+    "fields": {
+        "name": "Palashbari",
+        "district": 54
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 492,
+    "fields": {
+        "name": "Sadullapur",
+        "district": 54
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 493,
+    "fields": {
+        "name": "Saghata",
+        "district": 54
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 494,
+    "fields": {
+        "name": "Sundarganj",
+        "district": 54
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 495,
+    "fields": {
+        "name": "Phulbari",
+        "district": 55
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 496,
+    "fields": {
+        "name": "Kurigram Sadar",
+        "district": 55
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 497,
+    "fields": {
+        "name": "Bhurungamari",
+        "district": 55
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 498,
+    "fields": {
+        "name": "Nageshwari",
+        "district": 55
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 499,
+    "fields": {
+        "name": "Rajarhat",
+        "district": 55
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 500,
+    "fields": {
+        "name": "Raumari",
+        "district": 55
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 501,
+    "fields": {
+        "name": "Char Rajibpur",
+        "district": 55
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 502,
+    "fields": {
+        "name": "Chilmari",
+        "district": 55
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 503,
+    "fields": {
+        "name": "Ulipur",
+        "district": 55
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 504,
+    "fields": {
+        "name": "Aditmari",
+        "district": 56
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 505,
+    "fields": {
+        "name": "Hatibandha",
+        "district": 56
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 506,
+    "fields": {
+        "name": "Kaliganj",
+        "district": 56
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 507,
+    "fields": {
+        "name": "Lalmonirhat Sadar",
+        "district": 56
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 508,
+    "fields": {
+        "name": "Patgram",
+        "district": 56
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 509,
+    "fields": {
+        "name": "Dimla Upazila",
+        "district": 57
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 510,
+    "fields": {
+        "name": "Domar Upazila",
+        "district": 57
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 511,
+    "fields": {
+        "name": "Jaldhaka Upazila",
+        "district": 57
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 512,
+    "fields": {
+        "name": "Kishoreganj Upazila",
+        "district": 57
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 513,
+    "fields": {
+        "name": "Nilphamari Sadar Upaz",
+        "district": 57
+    }
+},
+{
+    "model": "accounts.thana",
+    "pk": 514,
+    "fields": {
+        "name": "Saidpur Upazila",
+        "district": 57
+    }
 }
 ]

@@ -17,57 +17,108 @@ from accounts.models import (Division, District, Thana, PostOffice, PostCode, Ad
 class DivisionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Division
+<<<<<<< HEAD
+        fields = ['name']
+=======
         fields = [
             'pk',
             'name'
         ]
+>>>>>>> dc7380983bef02cf4a50ab6ddc54f61ab462ec18
 
 
 class DistrictSerializer(serializers.ModelSerializer):
     class Meta:
         model = District
+<<<<<<< HEAD
+        fields = ['name']
+=======
         fields = [
             'pk',
             'name',
             'division'
         ]
+>>>>>>> dc7380983bef02cf4a50ab6ddc54f61ab462ec18
 
 
 class ThanaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Thana
+<<<<<<< HEAD
+        fields = ['name']
+=======
         fields = [
             'pk',
             'name',
             'district'
         ]
+>>>>>>> dc7380983bef02cf4a50ab6ddc54f61ab462ec18
 
 
 class PostOfficeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostOffice
+<<<<<<< HEAD
+        fields = ['name']
+=======
         fields = [
             'pk',
             'name',
             'district'
         ]
+>>>>>>> dc7380983bef02cf4a50ab6ddc54f61ab462ec18
 
 
 class PostCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostCode
+<<<<<<< HEAD
+        fields = ['name']
+=======
         fields = [
             'pk',
             'name',
             'post_office'
         ]
+>>>>>>> dc7380983bef02cf4a50ab6ddc54f61ab462ec18
 
 
 class AddressSerializer(serializers.ModelSerializer):
+    # division = serializers.SerializerMethodField("division_name")
+    # district = serializers.SerializerMethodField("district_name")
+    # thana = serializers.SerializerMethodField("thana_name")
+    # post_office = serializers.SerializerMethodField("post_office_name")
+    # post_code = serializers.SerializerMethodField("post_code_name")
+
+    division = DivisionSerializer()
+    district = DistrictSerializer()
+    thana = ThanaSerializer()
+    post_office = PostOfficeSerializer()
+    post_code = PostCodeSerializer()
 
     class Meta:
         model = Address
         fields = ['id', 'division', 'district', 'thana', 'post_office', 'post_code', 'address_info']
+
+    # def division_name(self, obj):
+    #     name = obj.division.name
+    #     return name
+    #
+    # def district_name(self, obj):
+    #     name = obj.district.name
+    #     return name
+    #
+    # def thana_name(self, obj):
+    #     name = obj.thana.name
+    #     return name
+    #
+    # def post_office_name(self, obj):
+    #     name = obj.post_office.name
+    #     return name
+    #
+    # def post_code_name(self, obj):
+    #     name = obj.post_code.name
+    #     return name
 
 
 # ============ 2. madrasha serializer =============
