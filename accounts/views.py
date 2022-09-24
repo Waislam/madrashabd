@@ -31,12 +31,14 @@ from .serializers import (
     PostCodeSerializer
 )
 
-from rest_framework import status
+from rest_framework import status, generics
 from rest_framework.generics import mixins, GenericAPIView, ListAPIView
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from django.contrib.auth import get_user_model
 from django.forms.models import model_to_dict
+
+from .filters import DistrictFilter, PostCodeFilter, PostOfficeFilter, ThanaFilter
 
 User = get_user_model()
 
@@ -46,9 +48,11 @@ User = get_user_model()
 #  ====================================== 1.dependent drop down for address ==========================
 
 
-class DistrictListView(ListAPIView):
+class DistrictListView(generics.ListAPIView):
     queryset = District.objects.all()
+    filter_backends = [DjangoFilterBackend, SearchFilter]
     serializer_class = DistrictSerializer
+    filterset_class = DistrictFilter
 
 
 class DivisionListView(ListAPIView):
@@ -59,6 +63,8 @@ class DivisionListView(ListAPIView):
 class ThanaListView(ListAPIView):
     queryset = Thana.objects.all()
     serializer_class = ThanaSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = ThanaFilter
 
 
 # class PostOfficeList(APIView):
@@ -74,7 +80,8 @@ class ThanaListView(ListAPIView):
 class PostOfficeListView(ListAPIView):
     queryset = PostOffice.objects.all()
     serializer_class = PostOfficeSerializer
-
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = PostOfficeFilter
 
 # class PostCodeList(APIView):
 #     def post(self, request):
@@ -89,6 +96,9 @@ class PostOfficeListView(ListAPIView):
 class PostCodeListView(ListAPIView):
     queryset = PostCode.objects.all()
     serializer_class = PostCodeSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_class = PostCodeFilter
+
 
 # ==================== 2. individual address ============
 

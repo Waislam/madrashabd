@@ -23,7 +23,6 @@ class DivisionSerializer(serializers.ModelSerializer):
         ]
 
 
-
 class DistrictSerializer(serializers.ModelSerializer):
     class Meta:
         model = District

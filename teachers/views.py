@@ -23,6 +23,7 @@ class TeacherView(mixins.ListModelMixin,
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = TeacherFilter
     search_fields = ['teacher_id']
+    pagination_class = CustomPagination
 
     def get(self, request, *args, **kwargs):
         """method to show the list of Teacher """
