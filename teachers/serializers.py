@@ -24,8 +24,6 @@ class TeacherSerializer(serializers.ModelSerializer):
     permanent_address = AddressSerializer()
     education = EducationSerializer()
     skill = SkillSerializer()
-    department = DepartmentSerializer()
-    designation = DesignationSerializer()
 
     class Meta:
         model = Teacher
@@ -103,3 +101,19 @@ class TeacherSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
+
+
+class TeacherListSerializer(serializers.ModelSerializer):
+    present_address = AddressSerializer()
+    permanent_address = AddressSerializer()
+    education = EducationSerializer()
+    skill = SkillSerializer()
+    department = DepartmentSerializer()
+    designation = DesignationSerializer()
+
+    class Meta:
+        model = Teacher
+        fields = ['id', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
+                  'marital_status', 'present_address', 'permanent_address', 'education', 'skill',
+                  'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
+                  'designation', 'starting_date', 'ending_date', 'slug']

@@ -70,6 +70,22 @@ class AddressSerializer(serializers.ModelSerializer):
     # post_office = serializers.SerializerMethodField("post_office_name")
     # post_code = serializers.SerializerMethodField("post_code_name")
 
+    # division = DivisionSerializer()
+    # district = DistrictSerializer()
+    # thana = ThanaSerializer()
+    # post_office = PostOfficeSerializer()
+    # post_code = PostCodeSerializer()
+
+    class Meta:
+        model = Address
+        fields = ['id', 'division', 'district', 'thana', 'post_office', 'post_code', 'address_info']
+
+    # def division_name(self, obj):
+    #     name = obj.division.name
+    #     return name
+
+
+class AddressDetailSerializer(serializers.ModelSerializer):
     division = DivisionSerializer()
     district = DistrictSerializer()
     thana = ThanaSerializer()
@@ -80,25 +96,6 @@ class AddressSerializer(serializers.ModelSerializer):
         model = Address
         fields = ['id', 'division', 'district', 'thana', 'post_office', 'post_code', 'address_info']
 
-    # def division_name(self, obj):
-    #     name = obj.division.name
-    #     return name
-    #
-    # def district_name(self, obj):
-    #     name = obj.district.name
-    #     return name
-    #
-    # def thana_name(self, obj):
-    #     name = obj.thana.name
-    #     return name
-    #
-    # def post_office_name(self, obj):
-    #     name = obj.post_office.name
-    #     return name
-    #
-    # def post_code_name(self, obj):
-    #     name = obj.post_code.name
-    #     return name
 
 
 # ============ 2. madrasha serializer =============

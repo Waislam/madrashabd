@@ -7,7 +7,7 @@
 from rest_framework import serializers
 from .models import Student, AcademicFess, Parent
 from accounts.models import Address
-from accounts.serializers import AddressSerializer, CustomUserSerializer
+from accounts.serializers import AddressSerializer, CustomUserSerializer, AddressDetailSerializer
 
 
 # ================= 2. ParentSerializer =====================
@@ -31,8 +31,8 @@ class ParentSerializer(serializers.ModelSerializer):
 
 class StudentListSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()
-    present_address = AddressSerializer()
-    permanent_address = AddressSerializer()
+    present_address = AddressDetailSerializer()
+    permanent_address = AddressDetailSerializer()
     father_info = ParentSerializer()
     mother_info = ParentSerializer()
 
@@ -53,16 +53,19 @@ class StudentListSerializer(serializers.ModelSerializer):
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
                   'slug']
 
+
 class StudentSerializer(serializers.ModelSerializer):
     present_address = AddressSerializer()
     permanent_address = AddressSerializer()
     father_info = ParentSerializer()
     mother_info = ParentSerializer()
+
     # user = serializers.SerializerMethodField("user_first_name")
 
     class Meta:
         model = Student
-        fields = ['id', 'user', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate', 'student_nid',
+        fields = ['id', 'user', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
+                  'student_nid',
                   'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
                   'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
                   'yearly_income', 'guardian_contact',
@@ -75,11 +78,13 @@ class StudentSerializer(serializers.ModelSerializer):
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
                   'slug']
+
     # def user_first_name(self, obj):
     #     first_name = obj.user.first_name
     #     return first_name
 
     def create(self, validated_data):
+        print(validated_data)
         present_address = validated_data.pop('present_address')
         permanent_address = validated_data.pop('permanent_address')
         father_info = validated_data.pop('father_info')
@@ -93,9 +98,12 @@ class StudentSerializer(serializers.ModelSerializer):
         father_info_obj = Parent.objects.create(**father_info)
         mother_info_obj = Parent.objects.create(**mother_info)
 
-        student = Student.objects.create(present_address=present_address_obj, permanent_address=permanent_address_obj,
-                                         father_info=father_info_obj, mother_info=mother_info_obj, **validated_data
-                                        )
+        student = Student.objects.create(
+            present_address=present_address_obj,
+            permanent_address=permanent_address_obj,
+            father_info=father_info_obj, mother_info=mother_info_obj,
+            **validated_data
+        )
         return student
 
     def update(self, instance, validated_data):
@@ -117,10 +125,12 @@ class StudentSerializer(serializers.ModelSerializer):
 
         def parent_info_method(varname, validated_value):
             varname.parent_name = validated_data.get(validated_value).get('parent_name', varname.parent_name)
-            varname.parent_date_of_birth = validated_data.get(validated_value).get('parent_date_of_birth', varname.parent_date_of_birth)
+            varname.parent_date_of_birth = validated_data.get(validated_value).get('parent_date_of_birth',
+                                                                                   varname.parent_date_of_birth)
             varname.parent_nid = validated_data.get(validated_value).get('parent_nid', varname.parent_nid)
             varname.occupation = validated_data.get(validated_value).get('occupation', varname.occupation)
-            varname.organization_with_designation = validated_data.get(validated_value).get('organization_with_designation', varname.organization_with_designation)
+            varname.organization_with_designation = validated_data.get(validated_value).get(
+                'organization_with_designation', varname.organization_with_designation)
             varname.education = validated_data.get(validated_value).get('education', varname.education)
             varname.contact_number = validated_data.get(validated_value).get('contact_number', varname.contact_number)
             varname.parent_email = validated_data.get(validated_value).get('parent_email', varname.parent_email)
@@ -150,17 +160,22 @@ class StudentSerializer(serializers.ModelSerializer):
         instance.guardian_occupation = validated_data.get('guardian_occupation', instance.guardian_occupation)
         instance.guardian_email = validated_data.get('guardian_email', instance.guardian_email)
         instance.other_contact_person = validated_data.get('other_contact_person', instance.other_contact_person)
-        instance.other_contact_person_relation = validated_data.get('other_contact_person_relation', instance.other_contact_person_relation)
-        instance.other_contact_person_contact = validated_data.get('other_contact_person_contact', instance.other_contact_person_contact)
+        instance.other_contact_person_relation = validated_data.get('other_contact_person_relation',
+                                                                    instance.other_contact_person_relation)
+        instance.other_contact_person_contact = validated_data.get('other_contact_person_contact',
+                                                                   instance.other_contact_person_contact)
         instance.sibling_id = validated_data.get('sibling_id', instance.sibling_id)
-        instance.previous_institution_name = validated_data.get('previous_institution_name', instance.previous_institution_name)
-        instance.previous_institution_contact = validated_data.get('previous_institution_contact', instance.previous_institution_contact)
+        instance.previous_institution_name = validated_data.get('previous_institution_name',
+                                                                instance.previous_institution_name)
+        instance.previous_institution_contact = validated_data.get('previous_institution_contact',
+                                                                   instance.previous_institution_contact)
         instance.previous_started_at = validated_data.get('previous_started_at', instance.previous_started_at)
         instance.previous_ending_at = validated_data.get('previous_ending_at', instance.previous_ending_at)
         instance.previous_ending_class = validated_data.get('previous_ending_class', instance.previous_ending_class)
         instance.previous_ending_result = validated_data.get('previous_ending_result', instance.previous_ending_result)
         instance.board_exam_name = validated_data.get('board_exam_name', instance.board_exam_name)
-        instance.board_exam_registration = validated_data.get('board_exam_registration', instance.board_exam_registration)
+        instance.board_exam_registration = validated_data.get('board_exam_registration',
+                                                              instance.board_exam_registration)
         instance.board_exam_roll = validated_data.get('board_exam_roll', instance.board_exam_roll)
         instance.board_exam_result = validated_data.get('board_exam_result', instance.board_exam_result)
         instance.admitted_department = validated_data.get('admitted_department', instance.admitted_department)
@@ -177,4 +192,3 @@ class StudentSerializer(serializers.ModelSerializer):
 
         instance.save()
         return instance
-

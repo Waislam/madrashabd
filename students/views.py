@@ -48,7 +48,6 @@ class StudentView(
 
 class StudentDetailView(APIView):
     """this class is for CRUD"""
-
     def get_object(self, slug):
         """For getting single obj with slug field"""
         try:
@@ -59,7 +58,7 @@ class StudentDetailView(APIView):
     def get(self, request, slug, formate=None):
         """For getting single student details"""
         student = self.get_object(slug)
-        serializer = StudentSerializer(student)
+        serializer = StudentListSerializer(student)
         return Response({"status": True, "data": serializer.data})
 
     def put(self, request, slug, formate=None):
