@@ -1,0 +1,30 @@
+[
+{
+    "model": "transactions.incomecategory",
+    "pk": 1,
+    "fields": {
+        "name": "Student"
+    }
+},
+{
+    "model": "transactions.incomecategory",
+    "pk": 2,
+    "fields": {
+        "name": "Lillah"
+    }
+},
+{
+    "model": "transactions.incomecategory",
+    "pk": 3,
+    "fields": {
+        "name": "General"
+    }
+},
+{
+    "model": "transactions.incomecategory",
+    "pk": 4,
+    "fields": {
+        "name": "Development and Construction"
+    }
+}
+]
