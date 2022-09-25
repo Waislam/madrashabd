@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import Http404
-from .serializers import TeacherSerializer
+from .serializers import TeacherSerializer, TeacherListSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -19,11 +19,15 @@ class TeacherView(mixins.ListModelMixin,
                   GenericAPIView):
     """ teacher Create and list view """
     queryset = Teacher.objects.all()
-    serializer_class = TeacherSerializer
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = TeacherFilter
     search_fields = ['teacher_id']
     pagination_class = CustomPagination
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return TeacherListSerializer
+        return TeacherSerializer
 
     def get(self, request, *args, **kwargs):
         """method to show the list of Teacher """

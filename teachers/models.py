@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from accounts.models import Address
+from accounts.models import Address, Madrasha
 from settingapp.models import Department, Designation
 from django.template.defaultfilters import slugify
 from datetime import datetime, date
@@ -51,6 +51,7 @@ class Skill(models.Model):
 
 class Teacher(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='teachers', blank=True, null=True)
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.SET_NULL, related_name='madrasha_teachers', null=True)
     teacher_id = models.CharField(max_length=20, unique=True, blank=True)  # auto incremented and generated
     father_name = models.CharField(max_length=150, blank=True, null=True)
     mother_name = models.CharField(max_length=150, blank=True, null=True)
