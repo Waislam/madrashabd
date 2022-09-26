@@ -139,10 +139,10 @@ class AllExpenseSerializer(serializers.ModelSerializer):
         sub_category = instance.sub_category
 
         # get updated fields value for every nested obj
-        category.name = validated_data.get('category').get('name', category.name)
+        category = validated_data.get('category', category)
         category.save()
 
-        sub_category.name = validated_data.get('sub_category').get('name', sub_category.name)
+        sub_category = validated_data.get('sub_category', sub_category)
         sub_category.save()
 
         # get instance fields

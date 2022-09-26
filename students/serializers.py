@@ -5,6 +5,9 @@
 """
 
 from rest_framework import serializers
+
+from settingapp.serializers import DepartmentSerializer, ClassGroupSerializer, ShiftSerializer, SessionSerializer, \
+    ClassSerializer
 from .models import Student, AcademicFess, Parent
 from accounts.models import Address
 from accounts.serializers import AddressSerializer, CustomUserSerializer, AddressDetailSerializer
@@ -29,12 +32,18 @@ class ParentSerializer(serializers.ModelSerializer):
 
 # ================= 3. StudentSerializer =====================
 
+
 class StudentListSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()
     present_address = AddressDetailSerializer()
     permanent_address = AddressDetailSerializer()
     father_info = ParentSerializer()
     mother_info = ParentSerializer()
+    admitted_department = DepartmentSerializer()
+    admitted_class = ClassSerializer()
+    admitted_group = ClassGroupSerializer()
+    admitted_shift = ShiftSerializer()
+    admitted_session = SessionSerializer()
 
     class Meta:
         model = Student

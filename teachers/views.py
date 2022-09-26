@@ -50,7 +50,7 @@ class TeacherDetailView(APIView):
     def get(self, request, slug, formate=None):
         """veiw details of single obj"""
         teacher = self.get_object(slug)
-        serializer = TeacherSerializer(teacher)
+        serializer = TeacherListSerializer(teacher)
         return Response({'status': True, 'data': serializer.data})
 
     def put(self, request, slug, formate=None):
