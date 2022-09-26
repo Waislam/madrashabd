@@ -27,7 +27,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
-        fields = ['id', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
+        fields = ['id', 'user', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
                   'marital_status', 'present_address', 'permanent_address', 'education', 'skill',
                   'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
                   'designation', 'starting_date', 'ending_date', 'slug']
@@ -113,7 +113,7 @@ class TeacherListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
-        fields = ['id', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
+        fields = ['id', 'user', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
                   'marital_status', 'present_address', 'permanent_address', 'education', 'skill',
                   'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
                   'designation', 'starting_date', 'ending_date', 'slug']
