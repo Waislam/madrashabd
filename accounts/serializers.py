@@ -96,8 +96,6 @@ class AddressDetailSerializer(serializers.ModelSerializer):
         model = Address
         fields = ['id', 'division', 'district', 'thana', 'post_office', 'post_code', 'address_info']
 
-
-
 # ============ 2. madrasha serializer =============
 
 
