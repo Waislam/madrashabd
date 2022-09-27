@@ -1,4 +1,6 @@
 from rest_framework import serializers
+
+from accounts.serializers import MadrashaSerializer
 from .models import IncomeCategory, IncomeSubCategory, StudentIncome, OtherIncome, AllExpense, ExpenseCategory, \
     ExpenseSubCategory
 
@@ -52,6 +54,7 @@ class StudentIncomeSerializer(serializers.ModelSerializer):
 
 
 class StudentIncomeListSerializer(serializers.ModelSerializer):
+    madrasha = MadrashaSerializer()
     category = IncomeCategorySerializer()
     sub_category = IncomeSubCategorySerializer()
 
@@ -98,6 +101,7 @@ class OtherIncomeSerializer(serializers.ModelSerializer):
 
 
 class OtherIncomeListSerializer(serializers.ModelSerializer):
+    madrasha = MadrashaSerializer()
     category = IncomeCategorySerializer()
     sub_category = IncomeSubCategorySerializer()
 
@@ -159,6 +163,7 @@ class AllExpenseSerializer(serializers.ModelSerializer):
 
 
 class AllExpenseListSerializer(serializers.ModelSerializer):
+    madrasha = MadrashaSerializer()
     category = ExpenseCategorySerializer()
     sub_category = ExpenseSubCategorySerializer()
 
