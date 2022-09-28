@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'teachers',
     'students',
     'transactions',
+    'boarding',
 ]
 
 MIDDLEWARE = [
@@ -77,26 +78,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'mh123456',
-        'HOST': 'localhost',
-        'PORT': '5434',
-    }
-}
 
 # ======================Custom User=====================
 AUTH_USER_MODEL = 'accounts.CustomUser'
