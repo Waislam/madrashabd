@@ -106,6 +106,7 @@ class MadrashaSerializer(serializers.ModelSerializer):
         model = Madrasha
         fields = ['id', 'name', 'madrasha_code', 'madrasha_address', 'madrasha_logo', 'created_by', 'updated_by', 'active_status', 'slug']
 
+
     def create(self, validated_data):
         address_data = validated_data['madrasha_address']
         madrasha_name = validated_data['name']
