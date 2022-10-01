@@ -25,19 +25,17 @@ class BazarListSerializer(serializers.ModelSerializer):
     class Meta:
         model = BazarList
         fields = [
-            'id',
             'madrasha',
             'item',
             'date',
             'total_cost',
         ]
-        depth = 1
 
     def create(self, validated_data):
-            item = validated_data.pop('item')
+        item = validated_data.pop('item')
+        item_obj = BazarItem.objects.create(**item)
+        bazar_list = BazarList.objects.create(item=item_obj, **validated_data)
+        return bazar_list
 
-            bazar_item_obj = BazarItem.objects.create(**item)
-            Bazar = BazarList.objects.create(item=bazar_item_obj, **validated_data)
-            return Bazar
 
 
