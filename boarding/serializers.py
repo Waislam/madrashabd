@@ -12,6 +12,7 @@ class BazarItemSerializer(serializers.ModelSerializer):
             'madrasha',
             'bazar_item_name',
             'quantity',
+            'measurement',
             'amount',
             'consumption',
             'total_stock'
@@ -30,7 +31,13 @@ class BazarListSerializer(serializers.ModelSerializer):
             'date',
             'total_cost',
         ]
+        depth = 1
 
+    def create(self, validated_data):
+            item = validated_data.pop('item')
 
+            bazar_item_obj = BazarItem.objects.create(**item)
+            Bazar = BazarList.objects.create(item=bazar_item_obj, **validated_data)
+            return Bazar
 
 
