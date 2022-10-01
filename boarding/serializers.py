@@ -19,6 +19,7 @@ class BazarItemSerializer(serializers.ModelSerializer):
 
 
 class BazarListSerializer(serializers.ModelSerializer):
+    item = BazarItemSerializer()
 
     class Meta:
         model = BazarList
@@ -29,7 +30,7 @@ class BazarListSerializer(serializers.ModelSerializer):
             'date',
             'total_cost',
         ]
-        depth = 1
+
 
 
 

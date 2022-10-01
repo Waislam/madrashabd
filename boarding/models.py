@@ -16,11 +16,9 @@ class BazarList(models.Model):
     item = models.ForeignKey(BazarItem, on_delete=models.SET_NULL, related_name='bazarList_item', null=True)
     date = models.DateField(blank=True, null=True)
     total_cost = models.CharField(max_length=250, blank=True, null=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['-date']
 
 
 
