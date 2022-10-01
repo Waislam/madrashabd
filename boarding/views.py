@@ -13,12 +13,11 @@ class BazarListView(
     mixins.CreateModelMixin,
     generics.GenericAPIView
 ):
-    """Student Create and list view"""
+    """BazarList Create and list view"""
 
     queryset = BazarList.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = BazarListFilter
-    search_fields = ["bazar_item_name"]
     pagination_class = CustomPagination
     serializer_class = BazarListSerializer
 
