@@ -6,4 +6,4 @@ class BazarListFilter(django_filters.FilterSet):
 
     class Meta:
         model = BazarList
-        fields = ['bazar_item_name']
+        fields = ['date']
