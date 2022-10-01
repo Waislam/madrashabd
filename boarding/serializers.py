@@ -1,10 +1,8 @@
 from rest_framework import serializers
 from .models import BazarList, BazarItem
-from accounts.serializers import MadrashaSerializer
 
 
 class BazarItemSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = BazarItem
         fields = [
@@ -12,6 +10,7 @@ class BazarItemSerializer(serializers.ModelSerializer):
             'madrasha',
             'bazar_item_name',
             'quantity',
+            'measurement',
             'amount',
             'consumption',
             'total_stock'
@@ -24,13 +23,17 @@ class BazarListSerializer(serializers.ModelSerializer):
     class Meta:
         model = BazarList
         fields = [
-            'id',
             'madrasha',
             'item',
             'date',
             'total_cost',
         ]
 
+    def create(self, validated_data):
+        item = validated_data.pop('item')
+        item_obj = BazarItem.objects.create(**item)
+        bazar_list = BazarList.objects.create(item=item_obj, **validated_data)
+        return bazar_list
 
 
 
