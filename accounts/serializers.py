@@ -96,8 +96,6 @@ class AddressDetailSerializer(serializers.ModelSerializer):
         model = Address
         fields = ['id', 'division', 'district', 'thana', 'post_office', 'post_code', 'address_info']
 
-
-
 # ============ 2. madrasha serializer =============
 
 
@@ -107,6 +105,7 @@ class MadrashaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Madrasha
         fields = ['id', 'name', 'madrasha_code', 'madrasha_address', 'madrasha_logo', 'created_by', 'updated_by', 'active_status', 'slug']
+
 
     def create(self, validated_data):
         address_data = validated_data['madrasha_address']

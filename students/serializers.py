@@ -10,7 +10,7 @@ from settingapp.serializers import DepartmentSerializer, ClassGroupSerializer, S
     ClassSerializer
 from .models import Student, AcademicFess, Parent
 from accounts.models import Address
-from accounts.serializers import AddressSerializer, CustomUserSerializer, AddressDetailSerializer
+from accounts.serializers import AddressSerializer, CustomUserSerializer, AddressDetailSerializer, MadrashaSerializer
 
 
 # ================= 2. ParentSerializer =====================
@@ -35,6 +35,7 @@ class ParentSerializer(serializers.ModelSerializer):
 
 class StudentListSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()
+    madrasha = MadrashaSerializer()
     present_address = AddressDetailSerializer()
     permanent_address = AddressDetailSerializer()
     father_info = ParentSerializer()
@@ -47,7 +48,7 @@ class StudentListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['id', 'user', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
+        fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
                   'student_nid',
                   'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
                   'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
@@ -73,7 +74,7 @@ class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['id', 'user', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
+        fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
                   'student_nid',
                   'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
                   'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
@@ -93,7 +94,6 @@ class StudentSerializer(serializers.ModelSerializer):
     #     return first_name
 
     def create(self, validated_data):
-        print(validated_data)
         present_address = validated_data.pop('present_address')
         permanent_address = validated_data.pop('permanent_address')
         father_info = validated_data.pop('father_info')

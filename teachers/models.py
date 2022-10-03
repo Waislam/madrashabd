@@ -74,6 +74,9 @@ class Teacher(models.Model):
     ending_date = models.DateField(blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
 
+    class Meta:
+        ordering = ['-slug']
+
     def generate_teacher_id(self):
         starting_from = 100
         last_teacher = Teacher.objects.last()

@@ -113,6 +113,9 @@ class Student(models.Model):
     talimi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
 
+    class Meta:
+        ordering = ['-slug']
+
     def generate_student_id(self):
         starting_from = 100
         last_student = Student.objects.last()
