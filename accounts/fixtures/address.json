@@ -1,0 +1,38 @@
+[
+{
+    "model": "accounts.address",
+    "pk": 1,
+    "fields": {
+        "division": 1,
+        "district": 1,
+        "thana": 1,
+        "post_office": 1,
+        "post_code": 1,
+        "address_info": "null habi jabi"
+    }
+},
+{
+    "model": "accounts.address",
+    "pk": 2,
+    "fields": {
+        "division": 1,
+        "district": 1,
+        "thana": 1,
+        "post_office": 1,
+        "post_code": 1,
+        "address_info": "shonarbangla"
+    }
+},
+{
+    "model": "accounts.address",
+    "pk": 3,
+    "fields": {
+        "division": 1,
+        "district": 1,
+        "thana": 1,
+        "post_office": 1,
+        "post_code": 1,
+        "address_info": "shonarbangla"
+    }
+}
+]
