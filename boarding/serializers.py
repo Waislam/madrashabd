@@ -1,8 +1,10 @@
 from rest_framework import serializers
 from .models import BazarList, BazarItem
+from accounts.serializers import MadrashaSerializer
 
 
 class BazarItemSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = BazarItem
         fields = [

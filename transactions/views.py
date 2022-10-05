@@ -104,6 +104,12 @@ class OtherIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.Upd
     search_fields = ["receipt_book_number"]
     pagination_class = CustomPagination
 
+    def get_queryset(self):
+        madrasha_slug = self.kwargs['madrasha_slug']
+        return super().get_queryset().filter(
+            madrasha__slug=madrasha_slug
+        )
+
     def get_serializer_class(self):
         if self.request.method == "GET":
             return OtherIncomeListSerializer
@@ -156,11 +162,15 @@ class OtherIncomeDetailView(APIView):
 
 
 class AllExpenseView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView):
-    queryset = AllExpense.objects.all()
+    # queryset = AllExpense.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = AllExpenseFilter
     search_fields = ["voucher_name"]
     pagination_class = CustomPagination
+
+    def get_queryset(self, request):
+        madrasha_slug = request.query_params.get('madrasha_slug')
+        return AllExpense.objects.filter(madrasha__madrasha_code=madrasha_slug)
 
     def get_serializer_class(self):
         if self.request.method == "GET":

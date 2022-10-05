@@ -36,13 +36,13 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
-    path('settings/', include('settingapp.urls')),
-    path('students/', include('students.urls')),
-    path('teachers/', include('teachers.urls')),
+    path('<madrasha_slug>/accounts/', include('accounts.urls')),
+    path('<madrasha_slug>/settings/', include('settingapp.urls')),
+    path('<madrasha_slug>/students/', include('students.urls')),
+    path('<madrasha_slug>/teachers/', include('teachers.urls')),
     path('transactions/', include('transactions.urls')),
-    path('library/', include('library.urls')),
-    path('boarding/', include('boarding.urls')),
+    path('<madrasha_slug>/library/', include('library.urls')),
+    path('<madrasha_slug>/boarding/', include('boarding.urls')),
 
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
