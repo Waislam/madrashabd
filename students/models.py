@@ -11,8 +11,8 @@ OCCUPATION_CHOICE =(
     ('doctor', 'Doctor'),
     ('police', 'Police'),
     ('businessman', 'Businessman'),
-    ('govt. employee', 'Govt. employee'),
-    ('non govt. employee', 'Non govt. employee'),
+    ('govt-employee', 'Govt. employee'),
+    ('non-govt-employee', 'Non govt. employee'),
     ('other', 'Other'),
 )
 EDUCATION_CHOICE = (
@@ -29,7 +29,7 @@ RELATION_CHOICE = (
     ('mother', 'Mother'),
     ('brother', 'Brother'),
     ('sister', 'Sister'),
-    ('auncle', 'Auncle'),
+    ('uncle', 'Uncle'),
     ('aunty', 'Aunty'),
     ('cousin', 'Cousin')
 )
