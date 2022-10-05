@@ -27,6 +27,11 @@ class LibaryBookView(mixins.ListModelMixin,
     search_fields = ['number']
     pagination_class = CustomPagination
 
+    def get_queryset(self):
+        """getting any argument/parameter from api/url"""
+        madrasha_slug = self.kwargs['madrasha_slug']
+        return super(LibaryBookView, self).get_queryset().filter(madrasha__slug=madrasha_slug)
+
     def get(self, request, *args, **kwargs):
         """method to show the list of Teacher """
         return self.list(request, *args, **kwargs)
@@ -34,19 +39,6 @@ class LibaryBookView(mixins.ListModelMixin,
     def post(self, request, *args, **kwargs):
         """Method to create Teacher obj """
         return self.create(request, *args, **kwargs)
-
-
-# class BookDetailView(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, GenericAPIView):
-#     queryset = LibraryBook.objects.all()
-#     serializer_class = LibraryBookCreateSerializer
-#
-#     def get(self, request, *args, **kwargs):
-#         """method to show the list of Teacher """
-#         return self.retrieve(request, *args, **kwargs)
-#
-#     def put(self, request, *args, **kwargs):
-#         """Method to create Teacher obj """
-#         return self.update(request, *args, **kwargs)
 
 
 class BookDetailView(APIView):

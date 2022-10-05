@@ -46,6 +46,13 @@ class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.U
     search_fields = ["student_class_id"]
     pagination_class = CustomPagination
 
+    def get_queryset(self):
+        """to get any parameter from api"""
+        madrasha_slug = self.kwargs['madrasha_slug']
+        return super().get_queryset().filter(
+            madrasha__slug=madrasha_slug
+        )
+
     def get_serializer_class(self):
         if self.request.method == "GET":
             return StudentIncomeListSerializer
@@ -162,15 +169,18 @@ class OtherIncomeDetailView(APIView):
 
 
 class AllExpenseView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin, generics.GenericAPIView):
-    # queryset = AllExpense.objects.all()
+    queryset = AllExpense.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = AllExpenseFilter
     search_fields = ["voucher_name"]
     pagination_class = CustomPagination
 
-    def get_queryset(self, request):
-        madrasha_slug = request.query_params.get('madrasha_slug')
-        return AllExpense.objects.filter(madrasha__madrasha_code=madrasha_slug)
+    def get_queryset(self):
+        """getting any argument/parameter from api/url"""
+        madrasha_slug = self.kwargs['madrasha_slug']
+        return super().get_queryset().filter(
+            madrasha__slug=madrasha_slug
+        )
 
     def get_serializer_class(self):
         if self.request.method == "GET":
