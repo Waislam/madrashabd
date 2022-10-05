@@ -54,14 +54,16 @@ class StudentIncomeSerializer(serializers.ModelSerializer):
 
 
 class StudentIncomeListSerializer(serializers.ModelSerializer):
-    madrasha = MadrashaSerializer()
-    category = IncomeCategorySerializer()
-    sub_category = IncomeSubCategorySerializer()
+    # madrasha = MadrashaSerializer()
+    # category = IncomeCategorySerializer()
+    # sub_category = IncomeSubCategorySerializer()
 
     class Meta:
         model = StudentIncome
         fields = ['id', 'madrasha', 'category', 'sub_category', 'student_class_id', 'amount', 'for_month', 'for_months',
                   'paid_date', 'receipt_number', 'student_id', 'voucher_name']
+
+        depth = 3
 
 
 class OtherIncomeSerializer(serializers.ModelSerializer):
@@ -101,14 +103,16 @@ class OtherIncomeSerializer(serializers.ModelSerializer):
 
 
 class OtherIncomeListSerializer(serializers.ModelSerializer):
-    madrasha = MadrashaSerializer()
-    category = IncomeCategorySerializer()
-    sub_category = IncomeSubCategorySerializer()
+    # madrasha = MadrashaSerializer()
+    # category = IncomeCategorySerializer()
+    # sub_category = IncomeSubCategorySerializer()
 
     class Meta:
         model = OtherIncome
         fields = ['id', 'madrasha', 'category', 'sub_category', 'donar_name', 'amount', 'for_month', 'for_months',
                   'paid_date', 'receipt_book_number', 'receipt_page_number', 'receipt_number', 'voucher_name']
+
+        depth = 3
 
 
 class ExpenseCategorySerializer(serializers.ModelSerializer):
