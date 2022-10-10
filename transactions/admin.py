@@ -16,7 +16,8 @@ admin.site.register(IncomeSubCategory)
 
 @admin.register(StudentIncome)
 class StudentIncomeAdminView(admin.ModelAdmin):
-    list_display = ['category', 'sub_category', 'student_class_id']
+    list_display = ['category', 'sub_category', 'student_class_id', 'created_at']
+    ordering = ['-created_at']
 
     class Media:
         js = ("js/incomecategorydependable.js",)
