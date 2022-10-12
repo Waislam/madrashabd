@@ -13,7 +13,7 @@ class Command(BaseCommand):
         call_command('loaddata', 'post_code.json')
         call_command('loaddata', 'address.json')
         call_command('loaddata', 'madrasha.json')
-        call_command('loaddata', 'customUser.json')
+        call_command('loaddata', 'customuser.json')
         call_command('loaddata', 'student.json')
         call_command('loaddata', 'parent.json')
         call_command('loaddata', 'teacher.json')
