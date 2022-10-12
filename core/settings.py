@@ -18,6 +18,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
+DEBUG = True
 
 # Application definition
 
@@ -117,10 +118,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = (os.path.join(BASE_DIR / 'static'),)
+STATIC_URL = '/static/'
+if DEBUG:
+    STATICFILES_DIRS = (os.path.join(BASE_DIR / 'static'),)
+else:
+    STATIC_ROOT = os.path.join(BASE_DIR / 'static')
 
-MEDIA_URL = 'media/'
+MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
@@ -142,3 +146,8 @@ REST_FRAMEWORK = {
     ],
 
 }
+
+if DEBUG:
+    CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8087', 'http://178.128.94.215:1337']
+else:
+    CSRF_TRUSTED_ORIGINS = ['http://178.128.94.215:1337']
