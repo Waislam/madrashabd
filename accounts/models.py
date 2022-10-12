@@ -213,3 +213,6 @@ class MadrashaUserListing(models.Model):
     class Meta:
         unique_together = [['user', 'madrasha']]
         ordering = ['pk']
+
+    def __str__(self):
+        return f"{self.user} + {self.madrasha}"
