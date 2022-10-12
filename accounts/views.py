@@ -178,6 +178,7 @@ class UserRegistrationView(APIView):
 
 # ==================== 5. TokenAuthentication ===================
 class CustomAuthToken(ObtainAuthToken, APIView):
+
     def get(self, request, formate=None):
         """get the user id using token"""
         token = request.COOKIES.get('token')
@@ -192,15 +193,19 @@ class CustomAuthToken(ObtainAuthToken, APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
+        print("token", token)
         user_data = CustomUser.objects.get(pk=user.pk)
-        user_serializer = CustomUserSerializer(user_data, data=model_to_dict(user_data))
-        if user_serializer.is_valid():
-            return Response({
-                'token': token.key,
-                'user_id': user.pk,
-                'phone': user.phone,
-                'user': user_serializer.data
-            })
+        user_madrasha = MadrashaUserListing.objects.get(user=user_data)
+        user_mobile = user.phone
+        return Response({
+            'token': token.key,
+            'user': user_mobile,
+            'user_id': user.pk,
+            'phone': user.phone,
+            'user_madrasha_id': user_madrasha.pk,
+            'user_madrasha_slug': user_madrasha.madrasha.slug,
+            'user_madrasha_code': user_madrasha.madrasha.madrasha_code,
+        })
 
 
 # =========================== 6. MadrashaUserListing =============================
