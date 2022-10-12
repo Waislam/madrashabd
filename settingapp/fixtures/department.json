@@ -3,9 +3,9 @@
     "model": "settingapp.department",
     "pk": 1,
     "fields": {
-        "name": "department1",
+        "name": "Jamat Khana",
         "is_active": true,
-        "slug": "amader-madrasha",
+        "slug": "jamat-khana",
         "madrasha": 1
     }
 }
