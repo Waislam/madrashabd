@@ -7,7 +7,7 @@
         "department": 1,
         "madrasha_class": 1,
         "is_active": true,
-        "madrasha": 3,
+        "madrasha": 1,
         "slug": "new-group"
     }
 }
