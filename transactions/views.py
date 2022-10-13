@@ -43,7 +43,7 @@ class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.U
     queryset = StudentIncome.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = StudentIncomeFilter
-    search_fields = ["student_class_id"]
+    search_fields = ["student_class_id", ""]
     pagination_class = CustomPagination
 
     def get_queryset(self):
