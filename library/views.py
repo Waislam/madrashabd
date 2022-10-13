@@ -38,6 +38,7 @@ class LibaryBookView(mixins.ListModelMixin,
 
     def post(self, request, *args, **kwargs):
         """Method to create Teacher obj """
+        # print('kwargs', **kwargs)
         return self.create(request, *args, **kwargs)
 
 
