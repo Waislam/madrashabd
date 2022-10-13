@@ -2,10 +2,12 @@ from django.shortcuts import render
 from django.http import Http404
 from rest_framework.response import Response
 
-from .serializers import (IncomeSubCategorySerializer, StudentIncomeSerializer, OtherIncomeSerializer,
+from .serializers import (IncomeCategorySerializer, IncomeSubCategorySerializer, StudentIncomeSerializer,
+                          OtherIncomeSerializer,
                           OtherIncomeListSerializer, StudentIncomeListSerializer, AllExpenseListSerializer,
                           AllExpenseSerializer)
 from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
 from .models import IncomeCategory, IncomeSubCategory, StudentIncome, ExpenseCategory, OtherIncome, AllExpense
 from django.http.response import JsonResponse
 from rest_framework import mixins, generics, status
@@ -16,6 +18,9 @@ from students.pagination import CustomPagination
 
 
 # Create your views here.
+class CategoryView(ListAPIView):
+    queryset = IncomeCategory.objects.all()
+    serializer_class = IncomeCategorySerializer
 
 
 class SubCategoryList(APIView):
@@ -26,6 +31,24 @@ class SubCategoryList(APIView):
             sub_cats = IncomeCategory.objects.get(id=category).sub_categories.all()
             sub_cat = {d.name: d.id for d in sub_cats}
         return JsonResponse(data=sub_cat, safe=False)
+
+
+class TransactionSubCategory(mixins.ListModelMixin,
+                             generics.GenericAPIView):
+    queryset = IncomeSubCategory.objects.all()
+    serializer_class = IncomeSubCategorySerializer
+
+    def get_queryset(self):
+        """to get any parameter from api"""
+        category = self.kwargs['category']
+        return super().get_queryset().filter(
+            category__pk=category
+        )
+
+    def get(self, request, *args, **kwargs):
+        """method to show the list of Income from sub_category"""
+        # self.serializer_class = StudentListSerializer
+        return self.list(request, *args, **kwargs)
 
 
 class ExpenseSubCategoryList(APIView):
