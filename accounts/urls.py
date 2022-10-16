@@ -11,11 +11,13 @@ from .views import (
     UserRegistrationView,
     CustomAuthToken,
     MadrashaUserListingView,
-    AvatarUpdateView
+    AvatarUpdateView,
+    UserDetail
 )
 
 urlpatterns = [
     path('api-token-auth/', CustomAuthToken.as_view()),
+    path('user-detail/<int:pk>/', UserDetail.as_view()),
 
     # Address path
     path('district/', DistrictListView.as_view()),
