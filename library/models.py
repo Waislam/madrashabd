@@ -33,7 +33,7 @@ class LibraryBook(models.Model):
     number = models.CharField(max_length=100, unique=True)
     name = models.CharField(max_length=255)
     part = models.CharField(max_length=200, blank=True, null=True)
-    category = models.CharField(max_length=100, choices=BOOK_CATEGORY, default='Hadis')
+    category = models.CharField(max_length=100, choices=BOOK_CATEGORY, default='Nesabi')
     book_for_class = models.CharField(max_length=100, blank=True, null=True)
     translator = models.CharField(max_length=100, blank=True, null=True)
     publication = models.CharField(max_length=100, blank=True, null=True)
