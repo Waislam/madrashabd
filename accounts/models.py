@@ -83,22 +83,48 @@ class Role(models.Model):
 
 
 class OurUserManager(BaseUserManager):
-    def create_user(self, phone, password=None, is_staff=False, is_active=True, **extra_fields):
-        if not phone:
-            raise ValueError('Phone number must required')
-        if not password:
-            raise ValueError('Password is required')
+    # def create_user(self, phone, password=None, is_staff=False, is_active=True, **extra_fields):
+    #     if not phone:
+    #         raise ValueError('Phone number must required')
+    #     if not password:
+    #         raise ValueError('Password is required')
+    #
+    #     # phone = self.normalize_email(phone)
+    #     phone = phone
+    #     user = self.model(phone=phone, is_staff=is_staff, is_active=is_active, **extra_fields)
+    #     if password:
+    #         user.set_password(password)
+    #     user.save(using=self._db)
+    #     return user
 
-        # phone = self.normalize_email(phone)
-        phone = OurUserManager.normalize_email(phone)
-        user = self.model(phone=phone, is_staff=is_staff, is_active=is_active, **extra_fields)
-        if password:
-            user.set_password(password)
+    def create_user(self, phone, password=None):
+        """
+        Creates and saves a User with the given email, date of
+        birth and password.
+        """
+        if not phone:
+            raise ValueError('Users must have an phone number')
+
+        user = self.model(
+            phone=phone,
+            username=phone
+        )
+
+        user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, phone, password=None, **extra_fields):
-        user = self.create_user(phone, password, is_staff=True, is_admin=True, is_superuser=True, **extra_fields)
+    def create_superuser(self, phone, password=None):
+        """
+        Creates and saves a superuser with the given email, date of
+        birth and password.
+        """
+        user = self.create_user(
+            phone=phone,
+            password=password,
+        )
+        user.is_admin = True
+        user.save(using=self._db)
         return user
 
     def create_staffuser(self, phone, password=None, **extra_fields):
