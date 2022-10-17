@@ -36,8 +36,10 @@ urlpatterns = [
 
     path('books/', BooksView.as_view()),
     path('books/detail/<slug:slug>/', BooksDetailview.as_view()),
-    path('fees/', FeesView.as_view()),
+
+    path('<madrasha_slug>/fees/', FeesView.as_view()),
     path('fees/detail/<slug:slug>/', FeesDetailview.as_view()),
+
     path('exam-rules/', ExamRulesView.as_view()),
     path('exam-rules/detail/<slug:slug>/', ExamRulesDetailview.as_view()),
 
