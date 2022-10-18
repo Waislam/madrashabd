@@ -1,11 +1,11 @@
-'''
+"""
 1. Address
 2. Role Model
 3. Custom Manager
 4. Madrasha object
 5. Madrasha user List
 
-'''
+"""
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 from PIL import Image
@@ -136,8 +136,8 @@ class CustomUser(PermissionsMixin, AbstractBaseUser):
     username = models.CharField(unique=True, max_length=50)
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
-    phone = models.CharField(max_length=15, unique=True)  # need to modify this one
-    email = models.EmailField(unique=True, blank=True, null=True) # addded null true during user creation django.db.utils.IntegrityError: UNIQUE constraint failed: accounts_customuser.email
+    phone = models.CharField(max_length=15, unique=True)
+    email = models.EmailField(unique=True, blank=True, null=True)
     role = models.ForeignKey(Role, on_delete=models.PROTECT, related_name='user_roles', null=True, blank=True)
     avatar = models.ImageField(upload_to='user-image', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -192,7 +192,6 @@ class Madrasha(models.Model):
 
     def generate_madrasha_code(self):
         starting = 100
-        # shob = Madrasha.objects.all()
         try:
             last_madrasha = Madrasha.objects.latest('madrasha_code')
             if last_madrasha:
@@ -202,7 +201,6 @@ class Madrasha(models.Model):
             generated_code = str(last_madrasha_code+1)
             return generated_code
         except:
-
             return starting
 
     def resize_logo_image(self):
@@ -216,8 +214,6 @@ class Madrasha(models.Model):
     def save(self, *args, **kwargs):
         if not self.madrasha_code:
             self.madrasha_code = self.generate_madrasha_code()
-            print(self.madrasha_code)
-
         if not self.slug:
             self.slug = slugify(self.madrasha_code)
         super(Madrasha, self).save(*args, **kwargs)
