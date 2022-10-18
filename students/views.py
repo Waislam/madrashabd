@@ -78,3 +78,31 @@ class StudentDetailView(APIView):
             {"status": False, "message": serializer.errors},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+
+class CheckUniquePassportNumber(APIView):
+
+    def get(self, request, passport_number, formate=None):
+        """For getting single student details"""
+        try:
+            if passport_number:
+                Student.objects.get(passport_number=passport_number)
+                return Response({"status": True, "msg": "Passport number already exist!!"})
+            else:
+                return Response({"status": False, "msg": "Passport number is not present!!"})
+        except:
+            return Response({"status": False, "msg": "Passport number is not present!!"})
+
+
+class CheckUniqueNIDNumber(APIView):
+
+    def get(self, request, nid_number, formate=None):
+        """For getting single student details"""
+        try:
+            if nid_number:
+                Student.objects.get(student_nid=nid_number)
+                return Response({"status": True, "msg": "NID number already exist!!"})
+            else:
+                return Response({"status": False, "msg": "NID number is not present!!"})
+        except:
+            return Response({"status": False, "msg": "NID number is not present!!"})

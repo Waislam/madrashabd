@@ -2,11 +2,20 @@ from django.shortcuts import render
 from django.http import Http404
 from rest_framework.response import Response
 
-from .serializers import (IncomeSubCategorySerializer, StudentIncomeSerializer, OtherIncomeSerializer,
+from .serializers import (IncomeCategorySerializer, IncomeSubCategorySerializer, StudentIncomeSerializer,
+                          OtherIncomeSerializer,
                           OtherIncomeListSerializer, StudentIncomeListSerializer, AllExpenseListSerializer,
-                          AllExpenseSerializer)
+                          AllExpenseSerializer, ExpenseCategorySerializer, ExpenseSubCategorySerializer)
 from rest_framework.views import APIView
-from .models import IncomeCategory, IncomeSubCategory, StudentIncome, ExpenseCategory, OtherIncome, AllExpense
+from rest_framework.generics import ListAPIView
+from .models import (IncomeCategory,
+                     IncomeSubCategory,
+                     StudentIncome,
+                     ExpenseCategory,
+                     OtherIncome,
+                     AllExpense,
+                     ExpenseSubCategory
+                     )
 from django.http.response import JsonResponse
 from rest_framework import mixins, generics, status
 from django_filters.rest_framework import DjangoFilterBackend
@@ -16,6 +25,9 @@ from students.pagination import CustomPagination
 
 
 # Create your views here.
+class CategoryView(ListAPIView):
+    queryset = IncomeCategory.objects.all()
+    serializer_class = IncomeCategorySerializer
 
 
 class SubCategoryList(APIView):
@@ -28,6 +40,29 @@ class SubCategoryList(APIView):
         return JsonResponse(data=sub_cat, safe=False)
 
 
+class TransactionSubCategory(mixins.ListModelMixin,
+                             generics.GenericAPIView):
+    queryset = IncomeSubCategory.objects.all()
+    serializer_class = IncomeSubCategorySerializer
+
+    def get_queryset(self):
+        """to get any parameter from api"""
+        category = self.kwargs['category']
+        return super().get_queryset().filter(
+            category__pk=category
+        )
+
+    def get(self, request, *args, **kwargs):
+        """method to show the list of Income from sub_category"""
+        # self.serializer_class = StudentListSerializer
+        return self.list(request, *args, **kwargs)
+
+
+class ExpenseCategoryList(ListAPIView):
+    queryset = ExpenseCategory.objects.all()
+    serializer_class = ExpenseCategorySerializer
+
+
 class ExpenseSubCategoryList(APIView):
     def post(self, request):
         category = request.data['category']
@@ -38,12 +73,30 @@ class ExpenseSubCategoryList(APIView):
         return JsonResponse(data=sub_cat, safe=False)
 
 
+class TransactionExpenseSubCategory(mixins.ListModelMixin,
+                                    generics.GenericAPIView):
+    queryset = ExpenseSubCategory.objects.all()
+    serializer_class = ExpenseSubCategorySerializer
+
+    def get_queryset(self):
+        """to get any parameter from api"""
+        category = self.kwargs['category']
+        return super().get_queryset().filter(
+            category__pk=category
+        )
+
+    def get(self, request, *args, **kwargs):
+        """method to show the list of Income from sub_category"""
+        # self.serializer_class = StudentListSerializer
+        return self.list(request, *args, **kwargs)
+
+
 class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.UpdateModelMixin,
                         generics.GenericAPIView):
     queryset = StudentIncome.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = StudentIncomeFilter
-    search_fields = ["student_class_id"]
+    search_fields = ["student_class_id", ""]
     pagination_class = CustomPagination
 
     def get_queryset(self):

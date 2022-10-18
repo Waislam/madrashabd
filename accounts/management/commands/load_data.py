@@ -28,4 +28,8 @@ class Command(BaseCommand):
         call_command('loaddata', 'skill.json')
         call_command('loaddata', 'student.json')
         call_command('loaddata', 'teacher.json')
+        call_command('loaddata', 'incomecategory.json')
+        call_command('loaddata', 'incomesubcategory.json')
+        call_command('loaddata', 'expensecategory.json')
+        call_command('loaddata', 'expensesubcategory.json')
         self.stdout.write(self.style.SUCCESS('Successfully loaded data.'))

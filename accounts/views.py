@@ -83,6 +83,7 @@ class PostOfficeListView(ListAPIView):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = PostOfficeFilter
 
+
 # class PostCodeList(APIView):
 #     def post(self, request):
 #         post_office = request.data['post_office']  # here post_code is the var from form
@@ -240,3 +241,17 @@ class AvatarUpdateView(APIView):
             serializer.save()
             return Response({'status': True, 'message': 'img updated successfully'})
         return Response({'status': False, 'message': serializer.data})
+
+
+class UserDetail(mixins.RetrieveModelMixin,
+                 mixins.UpdateModelMixin,
+                 mixins.DestroyModelMixin,
+                 generics.GenericAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = CustomUserSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
