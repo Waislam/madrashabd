@@ -48,6 +48,9 @@ class MadrashaClasses(models.Model):
             self.slug = slugify(self.name)
         return super().save(*ars, **kwargs)
 
+    class Meta:
+        unique_together = ()
+
     def __str__(self):
         return self.name
 
