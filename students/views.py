@@ -37,12 +37,10 @@ class StudentView(
 
     def get(self, request, *args, **kwargs):
         """method to show the list of Students"""
-        # self.serializer_class = StudentListSerializer
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         """Method to create student obj"""
-        # self.serializer_class = StudentSerializer
         return self.create(request, *args, **kwargs)
 
 
@@ -78,3 +76,47 @@ class StudentDetailView(APIView):
             {"status": False, "message": serializer.errors},
             status=status.HTTP_400_BAD_REQUEST,
         )
+
+
+class StudentDetailBySlugView(APIView):
+    """this class is for CRUD"""
+    def get_object(self, student_id):
+        """For getting single obj with slug field"""
+        try:
+            return Student.objects.get(student_id=student_id)
+        except Student.DoesNotExist:
+            raise Http404
+
+    def get(self, request, student_id, formate=None):
+        """For getting single student details"""
+        student = self.get_object(student_id)
+        serializer = StudentListSerializer(student)
+        return Response({"status": True, "data": serializer.data})
+
+
+class CheckUniquePassportNumber(APIView):
+
+    def get(self, request, passport_number, formate=None):
+        """For getting single student details"""
+        try:
+            if passport_number:
+                Student.objects.get(passport_number=passport_number)
+                return Response({"status": True, "msg": "Passport number already exist!!"})
+            else:
+                return Response({"status": False, "msg": "Passport number is not present!!"})
+        except:
+            return Response({"status": False, "msg": "Passport number is not present!!"})
+
+
+class CheckUniqueNIDNumber(APIView):
+
+    def get(self, request, nid_number, formate=None):
+        """For getting single student details"""
+        try:
+            if nid_number:
+                Student.objects.get(student_nid=nid_number)
+                return Response({"status": True, "msg": "NID number already exist!!"})
+            else:
+                return Response({"status": False, "msg": "NID number is not present!!"})
+        except:
+            return Response({"status": False, "msg": "NID number is not present!!"})

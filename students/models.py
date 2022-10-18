@@ -118,7 +118,7 @@ class Student(models.Model):
 
     def generate_student_id(self):
         starting_from = 100
-        last_student = Student.objects.last()
+        last_student = Student.objects.first()
         if last_student:
             last_student_id_str = last_student.student_id
             slice_it = last_student_id_str[1:]
@@ -128,6 +128,7 @@ class Student(models.Model):
 
         new_student_id = str(last_student_id + 1)
         generated_id = 'S' + new_student_id
+        print("generated_id", generated_id)
         return generated_id
 
     def save(self, *args, **kwargs):

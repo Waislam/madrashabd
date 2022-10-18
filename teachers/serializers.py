@@ -35,7 +35,7 @@ class TeacherSerializer(serializers.ModelSerializer):
                   'designation', 'starting_date', 'ending_date', 'slug']
 
     def create(self, validated_data):
-        present_address = validated_data.pop('present_address')  # need to pop to avoid multiple value assingment for same field
+        present_address = validated_data.pop('present_address')
         permanent_address = validated_data.pop('permanent_address')
         education = validated_data.pop('education')
         skill = validated_data.pop('skill')
