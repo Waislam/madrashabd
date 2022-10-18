@@ -80,6 +80,22 @@ class StudentDetailView(APIView):
         )
 
 
+class StudentDetailBySlugView(APIView):
+    """this class is for CRUD"""
+    def get_object(self, student_id):
+        """For getting single obj with slug field"""
+        try:
+            return Student.objects.get(student_id=student_id)
+        except Student.DoesNotExist:
+            raise Http404
+
+    def get(self, request, student_id, formate=None):
+        """For getting single student details"""
+        student = self.get_object(student_id)
+        serializer = StudentListSerializer(student)
+        return Response({"status": True, "data": serializer.data})
+
+
 class CheckUniquePassportNumber(APIView):
 
     def get(self, request, passport_number, formate=None):
