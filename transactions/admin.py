@@ -37,7 +37,7 @@ admin.site.register(ExpenseSubCategory)
 
 @admin.register(AllExpense)
 class AllExpenseAdminView(admin.ModelAdmin):
-    list_display = ['madrasha']
+    list_display = ['madrasha', 'category',  'sub_category', 'amount', 'description']
 
     class Media:
         js = ("js/expensedropdowncategory.js",)

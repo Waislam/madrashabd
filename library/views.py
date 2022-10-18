@@ -8,8 +8,12 @@ from rest_framework.generics import mixins, GenericAPIView
 from rest_framework.views import APIView
 
 from library.filters import BookFilter
-from library.models import LibraryBook
-from library.serializers import LibraryBookCreateSerializer, LibraryBookUpdateSerializer
+from library.models import LibraryBook, BookDistribution
+from library.serializers import (
+    LibraryBookCreateSerializer,
+    LibraryBookUpdateSerializer,
+    BookDistributionSerializer
+)
 from students.pagination import CustomPagination
 
 
@@ -38,6 +42,7 @@ class LibaryBookView(mixins.ListModelMixin,
 
     def post(self, request, *args, **kwargs):
         """Method to create Teacher obj """
+        # print('kwargs', **kwargs)
         return self.create(request, *args, **kwargs)
 
 
@@ -65,3 +70,28 @@ class BookDetailView(APIView):
             return Response({'status': True, 'data': serializer.data})
         return Response({'status': False, 'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+
+class BookDistributionList(APIView):
+    """
+    List all BookDistribution, or create a new snippet.
+    """
+    def get(self, request, format=None):
+        queryset = BookDistribution.objects.all()
+        serializer = BookDistributionSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+
+class BookDistributionDelete(APIView):
+    """
+    Retrieve, update or delete a BookDistribution instance.
+    """
+    def get_object(self, pk):
+        try:
+            return BookDistribution.objects.get(pk=pk)
+        except BookDistribution.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, pk, format=None):
+        queryset = self.get_object(pk)
+        queryset.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
