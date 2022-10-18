@@ -47,6 +47,7 @@ class LibraryBook(models.Model):
     original_writer = models.CharField(max_length=200, blank=True, null=True)
     language = models.CharField(max_length=100, blank=True, null=True)
     created_at = models.DateField(default=date.today)
+    is_available = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
