@@ -16,8 +16,10 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Department, Designation, MadrashaClasses, MadrashaGroup, Shift, Session, Books, ExamRules, Fees
 from .serializers import (DepartmentSerializer, DesignationSerializer, ClassSerializer, ClassGroupSerializer,
-                          ShiftSerializer, BooksSerializer, SessionSerializer, ExamRulesSerializer,
+                          ShiftSerializer,
+                          BooksSerializer, SessionSerializer, ExamRulesSerializer,
                           FeesSerializer)
+
 
 # Create your views here.
 
@@ -35,10 +37,10 @@ class DepartmentView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, formate=None):
+    def get(self, request, madrasha_slug, **kwargs):
         """ showing a list of depatment objects"""
-        departments = Department.objects.all()
-        serializer = DepartmentSerializer(departments, many=True)
+        department = Department.objects.filter(madrasha__slug=madrasha_slug)
+        serializer = DepartmentSerializer(department, many=True)
         return Response(serializer.data)
 
 
@@ -74,6 +76,7 @@ class DepartmentDetailview(APIView):
         department.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 # ========================== 2. Designation ===================================
 
 
@@ -88,9 +91,9 @@ class DesignationView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, formate=None):
+    def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Designation objects"""
-        designations = Designation.objects.all()
+        designations = Designation.objects.filter(madrasha__slug=madrasha_slug)
         serializer = DesignationSerializer(designations, many=True)
         return Response(serializer.data)
 
@@ -142,9 +145,9 @@ class MadrashaClassesView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, formate=None):
+    def get(self, request, madrasha_slug, formate=None):
         """ showing a list of MadrashaClasses objects"""
-        classes = MadrashaClasses.objects.all()
+        classes = MadrashaClasses.objects.filter(madrasha__slug=madrasha_slug)
         serializer = ClassSerializer(classes, many=True)
         return Response(serializer.data)
 
@@ -195,9 +198,9 @@ class MadrashaClassGroupView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, formate=None):
+    def get(self, request, madrasha_slug, formate=None):
         """ showing a list of MadrashaClassesGroup objects"""
-        groups = MadrashaGroup.objects.all()
+        groups = MadrashaGroup.objects.filter(madrasha__slug=madrasha_slug)
         serializer = ClassGroupSerializer(groups, many=True)
         return Response(serializer.data)
 
@@ -248,9 +251,9 @@ class ShiftView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, formate=None):
+    def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Shift objects"""
-        shifts = Shift.objects.all()
+        shifts = Shift.objects.filter(madrasha__slug=madrasha_slug)
         serializer = ShiftSerializer(shifts, many=True)
         return Response(serializer.data)
 
@@ -342,6 +345,7 @@ class BooksDetailview(APIView):
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 # ================================== 7. Fees =====================
 
 
@@ -356,9 +360,10 @@ class FeesView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, formate=None):
+    def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Fees objects"""
-        fees = Fees.objects.all()
+        # madrasha_slug = kwargs.get('madrasha_slug')
+        fees = Fees.objects.filter(madrasha__slug=madrasha_slug)
         serializer = FeesSerializer(fees, many=True)
         return Response(serializer.data)
 
@@ -410,9 +415,9 @@ class SessionView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, formate=None):
+    def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Session objects"""
-        session = Session.objects.all()
+        session = Session.objects.filter(madrasha__slug=madrasha_slug)
         serializer = SessionSerializer(session, many=True)
         return Response(serializer.data)
 
