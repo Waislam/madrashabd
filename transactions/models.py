@@ -187,4 +187,4 @@ class AllExpense(models.Model):
         super(AllExpense, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.sub_category
+        return self.sub_category.name
