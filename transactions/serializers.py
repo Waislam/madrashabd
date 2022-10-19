@@ -26,32 +26,6 @@ class StudentIncomeSerializer(serializers.ModelSerializer):
         fields = ['id', 'madrasha', 'category', 'sub_category', 'student_class_id', 'amount', 'for_month', 'for_months',
                   'paid_date', 'receipt_number', 'student_id', 'voucher_name']
 
-    def create(self, validated_data):
-        # create Student Income obj
-        student_income = StudentIncome.objects.create(**validated_data)
-        return student_income
-
-    def update(self, instance, validated_data):
-        print(validated_data)
-        # get all nested obj
-        category = instance.category
-        sub_category = instance.sub_category
-
-        # get updated fields value for every nested obj
-        category = validated_data.get('category', category)
-        category.save()
-
-        sub_category = validated_data.get('sub_category', sub_category)
-        sub_category.save()
-
-        # get instance fields
-        instance.amount = validated_data.get('amount', instance.amount)
-        instance.for_month = validated_data.get('for_month', instance.for_month)
-        instance.for_months = validated_data.get('for_months', instance.for_months)
-
-        instance.save()
-        return instance
-
 
 class StudentIncomeListSerializer(serializers.ModelSerializer):
     # madrasha = MadrashaSerializer()
