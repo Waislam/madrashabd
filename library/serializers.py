@@ -6,7 +6,7 @@ class LibraryBookCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = LibraryBook
         fields = ['id', 'madrasha', 'number', 'name', 'part', 'category', 'book_for_class',
-                  'translator', 'publication', 'original_writer', 'language']
+                  'translator', 'publication', 'original_writer', 'language', 'is_available']
         depth = 3  # if you use depth you no need to use nested serializer to show dictionary of nested obj
 
     def __init__(self, *args, **kwargs):
@@ -22,19 +22,20 @@ class LibraryBookUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = LibraryBook
         fields = ['id', 'madrasha', 'name', 'part', 'category', 'book_for_class',
-                  'translator', 'publication', 'original_writer', 'language']
+                  'translator', 'publication', 'original_writer', 'language', 'is_available']
 
 
 class BookDistributionSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookDistribution
         fields = [
-
+            'id',
             'madrasha',
             'student_roll_id',
             'book_number',
             'taken_date',
-            'recipient_number'
+            'recipient_number',
+
         ]
         depth = 2
 
