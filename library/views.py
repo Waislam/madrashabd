@@ -108,6 +108,7 @@ class BookDistributionDelete(APIView):
         except BookDistribution.DoesNotExist:
             raise Http404
 
+
     def delete(self, request, pk, format=None):
         queryset = self.get_object(pk)
         # queryset.book_number.is_available = True

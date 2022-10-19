@@ -29,6 +29,7 @@ class BookDistributionSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookDistribution
         fields = [
+            'id',
             'madrasha',
             'student_roll_id',
             'book_number',
