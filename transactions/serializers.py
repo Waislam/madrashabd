@@ -84,11 +84,11 @@ class OtherIncomeSerializer(serializers.ModelSerializer):
         sub_category = instance.sub_category
 
         # get updated fields value for every nested obj
-        category = validated_data.get('category', category)
-        category.save()
+        category_obj = validated_data.get('category', category)
+        category_obj.save()
 
-        sub_category = validated_data.get('sub_category', sub_category)
-        sub_category.save()
+        sub_category_obj = validated_data.get('sub_category', sub_category)
+        sub_category_obj.save()
 
         # get instance fields
         instance.donar_name = validated_data.get('donar_name', instance.donar_name)
@@ -97,6 +97,8 @@ class OtherIncomeSerializer(serializers.ModelSerializer):
         instance.for_months = validated_data.get('for_months', instance.for_months)
         instance.receipt_book_number = validated_data.get('receipt_book_number', instance.receipt_book_number)
         instance.receipt_page_number = validated_data.get('receipt_page_number', instance.receipt_page_number)
+        instance.category = validated_data.get('category', category_obj)
+        instance.sub_category = validated_data.get('sub_category', sub_category_obj)
 
         instance.save()
         return instance
@@ -147,11 +149,11 @@ class AllExpenseSerializer(serializers.ModelSerializer):
         sub_category = instance.sub_category
 
         # get updated fields value for every nested obj
-        category = validated_data.get('category', category)
-        category.save()
+        category_obj = validated_data.get('category', category)
+        category_obj.save()
 
-        sub_category = validated_data.get('sub_category', sub_category)
-        sub_category.save()
+        sub_category_obj = validated_data.get('sub_category', sub_category)
+        sub_category_obj.save()
 
         # get instance fields
         instance.expense_by = validated_data.get('expense_by', instance.expense_by)
@@ -161,6 +163,8 @@ class AllExpenseSerializer(serializers.ModelSerializer):
         instance.description = validated_data.get('description', instance.description)
         instance.approved_by = validated_data.get('approved_by', instance.approved_by)
         instance.amount = validated_data.get('amount', instance.amount)
+        instance.category = validated_data.get('category', category_obj)
+        instance.sub_category = validated_data.get('sub_category', sub_category_obj)
 
         instance.save()
         return instance
