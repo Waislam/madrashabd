@@ -111,6 +111,7 @@ class Student(models.Model):
     academic_fees = models.OneToOneField(AcademicFess, on_delete=models.SET_NULL, blank=True, null=True)
 
     talimi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
+    eslahi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
 
     class Meta:

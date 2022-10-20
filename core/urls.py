@@ -34,6 +34,13 @@ schema_view = get_schema_view(
     permission_classes=[permissions.AllowAny],
 )
 
+from django.urls import path
+
+
+def trigger_error(request):
+    division_by_zero = 1 / 0
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
@@ -47,6 +54,7 @@ urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('glitchtip-debug/', trigger_error),
 ]
 
 if settings.DEBUG:
