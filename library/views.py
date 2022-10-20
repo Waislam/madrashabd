@@ -7,7 +7,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework.generics import mixins, GenericAPIView
 from rest_framework.views import APIView
 
-from library.filters import BookFilter
+from library.filters import BookFilter, BookDistributionFilter
 from library.models import LibraryBook, BookDistribution
 from library.serializers import (
     LibraryBookCreateSerializer,
@@ -68,22 +68,37 @@ class BookDetailView(APIView):
         return Response({'status': False, 'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-class BookDistributionList(APIView):
-    """
-    List all BookDistribution, or create a new snippet.
-    """
+class BookDistributionListView(mixins.ListModelMixin,
+                               mixins.CreateModelMixin,
+                               GenericAPIView):
+    queryset = BookDistribution.objects.all()
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    serializer_class = BookDistributionSerializer
+    filterset_class = BookDistributionFilter
+    search_fields = ('book_number__name', 'recipient_number')
 
-    def get(self, request, format=None):
-        queryset = BookDistribution.objects.all()
-        serializer = BookDistributionSerializer(queryset, many=True)
-        return Response(serializer.data)
+    pagination_class = CustomPagination
+
+    def get_queryset(self):
+        """getting any argument/parameter from api/url"""
+        madrasha_slug = self.kwargs['madrasha_slug']
+        return super(BookDistributionListView, self).get_queryset().filter(madrasha__slug=madrasha_slug)
+
+    def get(self, request, *args, **kwargs):
+        """method to show the list of Teacher """
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        """Method to create Teacher obj """
+        # print('kwargs', **kwargs)
+        return self.create(request, *args, **kwargs)
 
 
 class BookDistributionDelete(APIView):
     """
     Retrieve, update or delete a BookDistribution instance.
     """
-
+    
     def get_object(self, pk):
         try:
             return BookDistribution.objects.get(pk=pk)
@@ -92,5 +107,6 @@ class BookDistributionDelete(APIView):
 
     def delete(self, request, pk, format=None):
         queryset = self.get_object(pk)
+        # queryset.book_number.is_available = True
         queryset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
