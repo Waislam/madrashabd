@@ -17,13 +17,9 @@ from library.serializers import (
 from students.pagination import CustomPagination
 
 
-# Create your views here.
-
-
 class LibaryBookView(mixins.ListModelMixin,
                      mixins.CreateModelMixin,
                      GenericAPIView):
-
     queryset = LibraryBook.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
     serializer_class = LibraryBookCreateSerializer
@@ -48,6 +44,7 @@ class LibaryBookView(mixins.ListModelMixin,
 
 class BookDetailView(APIView):
     """ put, get, no delete"""
+
     def get_object(self, pk):
         """get single obj"""
         try:
@@ -75,6 +72,7 @@ class BookDistributionList(APIView):
     """
     List all BookDistribution, or create a new snippet.
     """
+
     def get(self, request, format=None):
         queryset = BookDistribution.objects.all()
         serializer = BookDistributionSerializer(queryset, many=True)
@@ -85,6 +83,7 @@ class BookDistributionDelete(APIView):
     """
     Retrieve, update or delete a BookDistribution instance.
     """
+
     def get_object(self, pk):
         try:
             return BookDistribution.objects.get(pk=pk)

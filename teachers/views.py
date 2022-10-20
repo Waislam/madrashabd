@@ -11,8 +11,6 @@ from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import mixins, GenericAPIView
 
-# Create your views here.
-
 
 class TeacherView(mixins.ListModelMixin,
                   mixins.CreateModelMixin,
@@ -40,6 +38,7 @@ class TeacherView(mixins.ListModelMixin,
 
 class TeacherDetailView(APIView):
     """ put, get, no delete"""
+
     def get_object(self, slug):
         """get single obj"""
         try:
