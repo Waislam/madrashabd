@@ -32,6 +32,12 @@ class ParentSerializer(serializers.ModelSerializer):
 
 # ================= 3. StudentSerializer =====================
 
+class AcademicFeesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AcademicFess
+        fields = '__all__'
+
 
 class StudentListSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()
@@ -45,6 +51,7 @@ class StudentListSerializer(serializers.ModelSerializer):
     admitted_group = ClassGroupSerializer()
     admitted_shift = ShiftSerializer()
     admitted_session = SessionSerializer()
+    academic_fees = AcademicFeesSerializer()
 
     class Meta:
         model = Student
