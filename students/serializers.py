@@ -61,7 +61,7 @@ class StudentListSerializer(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
-                  'slug']
+                  'eslahi_murobbi_name', 'slug']
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -87,7 +87,7 @@ class StudentSerializer(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
-                  'slug']
+                  'eslahi_murobbi_name', 'slug']
 
     # def user_first_name(self, obj):
     #     first_name = obj.user.first_name
