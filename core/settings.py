@@ -9,6 +9,8 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import os
+import dj_database_url
 import os.path
 from pathlib import Path
 
@@ -19,6 +21,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 DEBUG = True
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = 'django-insecure-wg(wplo(x!$a(l$rzw5k!tr4v#k9zxy5=o_7*9@a(_q4f&3s&8'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -80,6 +89,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
+DATABASES = {
+    'default': dj_database_url.parse("postgres://postgres:da58a0814122ea5db624890d06a5008b@dokku-postgres-mydb:5432/mydb", conn_max_age=600),
+}
+
 
 # ======================Custom User=====================
 AUTH_USER_MODEL = 'accounts.CustomUser'
@@ -118,14 +131,21 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
+# STATIC_URL = '/static/'
+# if DEBUG:
+#     STATICFILES_DIRS = (os.path.join(BASE_DIR / 'static'),)
+# else:
+#     STATIC_ROOT = os.path.join(BASE_DIR / 'static')
+#
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
 STATIC_URL = '/static/'
-if DEBUG:
-    STATICFILES_DIRS = (os.path.join(BASE_DIR / 'static'),)
-else:
-    STATIC_ROOT = os.path.join(BASE_DIR / 'static')
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = BASE_DIR / 'mediafiles'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -151,3 +171,21 @@ if DEBUG:
     CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8087', 'http://178.128.94.215:1337', 'http://178.128.94.215']
 else:
     CSRF_TRUSTED_ORIGINS = ['http://178.128.94.215:1337', "http://178.128.94.215"]
+
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:3001",
+]
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn="https://58ada142c1f448aeb56759d3decf4923@app.glitchtip.com/1981",
+    integrations=[DjangoIntegration()],
+    auto_session_tracking=False,
+    traces_sample_rate=0
+)
