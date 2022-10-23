@@ -20,8 +20,9 @@ urlpatterns = [
     path('user-detail/<int:pk>/', UserDetail.as_view()),
 
     # Address path
-    path('district/', DistrictListView.as_view()),
     path('division/', DivisionListView.as_view()),
+    path('district/', DistrictListView.as_view()),
+    path('district/<division>/', DistrictListView.as_view()),
     path('thana/', ThanaListView.as_view()),
     path('post-office/', PostOfficeListView.as_view()),
     path('post-code/', PostCodeListView.as_view()),

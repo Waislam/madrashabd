@@ -15,7 +15,9 @@ from .permissions import IsMadrashaAdmin
 
 
 class StudentView(
-    mixins.ListModelMixin, mixins.CreateModelMixin, generics.GenericAPIView
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    generics.GenericAPIView
 ):
     """Student Create and list view"""
 
@@ -24,11 +26,15 @@ class StudentView(
     filterset_class = StudentFilter
     search_fields = ["student_id"]
     pagination_class = CustomPagination
-
     # permission_classes = [IsMadrashaAdmin]
 
     # def check_permissions(self):
     #     pass
+
+    def get_queryset(self):
+        """getting any argument/parameter from api/url"""
+        madrasha_slug = self.kwargs['madrasha_slug']
+        return super(StudentView, self).get_queryset().filter(madrasha__slug=madrasha_slug)
 
     def get_serializer_class(self):
         if self.request.method == "GET":

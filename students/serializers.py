@@ -32,6 +32,12 @@ class ParentSerializer(serializers.ModelSerializer):
 
 # ================= 3. StudentSerializer =====================
 
+class AcademicFeesSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = AcademicFess
+        fields = '__all__'
+
 
 class StudentListSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()
@@ -45,6 +51,7 @@ class StudentListSerializer(serializers.ModelSerializer):
     admitted_group = ClassGroupSerializer()
     admitted_shift = ShiftSerializer()
     admitted_session = SessionSerializer()
+    academic_fees = AcademicFeesSerializer()
 
     class Meta:
         model = Student
@@ -61,7 +68,7 @@ class StudentListSerializer(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
-                  'slug']
+                  'eslahi_murobbi_name', 'slug']
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -87,7 +94,7 @@ class StudentSerializer(serializers.ModelSerializer):
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
                   'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
-                  'slug']
+                  'eslahi_murobbi_name', 'slug']
 
     # def user_first_name(self, obj):
     #     first_name = obj.user.first_name

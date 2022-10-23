@@ -19,9 +19,6 @@ from library.serializers import (
 from students.pagination import CustomPagination
 
 
-# Create your views here.
-
-
 class LibaryBookView(mixins.ListModelMixin,
                      mixins.CreateModelMixin,
                      GenericAPIView):
@@ -103,7 +100,7 @@ class BookDistributionDelete(APIView):
     """
     Retrieve, update or delete a BookDistribution instance.
     """
-
+    
     def get_object(self, pk):
         try:
             return BookDistribution.objects.get(pk=pk)
