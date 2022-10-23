@@ -47,17 +47,20 @@ User = get_user_model()
 
 #  ====================================== 1.dependent drop down for address ==========================
 
-
-class DistrictListView(generics.ListAPIView):
-    queryset = District.objects.all()
-    filter_backends = [DjangoFilterBackend, SearchFilter]
-    serializer_class = DistrictSerializer
-    filterset_class = DistrictFilter
-
-
 class DivisionListView(ListAPIView):
     queryset = Division.objects.all()
     serializer_class = DivisionSerializer
+
+
+class DistrictListView(generics.ListAPIView):
+    serializer_class = DistrictSerializer
+
+    def get_queryset(self):
+        queryset = District.objects.all()
+        division = self.kwargs.get('division')
+        if division is not None:
+            queryset = queryset.filter(division__pk=division)
+        return queryset
 
 
 class ThanaListView(ListAPIView):
