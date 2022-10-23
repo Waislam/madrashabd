@@ -9,10 +9,12 @@ from rest_framework.views import APIView
 
 from library.filters import BookFilter, BookDistributionFilter
 from library.models import LibraryBook, BookDistribution
+from students.models import Student
 from library.serializers import (
     LibraryBookCreateSerializer,
     LibraryBookUpdateSerializer,
-    BookDistributionSerializer
+    BookDistributionSerializer,
+    BookDistributionPostSerializer
 )
 from students.pagination import CustomPagination
 
@@ -108,9 +110,24 @@ class BookDistributionDelete(APIView):
         except BookDistribution.DoesNotExist:
             raise Http404
 
-
     def delete(self, request, pk, format=None):
         queryset = self.get_object(pk)
         # queryset.book_number.is_available = True
         queryset.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class BookDistributionPostAPI(APIView):
+
+    def post(self, request, student_roll_id, book_number, *args, **kwargs):
+        student = Student.objects.get(student_id=student_roll_id)
+        book = LibraryBook.objects.get(id=book_number)
+
+        serializer = BookDistributionPostSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.validated_data['student_roll_id'] = student
+            print("book... status: ", book.is_available)
+            book.is_available = False
+            book.save()
+            serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)

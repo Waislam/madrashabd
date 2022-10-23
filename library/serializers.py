@@ -48,6 +48,14 @@ class BookDistributionSerializer(serializers.ModelSerializer):
             self.Meta.depth = 2
 
 
-
-
-
+class BookDistributionPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BookDistribution
+        fields = [
+            'id',
+            'madrasha',
+            'student_roll_id',
+            'book_number',
+            'taken_date',
+            'recipient_number',
+        ]
