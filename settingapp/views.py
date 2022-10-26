@@ -371,7 +371,6 @@ class FeesView(APIView):
 
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Fees objects"""
-        # madrasha_slug = kwargs.get('madrasha_slug')
         fees = Fees.objects.filter(madrasha__slug=madrasha_slug)
         serializer = FeesListSerializer(fees, many=True)
         return Response(serializer.data)
