@@ -26,6 +26,7 @@ class Designation(models.Model):
     name = models.CharField(max_length=150, blank=True)
     is_active = models.BooleanField(default=True)
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_designations')
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='department_designations', blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
 
     def save(self, *ars, **kwargs):
@@ -127,6 +128,7 @@ class Books(models.Model):
 
 class Session(models.Model):
     name = models.CharField(max_length=150, blank=True)
+    actual_year = models.CharField(max_length=150, blank=True)
     is_active = models.BooleanField(default=True)
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_sessions')
     slug = models.SlugField(unique=True, blank=True)

@@ -19,6 +19,15 @@ from .serializers import (DepartmentSerializer, DesignationSerializer, ClassSeri
                           ShiftSerializer,
                           BooksSerializer, SessionSerializer, ExamRulesSerializer,
                           FeesSerializer)
+from .serializers import (DepartmentListSerializer,
+                          DesignationListSerializer,
+                          ClassListSerializer,
+                          BooksListSerializer,
+                          SessionListSerializer,
+                          ClassGroupListSerializer,
+                          ShiftListSerializer,
+                          FeesListSerializer
+                          )
 
 
 # Create your views here.
@@ -29,7 +38,7 @@ from .serializers import (DepartmentSerializer, DesignationSerializer, ClassSeri
 class DepartmentView(APIView):
     """ A class to creae api for Department """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating department object"""
         serializer = DepartmentSerializer(data=request.data)
         if serializer.is_valid():
@@ -40,7 +49,7 @@ class DepartmentView(APIView):
     def get(self, request, madrasha_slug, **kwargs):
         """ showing a list of depatment objects"""
         department = Department.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = DepartmentSerializer(department, many=True)
+        serializer = DepartmentListSerializer(department, many=True)
         return Response(serializer.data)
 
 
@@ -83,7 +92,7 @@ class DepartmentDetailview(APIView):
 class DesignationView(APIView):
     """ A class to create api for Designation """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating Designation object"""
         serializer = DesignationSerializer(data=request.data)
         if serializer.is_valid():
@@ -94,7 +103,7 @@ class DesignationView(APIView):
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Designation objects"""
         designations = Designation.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = DesignationSerializer(designations, many=True)
+        serializer = DesignationListSerializer(designations, many=True)
         return Response(serializer.data)
 
 
@@ -137,7 +146,7 @@ class DesignationDetailview(APIView):
 class MadrashaClassesView(APIView):
     """ A class to create api for MadrashaClasses """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating MadrashaClasses object"""
         serializer = ClassSerializer(data=request.data)
         if serializer.is_valid():
@@ -148,7 +157,7 @@ class MadrashaClassesView(APIView):
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of MadrashaClasses objects"""
         classes = MadrashaClasses.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = ClassSerializer(classes, many=True)
+        serializer = ClassListSerializer(classes, many=True)
         return Response(serializer.data)
 
 
@@ -190,7 +199,7 @@ class MadrashaClassesDetailview(APIView):
 class MadrashaClassGroupView(APIView):
     """ A class to create api for MadrashaClassesGroup """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating department object"""
         serializer = ClassGroupSerializer(data=request.data)
         if serializer.is_valid():
@@ -201,7 +210,7 @@ class MadrashaClassGroupView(APIView):
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of MadrashaClassesGroup objects"""
         groups = MadrashaGroup.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = ClassGroupSerializer(groups, many=True)
+        serializer = ClassGroupListSerializer(groups, many=True)
         return Response(serializer.data)
 
 
@@ -243,7 +252,7 @@ class MadrashaClassGroupDetailview(APIView):
 class ShiftView(APIView):
     """ A class to create api for Shift """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating Shift object"""
         serializer = ShiftSerializer(data=request.data)
         if serializer.is_valid():
@@ -253,8 +262,8 @@ class ShiftView(APIView):
 
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Shift objects"""
-        shifts = Shift.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = ShiftSerializer(shifts, many=True)
+        shifts = Shift.objects.filter(madrasha__slug=madrasha_slug, is_active=True)
+        serializer = ShiftListSerializer(shifts, many=True)
         return Response(serializer.data)
 
 
@@ -297,7 +306,7 @@ class ShiftDetailview(APIView):
 class BooksView(APIView):
     """ A class to create api for Books """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating Books object"""
         serializer = BooksSerializer(data=request.data)
         if serializer.is_valid():
@@ -305,10 +314,10 @@ class BooksView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, formate=None):
+    def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Books objects"""
-        books = Books.objects.all()
-        serializer = BooksSerializer(books, many=True)
+        books = Books.objects.filter(madrasha__slug=madrasha_slug)
+        serializer = BooksListSerializer(books, many=True)
         return Response(serializer.data)
 
 
@@ -352,7 +361,7 @@ class BooksDetailview(APIView):
 class FeesView(APIView):
     """ A class to create api for Fees """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating Fees object"""
         serializer = FeesSerializer(data=request.data)
         if serializer.is_valid():
@@ -364,7 +373,7 @@ class FeesView(APIView):
         """ showing a list of Fees objects"""
         # madrasha_slug = kwargs.get('madrasha_slug')
         fees = Fees.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = FeesSerializer(fees, many=True)
+        serializer = FeesListSerializer(fees, many=True)
         return Response(serializer.data)
 
 
@@ -407,7 +416,7 @@ class FeesDetailview(APIView):
 class SessionView(APIView):
     """ A class to create api for Session """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating Session object"""
         serializer = SessionSerializer(data=request.data)
         if serializer.is_valid():
@@ -418,7 +427,7 @@ class SessionView(APIView):
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Session objects"""
         session = Session.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = SessionSerializer(session, many=True)
+        serializer = SessionListSerializer(session, many=True)
         return Response(serializer.data)
 
 
