@@ -1,8 +1,12 @@
+import datetime
+
 from django.db import models
+from django.utils import timezone
 from django.contrib.auth import get_user_model
 from teachers.models import RELIGION_CHOICE, GENDER_CHOICE, NATIONALITY_CHOICE
 from accounts.models import Address, Madrasha
 from settingapp.models import *
+
 # Create your models here.
 User = get_user_model()
 OCCUPATION_CHOICE =(
@@ -140,3 +144,20 @@ class Student(models.Model):
         super().save(*args, **kwargs)
 
 
+class MealInfo(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='meal_info_madrashas')
+    student = models.ForeignKey(Student, on_delete=models.PROTECT, related_name='meal_info_student')
+    is_breakfast = models.BooleanField(default=False)
+    is_lunch = models.BooleanField(default=False)
+    is_snacks = models.BooleanField(default=False)
+    is_dinner = models.BooleanField(default=False)
+    meal_date = models.DateField(default=timezone.now())
+    created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="meail_info_user")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = [['student', 'meal_date']]
+
+    def __str__(self):
+        return self.student.student_id
