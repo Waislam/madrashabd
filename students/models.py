@@ -151,7 +151,7 @@ class MealInfo(models.Model):
     is_lunch = models.BooleanField(default=False)
     is_snacks = models.BooleanField(default=False)
     is_dinner = models.BooleanField(default=False)
-    meal_date = models.DateField(default=timezone.now())
+    meal_date = models.DateField()
     created_by = models.ForeignKey(User, on_delete=models.PROTECT, related_name="meail_info_user")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
