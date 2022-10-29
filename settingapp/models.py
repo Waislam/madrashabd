@@ -129,4 +129,10 @@ class ExamRules(models.Model):
         return self.text_input
 
 
+class AdmitCardInfo(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='exam_admit_info')
+    talimat_name = models.CharField(max_length=255)
+    center_name = models.CharField(max_length=300)
 
+    def __str__(self):
+        return self.madrasha.name
