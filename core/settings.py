@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'transactions',
     'boarding',
     'library',
+    'committees',
+    'talimats',
 ]
 
 MIDDLEWARE = [

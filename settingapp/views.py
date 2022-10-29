@@ -19,6 +19,15 @@ from .serializers import (DepartmentSerializer, DesignationSerializer, ClassSeri
                           ShiftSerializer,
                           BooksSerializer, SessionSerializer, ExamRulesSerializer,
                           FeesSerializer)
+from .serializers import (DepartmentListSerializer,
+                          DesignationListSerializer,
+                          ClassListSerializer,
+                          BooksListSerializer,
+                          SessionListSerializer,
+                          ClassGroupListSerializer,
+                          ShiftListSerializer,
+                          FeesListSerializer
+                          )
 
 
 # Create your views here.
@@ -29,7 +38,7 @@ from .serializers import (DepartmentSerializer, DesignationSerializer, ClassSeri
 class DepartmentView(APIView):
     """ A class to creae api for Department """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating department object"""
         serializer = DepartmentSerializer(data=request.data)
         if serializer.is_valid():
@@ -40,39 +49,38 @@ class DepartmentView(APIView):
     def get(self, request, madrasha_slug, **kwargs):
         """ showing a list of depatment objects"""
         department = Department.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = DepartmentSerializer(department, many=True)
+        serializer = DepartmentListSerializer(department, many=True)
         return Response(serializer.data)
 
 
 class DepartmentDetailview(APIView):
     """ department detail, update and delete"""
 
-    def get_object(self, slug):
+    def get_object(self, pk):
         """get single department obj"""
         try:
-            return Department.objects.get(slug=slug)
+            return Department.objects.get(id=pk)
         except Department.DoesNotExist:
             raise Http404
 
-    def get(self, request, slug, formate=None):
+    def get(self, request, pk, formate=None):
         """details veiw for single obj"""
-        department = self.get_object(slug)
-        serializer = DepartmentSerializer(department)
+        department = self.get_object(pk)
+        serializer = DepartmentListSerializer(department)
         return Response(serializer.data)
 
-    def put(self, request, slug, formate=None):
+    def put(self, request, pk, formate=None):
         """update view"""
-        department = self.get_object(slug)
+        department = self.get_object(pk)
         serializer = DepartmentSerializer(department, data=request.data)
         if serializer.is_valid():
-            slug = serializer.validated_data['name']
-            serializer.save(slug=slug)
+            serializer.save()
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, slug, formate=None):
+    def delete(self, request, pk, formate=None):
         """delete"""
-        department = self.get_object(slug)
+        department = self.get_object(pk)
         department.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -83,7 +91,7 @@ class DepartmentDetailview(APIView):
 class DesignationView(APIView):
     """ A class to create api for Designation """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating Designation object"""
         serializer = DesignationSerializer(data=request.data)
         if serializer.is_valid():
@@ -94,39 +102,38 @@ class DesignationView(APIView):
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Designation objects"""
         designations = Designation.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = DesignationSerializer(designations, many=True)
+        serializer = DesignationListSerializer(designations, many=True)
         return Response(serializer.data)
 
 
 class DesignationDetailview(APIView):
     """ Designation detail, update and delete"""
 
-    def get_object(self, slug):
+    def get_object(self, pk):
         """get single Designation obj"""
         try:
-            return Designation.objects.get(slug=slug)
+            return Designation.objects.get(id=pk)
         except Designation.DoesNotExist:
             raise Http404
 
-    def get(self, request, slug, formate=None):
+    def get(self, request, pk, formate=None):
         """details view for single obj"""
-        designation = self.get_object(slug)
-        serializer = DesignationSerializer(designation)
+        designation = self.get_object(pk)
+        serializer = DesignationListSerializer(designation)
         return Response(serializer.data)
 
-    def put(self, request, slug, formate=None):
+    def put(self, request, pk, formate=None):
         """update view"""
-        designation = self.get_object(slug)
+        designation = self.get_object(pk)
         serializer = DesignationSerializer(designation, data=request.data)
         if serializer.is_valid():
-            slug = serializer.validated_data['name']
-            serializer.save(slug=slug)
+            serializer.save()
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, slug, formate=None):
+    def delete(self, request, pk, formate=None):
         """delete"""
-        designation = self.get_object(slug)
+        designation = self.get_object(pk)
         designation.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -137,7 +144,7 @@ class DesignationDetailview(APIView):
 class MadrashaClassesView(APIView):
     """ A class to create api for MadrashaClasses """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating MadrashaClasses object"""
         serializer = ClassSerializer(data=request.data)
         if serializer.is_valid():
@@ -148,39 +155,38 @@ class MadrashaClassesView(APIView):
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of MadrashaClasses objects"""
         classes = MadrashaClasses.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = ClassSerializer(classes, many=True)
+        serializer = ClassListSerializer(classes, many=True)
         return Response(serializer.data)
 
 
 class MadrashaClassesDetailview(APIView):
     """ MadrashaClasses detail, update and delete"""
 
-    def get_object(self, slug):
+    def get_object(self, pk):
         """get single MadrashaClasses obj"""
         try:
-            return MadrashaClasses.objects.get(slug=slug)
+            return MadrashaClasses.objects.get(id=pk)
         except MadrashaClasses.DoesNotExist:
             raise Http404
 
-    def get(self, request, slug, formate=None):
+    def get(self, request, pk, formate=None):
         """details veiw for single obj"""
-        madrashaclass = self.get_object(slug)
-        serializer = ClassSerializer(madrashaclass)
+        madrashaclass = self.get_object(pk)
+        serializer = ClassListSerializer(madrashaclass)
         return Response(serializer.data)
 
-    def put(self, request, slug, formate=None):
+    def put(self, request, pk, formate=None):
         """update view"""
-        madrashaclass = self.get_object(slug)
+        madrashaclass = self.get_object(pk)
         serializer = ClassSerializer(madrashaclass, data=request.data)
         if serializer.is_valid():
-            slug = serializer.validated_data['name']
-            serializer.save(slug=slug)
+            serializer.save()
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, slug, formate=None):
+    def delete(self, request, pk, formate=None):
         """delete"""
-        madrashaclass = self.get_object(slug)
+        madrashaclass = self.get_object(pk)
         madrashaclass.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -190,7 +196,7 @@ class MadrashaClassesDetailview(APIView):
 class MadrashaClassGroupView(APIView):
     """ A class to create api for MadrashaClassesGroup """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating department object"""
         serializer = ClassGroupSerializer(data=request.data)
         if serializer.is_valid():
@@ -201,39 +207,38 @@ class MadrashaClassGroupView(APIView):
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of MadrashaClassesGroup objects"""
         groups = MadrashaGroup.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = ClassGroupSerializer(groups, many=True)
+        serializer = ClassGroupListSerializer(groups, many=True)
         return Response(serializer.data)
 
 
 class MadrashaClassGroupDetailview(APIView):
     """ MadrashaClassesGroup detail, update and delete"""
 
-    def get_object(self, slug):
+    def get_object(self, pk):
         """get single MadrashaClassesGroup obj"""
         try:
-            return MadrashaGroup.objects.get(slug=slug)
+            return MadrashaGroup.objects.get(id=pk)
         except MadrashaGroup.DoesNotExist:
             return Http404
 
-    def get(self, request, slug, formate=None):
+    def get(self, request, pk, formate=None):
         """details veiw for single obj"""
-        madrashagroup = self.get_object(slug)
-        serializer = ClassGroupSerializer(madrashagroup)
+        madrashagroup = self.get_object(pk)
+        serializer = ClassGroupListSerializer(madrashagroup)
         return Response(serializer.data)
 
-    def put(self, request, slug, formate=None):
+    def put(self, request, pk, formate=None):
         """update view"""
-        madrashagroup = self.get_object(slug)
+        madrashagroup = self.get_object(pk)
         serializer = ClassGroupSerializer(madrashagroup, data=request.data)
         if serializer.is_valid():
-            slug = serializer.validated_data['name']
-            serializer.save(slug=slug)
+            serializer.save()
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, slug, formate=None):
+    def delete(self, request, pk, formate=None):
         """delete"""
-        madrashagroup = self.get_object(slug)
+        madrashagroup = self.get_object(pk)
         madrashagroup.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -243,7 +248,7 @@ class MadrashaClassGroupDetailview(APIView):
 class ShiftView(APIView):
     """ A class to create api for Shift """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating Shift object"""
         serializer = ShiftSerializer(data=request.data)
         if serializer.is_valid():
@@ -253,41 +258,40 @@ class ShiftView(APIView):
 
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Shift objects"""
-        shifts = Shift.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = ShiftSerializer(shifts, many=True)
+        shifts = Shift.objects.filter(madrasha__slug=madrasha_slug, is_active=True)
+        serializer = ShiftListSerializer(shifts, many=True)
         return Response(serializer.data)
 
 
 class ShiftDetailview(APIView):
     """ Shift detail, update and delete"""
 
-    def get_object(self, slug):
+    def get_object(self, pk):
         """get single Shift obj"""
 
         try:
-            return Shift.objects.get(slug=slug)
+            return Shift.objects.get(id=pk)
         except Shift.DoesNotExist:
             return Http404
 
-    def get(self, request, slug, formate=None):
+    def get(self, request, pk, formate=None):
         """details veiw for single obj"""
-        shift = self.get_object(slug)
-        serializer = ShiftSerializer(shift)
+        shift = self.get_object(pk)
+        serializer = ShiftListSerializer(shift)
         return Response(serializer.data)
 
-    def put(self, request, slug, formate=None):
+    def put(self, request, pk, formate=None):
         """update view"""
-        shift = self.get_object(slug)
+        shift = self.get_object(pk)
         serializer = ShiftSerializer(shift, data=request.data)
         if serializer.is_valid():
-            slug = serializer.validated_data['name']
-            serializer.save(slug=slug)
+            serializer.save()
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, slug, formate=None):
+    def delete(self, request, pk, formate=None):
         """ delete """
-        shift = self.get_object(slug)
+        shift = self.get_object(pk)
         shift.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -297,7 +301,7 @@ class ShiftDetailview(APIView):
 class BooksView(APIView):
     """ A class to create api for Books """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating Books object"""
         serializer = BooksSerializer(data=request.data)
         if serializer.is_valid():
@@ -305,43 +309,42 @@ class BooksView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, formate=None):
+    def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Books objects"""
-        books = Books.objects.all()
-        serializer = BooksSerializer(books, many=True)
+        books = Books.objects.filter(madrasha__slug=madrasha_slug)
+        serializer = BooksListSerializer(books, many=True)
         return Response(serializer.data)
 
 
 class BooksDetailview(APIView):
     """ Books detail, update and delete"""
 
-    def get_object(self, slug):
+    def get_object(self, pk):
         """get single Books obj"""
 
         try:
-            return Books.objects.get(slug=slug)
+            return Books.objects.get(id=pk)
         except Books.DoesNotExist:
             raise Http404
 
-    def get(self, request, slug, formate=None):
+    def get(self, request, pk, formate=None):
         """details veiw for single obj"""
-        shift = self.get_object(slug)
-        serializer = BooksSerializer(shift)
+        books = self.get_object(pk)
+        serializer = BooksListSerializer(books)
         return Response(serializer.data)
 
-    def put(self, request, slug, formate=None):
+    def put(self, request, pk, formate=None):
         """update view"""
-        book = self.get_object(slug)
+        book = self.get_object(pk)
         serializer = BooksSerializer(book, data=request.data)
         if serializer.is_valid():
-            slug = serializer.validated_data['name']
-            serializer.save(slug=slug)
+            serializer.save()
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, slug, formate=None):
+    def delete(self, request, pk, formate=None):
         """ delete """
-        book = self.get_object(slug)
+        book = self.get_object(pk)
         book.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -352,7 +355,7 @@ class BooksDetailview(APIView):
 class FeesView(APIView):
     """ A class to create api for Fees """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating Fees object"""
         serializer = FeesSerializer(data=request.data)
         if serializer.is_valid():
@@ -362,42 +365,40 @@ class FeesView(APIView):
 
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Fees objects"""
-        # madrasha_slug = kwargs.get('madrasha_slug')
         fees = Fees.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = FeesSerializer(fees, many=True)
+        serializer = FeesListSerializer(fees, many=True)
         return Response(serializer.data)
 
 
 class FeesDetailview(APIView):
     """ Fees detail, update and delete"""
 
-    def get_object(self, slug):
+    def get_object(self, pk):
         """get single Fees obj"""
 
         try:
-            return Fees.objects.get(slug=slug)
+            return Fees.objects.get(id=pk)
         except Fees.DoesNotExist:
             raise Http404
 
-    def get(self, request, slug, formate=None):
+    def get(self, request, pk, formate=None):
         """details veiw for single obj"""
-        fee = self.get_object(slug)
-        serializer = FeesSerializer(fee)
+        fee = self.get_object(pk)
+        serializer = FeesListSerializer(fee)
         return Response(serializer.data)
 
-    def put(self, request, slug, formate=None):
+    def put(self, request, pk, formate=None):
         """update view"""
-        fee = self.get_object(slug)
+        fee = self.get_object(pk)
         serializer = FeesSerializer(fee, data=request.data)
         if serializer.is_valid():
-            slug = serializer.validated_data['name']
-            serializer.save(slug=slug)
+            serializer.save()
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, slug, formate=None):
+    def delete(self, request, pk, formate=None):
         """ delete """
-        fee = self.get_object(slug)
+        fee = self.get_object(pk)
         fee.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -407,7 +408,7 @@ class FeesDetailview(APIView):
 class SessionView(APIView):
     """ A class to create api for Session """
 
-    def post(self, request, formate=None):
+    def post(self, request, formate=None, **kwargs):
         """creating Session object"""
         serializer = SessionSerializer(data=request.data)
         if serializer.is_valid():
@@ -418,40 +419,39 @@ class SessionView(APIView):
     def get(self, request, madrasha_slug, formate=None):
         """ showing a list of Session objects"""
         session = Session.objects.filter(madrasha__slug=madrasha_slug)
-        serializer = SessionSerializer(session, many=True)
+        serializer = SessionListSerializer(session, many=True)
         return Response(serializer.data)
 
 
 class SessionDetailview(APIView):
     """ Session detail, update and delete"""
 
-    def get_object(self, slug):
+    def get_object(self, pk):
         """get single Session obj"""
 
         try:
-            return Session.objects.get(slug=slug)
+            return Session.objects.get(id=pk)
         except Session.DoesNotExist:
             raise Http404
 
-    def get(self, request, slug, formate=None):
+    def get(self, request, pk, formate=None):
         """details veiw for single obj"""
-        session = self.get_object(slug)
-        serializer = SessionSerializer(session)
+        session = self.get_object(pk)
+        serializer = SessionListSerializer(session)
         return Response(serializer.data)
 
-    def put(self, request, slug, formate=None):
+    def put(self, request, pk, formate=None):
         """update view"""
-        session = self.get_object(slug)
+        session = self.get_object(pk)
         serializer = SessionSerializer(session, data=request.data)
         if serializer.is_valid():
-            slug = serializer.validated_data['name']
-            serializer.save(slug=slug)
+            serializer.save()
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, slug, formate=None):
+    def delete(self, request, pk, formate=None):
         """ delete """
-        session = self.get_object(slug)
+        session = self.get_object(pk)
         session.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -483,7 +483,7 @@ class ExamRulesDetailview(APIView):
         """get single Session obj"""
 
         try:
-            return ExamRules.objects.get(pk=pk)
+            return ExamRules.objects.get(id=pk)
         except ExamRules.DoesNotExist:
             raise Http404
 
@@ -493,18 +493,17 @@ class ExamRulesDetailview(APIView):
         serializer = ExamRulesSerializer(exam_rule)
         return Response(serializer.data)
 
-    def put(self, request, slug, formate=None):
+    def put(self, request, pk, formate=None):
         """update view"""
-        exam_rule = self.get_object(slug)
+        exam_rule = self.get_object(pk)
         serializer = ExamRulesSerializer(exam_rule, data=request.data)
         if serializer.is_valid():
-            slug = serializer.validated_data['name']
-            serializer.save(slug=slug)
+            serializer.save()
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, slug, formate=None):
+    def delete(self, request, pk, formate=None):
         """ delete """
-        exam_rule = self.get_object(slug)
+        exam_rule = self.get_object(pk)
         exam_rule.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
