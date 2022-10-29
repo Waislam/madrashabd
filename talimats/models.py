@@ -1,5 +1,12 @@
 """
 1. Book Distribution to Teacher
+2. TeacherTraining
+3. Syllabus Creation
+4. TeacherStaffResponsibility
+5. AcademicCalendar
+6. ExamAnnouncement
+7. ExamRegistration
+8. ExamRoutine
 """
 
 from django.db import models
@@ -12,8 +19,6 @@ from students.models import Student
 
 # Create your models here.
 # ================== 1. Book Distribution to Teacher ===============#
-
-
 class BookDistributeToTeacher(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.CASCADE, related_name="books_to_teacher", blank=True,
                                  null=True)
@@ -27,6 +32,7 @@ class BookDistributeToTeacher(models.Model):
         return self.kitab_name
 
 
+# ================== 2. TeacherTraining ===============#
 class TeacherTraining(models.Model):
     madrasha = models.ForeignKey(
         Madrasha,
@@ -42,6 +48,7 @@ class TeacherTraining(models.Model):
         return self.training_title
 
 
+# ================== 3. Syllabus Creation ===============#
 class ExamTerm(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.CASCADE, related_name="exam_term_madrasha")
     term_name = models.CharField(max_length=100)
@@ -57,7 +64,7 @@ class Syllabus(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.CASCADE, related_name="syllabus_madrasha")
     madrasha_class = models.ForeignKey(MadrashaClasses, on_delete=models.PROTECT, related_name='syllabus_class')
     exam_term = models.ForeignKey(ExamTerm, on_delete=models.CASCADE, related_name='syllabus_term')
-    session_year = models.CharField(max_length=20)  # readly only from anywhere
+    session_year = models.CharField(max_length=20)  # read only from anywhere
     syllabus_details = models.TextField()
     syllabus_file = models.FileField(upload_to='syllabus', blank=True, null=True)
 
@@ -65,6 +72,7 @@ class Syllabus(models.Model):
         return self.exam_term.term_name
 
 
+# ================== 4. TeacherStaffResponsibility ===============#
 class TeacherStaffResponsibility(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.SET_NULL, related_name="staff_responsibility", null=True,
                                  blank=True)
@@ -75,6 +83,7 @@ class TeacherStaffResponsibility(models.Model):
         return self.teacher_staff.teacher_id
 
 
+# ================== 5. AcademicCalendar ===============#
 class AcademicCalendar(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.CASCADE, related_name="madrasha_calendar")
     calendar_date = models.DateTimeField()
@@ -88,6 +97,7 @@ class AcademicCalendar(models.Model):
         return str(self.calendar_date)
 
 
+# ================== 6. ExamAnnouncement ===============#
 class ExamAnnouncement(models.Model):
     madrasha = models.ForeignKey(
         Madrasha,
@@ -101,6 +111,7 @@ class ExamAnnouncement(models.Model):
         return self.exam_title
 
 
+# ================== 7. ExamRegistration ===============#
 class ExamRegistration(models.Model):
     student = models.ForeignKey(Student, on_delete=models.PROTECT, related_name='exam_registration_student')
     amount = models.TextField(max_length=300)
@@ -111,6 +122,7 @@ class ExamRegistration(models.Model):
         return self.student.student_id
 
 
+# ================== 8. ExamRoutine ===============#
 class ExamRoutine(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='exam_routine')
     routine_class = models.ForeignKey(MadrashaClasses, on_delete=models.CASCADE, related_name='exam_routine_class')
