@@ -3,7 +3,7 @@ from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .models import Committee
-from .serializers import CommitteeSerializers
+from .serializers import CommitteeSerializers, CommitteeListSerializers
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from .filters import CommitteeFilter
@@ -52,7 +52,7 @@ class CommitteeDetail(APIView):
 
     def get(self, request, pk, format=None):
         queryset = self.get_object(pk)
-        serializer = CommitteeSerializers(queryset)
+        serializer = CommitteeListSerializers(queryset)
         return Response(serializer.data)
 
     def put(self, request, pk, formate=None):

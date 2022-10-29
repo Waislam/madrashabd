@@ -1,14 +1,19 @@
 from rest_framework import serializers
 from .models import Committee
-from accounts.models import Madrasha
 
 
-class MadrashaSerializer(serializers.ModelSerializer):
+class CommitteeListSerializers(serializers.ModelSerializer):
     class Meta:
-        model = Madrasha
+        model = Committee
         fields = [
             'id',
+            'madrasha',
+            'member_name',
+            'member_designation',
+            'phone_number'
         ]
+
+        depth = 2
 
 
 class CommitteeSerializers(serializers.ModelSerializer):
