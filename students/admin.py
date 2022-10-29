@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Student, AcademicFess, Parent
+from .models import Student, AcademicFess, Parent, MealInfo
 
 
 @admin.register(Student)
@@ -9,4 +9,4 @@ class StudentAdminView(admin.ModelAdmin):
 
 admin.site.register(AcademicFess)
 admin.site.register(Parent)
-
+admin.site.register(MealInfo)

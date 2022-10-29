@@ -1,23 +1,26 @@
 """
-1. Book Distribtuion to teacher view
+1. Book Distribution to teacher view
+2. Teacher Training View
+3. Syllabus View
 """
 from django.http import Http404
-from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework import mixins, generics, status
-from talimats.models import BookDistributeToTeacher
+from talimats.models import BookDistributeToTeacher, TeacherTraining, Syllabus
 from rest_framework.response import Response
 from talimats.serializers import (
-    BookDistributionToTeacherSerializer
+    BookDistributionToTeacherSerializer,
+    TeacherTrainingSerializer, SyllabusSerializer, SyllabusListSerializer
 )
 from talimats.serializers import (
-    BookDistributionToTeacherListSerializer
+    BookDistributionToTeacherListSerializer,
+    TeacherTrainingListSerializer
 )
 
 
 # Create your views here.
 
-# ====================== 1. Book Distribtuion to teacher view ================
+# ====================== 1. Book Distribution to teacher view ================
 class BookDistributionToTeacherView(mixins.CreateModelMixin,
                                     mixins.ListModelMixin,
                                     generics.GenericAPIView
@@ -68,6 +71,106 @@ class BookDistToTeacherDetailView(APIView):
         return Response({"status": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
+# ====================== 2. Teacher Training View ================
+class TeacherTrainingView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    generics.GenericAPIView
+):
+    queryset = TeacherTraining.objects.all()
+
+    def get_queryset(self):
+        madrasha_slug = self.kwargs['madrasha_slug']
+        queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
+        return queryset
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return TeacherTrainingListSerializer
+        return TeacherTrainingSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
+class TeacherTrainingDetailView(APIView):
+    def get_object(self, pk):
+        try:
+            return TeacherTraining.objects.get(id=pk)
+        except TeacherTraining.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        serializer = TeacherTrainingListSerializer(obj)
+        return Response({"status": True, "data": serializer.data})
+
+    def put(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        serializer = TeacherTrainingSerializer(obj, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "status": True,
+                    "message": "Teacher Training notice has been updated successfully",
+                    "data": serializer.data,
+                }
+            )
+        return Response({"status": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+# ====================== 3. Syllabus View ================
+class SyllabusView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    generics.GenericAPIView
+):
+    queryset = Syllabus.objects.all()
+
+    def get_queryset(self):
+        madrasha_slug = self.kwargs['madrasha_slug']
+        queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
+        return queryset
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return SyllabusListSerializer
+        return SyllabusSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class SyllabusDetailView(APIView):
+    def get_object(self, pk):
+        try:
+            return Syllabus.objects.get(id=pk)
+        except Syllabus.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        serializer = SyllabusListSerializer(obj)
+        return Response({"status": True, "data": serializer.data})
+
+    def put(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        serializer = SyllabusSerializer(obj, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "status": True,
+                    "message": "Syllabus has been updated successfully",
+                    "data": serializer.data,
+                }
+            )
+        return Response({"status": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
