@@ -22,3 +22,11 @@ class BookDistributeToTeacher(models.Model):
         return self.kitab_name
 
 
+
+
+
+
+
+
+
+
