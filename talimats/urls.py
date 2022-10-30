@@ -5,7 +5,9 @@ from .views import (
     TeacherTrainingView,
     TeacherTrainingDetailView,
     SyllabusView,
-    SyllabusDetailView
+    SyllabusDetailView,
+    DawahView,
+    DawahDetailView
 )
 
 urlpatterns = [
@@ -17,4 +19,7 @@ urlpatterns = [
 
     path('<madrasha_slug>/syllabus/', SyllabusView.as_view()),
     path('syllabus/detail/<int:pk>/', SyllabusDetailView.as_view()),
+
+    path('<madrasha_slug>/dawah/', DawahView.as_view()),
+    path('dawah/detail/<int:pk>/', DawahDetailView.as_view()),
 ]

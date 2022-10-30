@@ -4,7 +4,13 @@
 3. SyllabusSerializer
 """
 from rest_framework import serializers
-from talimats.models import BookDistributeToTeacher, TeacherTraining, Syllabus, ExamTerm
+from talimats.models import (
+    BookDistributeToTeacher,
+    TeacherTraining,
+    Syllabus,
+    ExamTerm,
+    Dawah,
+)
 
 
 # ==================== 1. BookDistribtuinToTeacherSerializer ============================== #
@@ -73,5 +79,19 @@ class SyllabusSerializer(serializers.ModelSerializer):
 class SyllabusListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Syllabus
+        fields = '__all__'
+        depth = 2
+
+
+# ==================== 16. DawahSerializer ============================== #
+class DawahSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dawah
+        fields = '__all__'
+
+
+class DawahListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dawah
         fields = '__all__'
         depth = 2
