@@ -1,5 +1,9 @@
 from django.contrib import admin
-from talimats.models import BookDistributeToTeacher, Dawah
+from talimats.models import (
+    BookDistributeToTeacher,
+    Dawah,
+    ExtraActivity
+)
 
 
 # Register your models here.
@@ -11,4 +15,10 @@ class BookDistributeToTeacherAdminView(admin.ModelAdmin):
 # Register your models here.
 @admin.register(Dawah)
 class DawahAdminView(admin.ModelAdmin):
-    list_display = ['program_name', 'duration', 'start_Time', 'managed_by']
+    list_display = ['program_name', 'duration', 'start_time', 'managed_by']
+
+
+# Register your models here.
+@admin.register(ExtraActivity)
+class ExtraActivityView(admin.ModelAdmin):
+    list_display = ['category', 'duration', 'start_time', 'managed_by']

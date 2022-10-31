@@ -11,6 +11,7 @@ from talimats.models import (
     TeacherTraining,
     Syllabus,
     Dawah,
+    ExtraActivity
 )
 
 from rest_framework.response import Response
@@ -20,12 +21,14 @@ from talimats.serializers import (
     SyllabusSerializer,
     SyllabusListSerializer,
     DawahSerializer,
+    ExtraActivityListSerializer
 
 )
 from talimats.serializers import (
     BookDistributionToTeacherListSerializer,
     TeacherTrainingListSerializer,
-    DawahListSerializer
+    DawahListSerializer,
+    ExtraActivitySerializer
 )
 
 
@@ -248,5 +251,63 @@ class DawahDetailView(APIView):
         )
 
 
+# ====================== 17. ExtraActivity View ================
+class ExtraActivityView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    generics.GenericAPIView
+):
+    queryset = ExtraActivity.objects.all()
+
+    def get_queryset(self):
+        madrasha_slug = self.kwargs['madrasha_slug']
+        return super(ExtraActivityView, self).get_queryset().filter(madrasha__slug=madrasha_slug)
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return ExtraActivityListSerializer
+        return ExtraActivitySerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
 
 
+class ExtraActivityDetailView(APIView):
+
+    def get_object(self, pk):
+        try:
+            return ExtraActivity.objects.get(id=pk)
+        except ExtraActivity.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        serializer = ExtraActivityListSerializer(obj)
+        return Response({"status": True, "data": serializer.data})
+
+    def put(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        serializer = ExtraActivitySerializer(obj, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "status": True,
+                    "message": "Extra Activity has been updated successfully",
+                    "data": serializer.data,
+                }
+            )
+        return Response({"status": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        obj.delete()
+        return Response(
+            {
+                "status": True,
+                "message": "Extra activity has been successfully Delete",
+            }
+        )

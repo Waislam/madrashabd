@@ -141,11 +141,24 @@ class Dawah(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT)
     program_name = models.CharField(max_length=250)
     duration = models.CharField(max_length=250)
-    start_Time = models.CharField(max_length=250)
+    start_time = models.CharField(max_length=250)
     place = models.CharField(max_length=250)
-    Date = models.CharField(max_length=250)
+    date = models.CharField(max_length=250)
     managed_by = models.CharField(max_length=250)
 
     def __str__(self):
         return self.program_name
 
+
+# ================== 17. Extra Activity ===============#
+class ExtraActivity(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT)
+    category = models.CharField(max_length=250)
+    duration = models.CharField(max_length=250)
+    start_time = models.CharField(max_length=250)
+    place = models.CharField(max_length=250)
+    date = models.CharField(max_length=250)
+    managed_by = models.CharField(max_length=250)
+
+    def __str__(self):
+        return self.category

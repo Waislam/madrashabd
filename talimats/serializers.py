@@ -10,6 +10,7 @@ from talimats.models import (
     Syllabus,
     ExamTerm,
     Dawah,
+    ExtraActivity
 )
 
 
@@ -93,5 +94,19 @@ class DawahSerializer(serializers.ModelSerializer):
 class DawahListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dawah
+        fields = '__all__'
+        depth = 2
+
+
+# ==================== 17. ExtraActivitySerializer ============================== #
+class ExtraActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExtraActivity
+        fields = '__all__'
+
+
+class ExtraActivityListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExtraActivity
         fields = '__all__'
         depth = 2
