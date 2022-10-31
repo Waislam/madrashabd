@@ -69,7 +69,7 @@ class BookDistribution(models.Model):
         on_delete=models.CASCADE,
         related_name='library_book',
         null=True, blank=True)
-    taken_date = models.DateField()
+    taken_date = models.DateField(default=date.today)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(
