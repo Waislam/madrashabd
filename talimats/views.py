@@ -2,6 +2,7 @@
 1. Book Distribution to teacher view
 2. Teacher Training View
 3. Syllabus View
+4. TeacherStaffResponsibility View
 """
 from django.http import Http404
 from rest_framework.views import APIView
@@ -10,6 +11,7 @@ from talimats.models import (
     BookDistributeToTeacher,
     TeacherTraining,
     Syllabus,
+    TeacherStaffResponsibility,
     Dawah,
     ExtraActivity
 )
@@ -17,18 +19,23 @@ from talimats.models import (
 from rest_framework.response import Response
 from talimats.serializers import (
     BookDistributionToTeacherSerializer,
+    TeacherTrainingSerializer, SyllabusSerializer,
+    TeacherStaffResponsibilitySerializer,
     TeacherTrainingSerializer,
     SyllabusSerializer,
     SyllabusListSerializer,
     DawahSerializer,
-    ExtraActivityListSerializer
+    ExtraActivitySerializer
 
 )
 from talimats.serializers import (
     BookDistributionToTeacherListSerializer,
     TeacherTrainingListSerializer,
+    SyllabusListSerializer,
+    TeacherStaffResponsibilityListSerializer,
+    TeacherTrainingListSerializer,
     DawahListSerializer,
-    ExtraActivitySerializer
+    ExtraActivityListSerializer
 )
 
 
@@ -188,6 +195,57 @@ class SyllabusDetailView(APIView):
             )
         return Response({"status": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+
+# ====================== 4. TeacherStaffResponsibility View ================
+class TeacherStaffResponsibilityView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    generics.GenericAPIView
+):
+    queryset = TeacherStaffResponsibility.objects.all()
+
+    def get_queryset(self):
+        madrasha_slug = self.kwargs['madrasha_slug']
+        queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
+        return queryset
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return TeacherStaffResponsibilityListSerializer
+        return TeacherStaffResponsibilitySerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class TeacherStaffResponsibilityDetailView(APIView):
+    def get_object(self, pk):
+        try:
+            return TeacherStaffResponsibility.objects.get(id=pk)
+        except TeacherStaffResponsibility.DoesNotExist:
+            return Http404
+
+    def get(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        serializer = TeacherStaffResponsibilityListSerializer(obj)
+        return Response({"status": True, "data": serializer.data})
+
+    def put(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        serializer = TeacherStaffResponsibilitySerializer(obj, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {
+                    "status": True,
+                    "message": "Object has been updated successfully",
+                    "data": serializer.data,
+                }
+            )
+        return Response({"status": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 # ====================== 16. Dawah view ================
 class DawahView(

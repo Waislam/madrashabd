@@ -6,6 +6,9 @@ from .views import (
     TeacherTrainingDetailView,
     SyllabusView,
     SyllabusDetailView,
+    TeacherStaffResponsibilityDetailView,
+    TeacherStaffResponsibilityView,
+    SyllabusDetailView,
     DawahView,
     DawahDetailView,
     ExtraActivityView,
@@ -21,6 +24,9 @@ urlpatterns = [
 
     path('<madrasha_slug>/syllabus/', SyllabusView.as_view()),
     path('syllabus/detail/<int:pk>/', SyllabusDetailView.as_view()),
+
+    path('<madrasha_slug>/responsibility/', TeacherStaffResponsibilityView.as_view()),
+    path('responsibility/detail/<int:pk>/', TeacherStaffResponsibilityDetailView.as_view()),
 
     path('<madrasha_slug>/dawah/', DawahView.as_view()),
     path('dawah/detail/<int:pk>/', DawahDetailView.as_view()),
