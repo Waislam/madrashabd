@@ -5,7 +5,15 @@
 4. TeacherStaffResponsibilitySerializer
 """
 from rest_framework import serializers
-from talimats.models import BookDistributeToTeacher, TeacherTraining, Syllabus, ExamTerm, TeacherStaffResponsibility
+from talimats.models import (
+    BookDistributeToTeacher,
+    TeacherTraining,
+    Syllabus,
+    ExamTerm,
+    TeacherStaffResponsibility,
+    Dawah,
+    ExtraActivity
+)
 
 
 # ==================== 1. BookDistribtuinToTeacherSerializer ============================== #
@@ -87,5 +95,32 @@ class TeacherStaffResponsibilitySerializer(serializers.ModelSerializer):
 class TeacherStaffResponsibilityListSerializer(serializers.ModelSerializer):
     class Meta:
         model = TeacherStaffResponsibility
+        fields = '__all__'
+        depth = 2
+
+# ==================== 16. DawahSerializer ============================== #
+class DawahSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dawah
+        fields = '__all__'
+
+
+class DawahListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dawah
+        fields = '__all__'
+        depth = 2
+
+
+# ==================== 17. ExtraActivitySerializer ============================== #
+class ExtraActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExtraActivity
+        fields = '__all__'
+
+
+class ExtraActivityListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExtraActivity
         fields = '__all__'
         depth = 2

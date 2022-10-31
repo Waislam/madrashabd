@@ -7,7 +7,12 @@ from .views import (
     SyllabusView,
     SyllabusDetailView,
     TeacherStaffResponsibilityDetailView,
-    TeacherStaffResponsibilityView
+    TeacherStaffResponsibilityView,
+    SyllabusDetailView,
+    DawahView,
+    DawahDetailView,
+    ExtraActivityView,
+    ExtraActivityDetailView
 )
 
 urlpatterns = [
@@ -22,4 +27,10 @@ urlpatterns = [
 
     path('<madrasha_slug>/responsibility/', TeacherStaffResponsibilityView.as_view()),
     path('responsibility/detail/<int:pk>/', TeacherStaffResponsibilityDetailView.as_view()),
+
+    path('<madrasha_slug>/dawah/', DawahView.as_view()),
+    path('dawah/detail/<int:pk>/', DawahDetailView.as_view()),
+
+    path('<madrasha_slug>/extra-activity/', ExtraActivityView.as_view()),
+    path('extra-activity/detail/<int:pk>/', ExtraActivityDetailView.as_view()),
 ]

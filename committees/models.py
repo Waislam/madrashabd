@@ -1,5 +1,4 @@
 from django.db import models
-from django.template.defaultfilters import slugify
 from accounts.models import Madrasha
 
 
@@ -15,7 +14,7 @@ class Committee(models.Model):
         ordering = ['member_name']
 
     def __str__(self):
-        return self.name
+        return self.member_name
 
 
 
