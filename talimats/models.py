@@ -12,7 +12,7 @@
 
 from django.db import models
 from accounts.models import Madrasha
-from settingapp.models import MadrashaClasses, Books
+from settingapp.models import MadrashaClasses, Books, Session
 
 from teachers.models import Teacher
 from students.models import Student
@@ -114,9 +114,16 @@ class ExamAnnouncement(models.Model):
 
 # ================== 7. ExamRegistration ===============#
 class ExamRegistration(models.Model):
+    madrasha = models.ForeignKey(
+        Madrasha,
+        on_delete=models.PROTECT,
+        related_name='exam_registration_madrasha'
+    )
     student = models.ForeignKey(Student, on_delete=models.PROTECT, related_name='exam_registration_student')
     amount = models.TextField(max_length=300)
     exam_term = models.ForeignKey(ExamTerm, on_delete=models.PROTECT, related_name='registration_exam_term')
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='registration_session')
+    student_class = models.ForeignKey(MadrashaClasses, on_delete=models.CASCADE, related_name='registration_class')
     is_registered = models.BooleanField(default=False)
 
     def __str__(self):
@@ -162,3 +169,14 @@ class ExtraActivity(models.Model):
 
     def __str__(self):
         return self.category
+
+
+class HallDuty(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='hall_duty_madrasha')
+    duty_date = models.DateTimeField()
+    chief_of_hall = models.CharField(max_length=255)
+    assistant_of_hall = models.CharField(max_length=255, null=True, blank=True)
+    room_no = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.room_no

@@ -95,9 +95,12 @@ class StudentDetailBySlugView(APIView):
 
     def get(self, request, student_id, formate=None):
         """For getting single student details"""
-        student = self.get_object(student_id)
-        serializer = StudentListSerializer(student)
-        return Response({"status": True, "data": serializer.data})
+        try :
+            student = self.get_object(student_id)
+            serializer = StudentListSerializer(student)
+            return Response({"status": True, "data": serializer.data})
+        except:
+            return Response({"status": False})
 
 
 class CheckUniquePassportNumber(APIView):

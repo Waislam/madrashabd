@@ -6,6 +6,13 @@ from .views import (
     TeacherTrainingDetailView,
     SyllabusView,
     SyllabusDetailView,
+    ExamAnnouncementView,
+    ExamAnnouncementDetailView,
+    ExamRegistrationListView,
+    ExamTermListView,
+    HallDutyListView,
+    HallNigranDetailView,
+    SyllabusDetailView,
     TeacherStaffResponsibilityDetailView,
     TeacherStaffResponsibilityView,
     SyllabusDetailView,
@@ -33,4 +40,14 @@ urlpatterns = [
 
     path('<madrasha_slug>/extra-activity/', ExtraActivityView.as_view()),
     path('extra-activity/detail/<int:pk>/', ExtraActivityDetailView.as_view()),
+
+    path('<madrasha_slug>/exam-announcement/', ExamAnnouncementView.as_view()),
+    path('exam-announcement/detail/<int:pk>/', ExamAnnouncementDetailView.as_view()),
+
+    path('<madrasha_slug>/exam-registration/', ExamRegistrationListView.as_view()),
+
+    path('<madrasha_slug>/exam-term/', ExamTermListView.as_view()),
+
+    path('<madrasha_slug>/hall-duty/', HallDutyListView.as_view()),
+    path('hall-duty/detail/<int:pk>/', HallNigranDetailView.as_view()),
 ]

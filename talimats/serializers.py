@@ -10,6 +10,9 @@ from talimats.models import (
     TeacherTraining,
     Syllabus,
     ExamTerm,
+    ExamAnnouncement,
+    ExamRegistration,
+    HallDuty,
     TeacherStaffResponsibility,
     Dawah,
     ExtraActivity
@@ -98,6 +101,7 @@ class TeacherStaffResponsibilityListSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 2
 
+
 # ==================== 16. DawahSerializer ============================== #
 class DawahSerializer(serializers.ModelSerializer):
     class Meta:
@@ -124,3 +128,41 @@ class ExtraActivityListSerializer(serializers.ModelSerializer):
         model = ExtraActivity
         fields = '__all__'
         depth = 2
+
+
+class ExamAnnouncementListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamAnnouncement
+        fields = '__all__'
+        depth = 2
+
+
+class ExamAnnouncementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamAnnouncement
+        fields = '__all__'
+
+
+class ExamRegistrationListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamRegistration
+        fields = '__all__'
+        depth = 2
+
+
+class ExamRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamRegistration
+        fields = '__all__'
+
+
+class ExamTermListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamTerm
+        fields = '__all__'
+
+
+class HallDutySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HallDuty
+        fields = '__all__'
