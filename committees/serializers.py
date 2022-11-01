@@ -78,7 +78,7 @@ class OthersMemberSerializers(serializers.ModelSerializer):
         fields = [
             'id',
             'madrasha',
-            'address',
+            'member_name',
             'address',
             'phone_number'
         ]
