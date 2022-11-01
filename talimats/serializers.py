@@ -2,6 +2,7 @@
 1. BookDistribtuinToTeacherSerializer
 2. TeacherTrainingSerializer
 3. SyllabusSerializer
+4. TeacherStaffResponsibilitySerializer
 """
 from rest_framework import serializers
 from talimats.models import (
@@ -11,7 +12,10 @@ from talimats.models import (
     ExamTerm,
     ExamAnnouncement,
     ExamRegistration,
-    HallDuty
+    HallDuty,
+    TeacherStaffResponsibility,
+    Dawah,
+    ExtraActivity
 )
 
 
@@ -66,8 +70,7 @@ class SyllabusSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         exam_term_instance = instance.exam_term
-        exam_term_instance.term_name = validated_data.get('exam_term').get('term_name',
-                                                                           exam_term_instance.term_name)
+        exam_term_instance.term_name = validated_data.get('exam_term').get('term_name', exam_term_instance.term_name)
         exam_term_instance.save()
 
         instance.madrasha_class = validated_data.get('madrasha_class', instance.madrasha_class)
@@ -81,6 +84,48 @@ class SyllabusSerializer(serializers.ModelSerializer):
 class SyllabusListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Syllabus
+        fields = '__all__'
+        depth = 2
+
+
+# ==================== 4. TeacherStaffResponsibilitySerializer ============================== #
+class TeacherStaffResponsibilitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeacherStaffResponsibility
+        fields = '__all__'
+
+
+class TeacherStaffResponsibilityListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TeacherStaffResponsibility
+        fields = '__all__'
+        depth = 2
+
+
+# ==================== 16. DawahSerializer ============================== #
+class DawahSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dawah
+        fields = '__all__'
+
+
+class DawahListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Dawah
+        fields = '__all__'
+        depth = 2
+
+
+# ==================== 17. ExtraActivitySerializer ============================== #
+class ExtraActivitySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExtraActivity
+        fields = '__all__'
+
+
+class ExtraActivityListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExtraActivity
         fields = '__all__'
         depth = 2
 
