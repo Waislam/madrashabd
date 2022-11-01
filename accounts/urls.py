@@ -12,7 +12,8 @@ from .views import (
     CustomAuthToken,
     MadrashaUserListingView,
     AvatarUpdateView,
-    UserDetail
+    UserDetail,
+    ThanaListViewWithDependency
 )
 
 urlpatterns = [
@@ -23,7 +24,10 @@ urlpatterns = [
     path('division/', DivisionListView.as_view()),
     path('district/', DistrictListView.as_view()),
     path('district/<division>/', DistrictListView.as_view()),
+
     path('thana/', ThanaListView.as_view()),
+    path('thana/<district>/', ThanaListViewWithDependency.as_view()),
+
     path('post-office/', PostOfficeListView.as_view()),
     path('post-code/', PostCodeListView.as_view()),
     path('address/<int:pk>/', AddressDetail.as_view()),

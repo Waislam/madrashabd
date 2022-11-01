@@ -99,6 +99,11 @@ class BookDistToTeacherDetailView(APIView):
             )
         return Response({"status": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        obj.delete()
+        return Response({'status': True, "message": "your object has been deleted"})
+
 
 # ====================== 2. Teacher Training View ================
 class TeacherTrainingView(
@@ -203,6 +208,10 @@ class SyllabusDetailView(APIView):
             )
         return Response({"status": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    # def delete(self, request, pk, formate=None):
+    #     obj = self.get_object(pk)
+    #     obj.delete()
+    #     return Response({'statuus': True, "message": "your object has been deleted"})
 
 # ====================== 4. TeacherStaffResponsibility View ================
 class TeacherStaffResponsibilityView(

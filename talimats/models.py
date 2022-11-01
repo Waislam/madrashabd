@@ -27,7 +27,7 @@ class BookDistributeToTeacher(models.Model):
     kitab_name = models.CharField(max_length=255)
     class_name = models.ForeignKey(MadrashaClasses, on_delete=models.SET_NULL, related_name="book_to_class", blank=True,
                                    null=True)
-    class_time = models.CharField(max_length=255)
+    class_time = models.TimeField()
 
     def __str__(self):
         return self.kitab_name

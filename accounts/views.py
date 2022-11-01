@@ -70,6 +70,17 @@ class ThanaListView(ListAPIView):
     filterset_class = ThanaFilter
 
 
+class ThanaListViewWithDependency(generics.ListAPIView):
+    serializer_class = ThanaSerializer
+
+    def get_queryset(self):
+        queryset = Thana.objects.all()
+        district = self.kwargs.get('district')
+        if district is not None:
+            queryset = queryset.filter(district__pk=district)
+        return queryset
+
+
 # class PostOfficeList(APIView):
 #     def post(self, request):
 #         district = request.data['district']
