@@ -4,7 +4,15 @@
 3. SyllabusSerializer
 """
 from rest_framework import serializers
-from talimats.models import BookDistributeToTeacher, TeacherTraining, Syllabus, ExamTerm
+from talimats.models import (
+    BookDistributeToTeacher,
+    TeacherTraining,
+    Syllabus,
+    ExamTerm,
+    ExamAnnouncement,
+    ExamRegistration,
+    HallDuty
+)
 
 
 # ==================== 1. BookDistribtuinToTeacherSerializer ============================== #
@@ -59,7 +67,7 @@ class SyllabusSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         exam_term_instance = instance.exam_term
         exam_term_instance.term_name = validated_data.get('exam_term').get('term_name',
-                                                                                  exam_term_instance.term_name)
+                                                                           exam_term_instance.term_name)
         exam_term_instance.save()
 
         instance.madrasha_class = validated_data.get('madrasha_class', instance.madrasha_class)
@@ -75,3 +83,41 @@ class SyllabusListSerializer(serializers.ModelSerializer):
         model = Syllabus
         fields = '__all__'
         depth = 2
+
+
+class ExamAnnouncementListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamAnnouncement
+        fields = '__all__'
+        depth = 2
+
+
+class ExamAnnouncementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamAnnouncement
+        fields = '__all__'
+
+
+class ExamRegistrationListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamRegistration
+        fields = '__all__'
+        depth = 2
+
+
+class ExamRegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamRegistration
+        fields = '__all__'
+
+
+class ExamTermListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamTerm
+        fields = '__all__'
+
+
+class HallDutySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HallDuty
+        fields = '__all__'
