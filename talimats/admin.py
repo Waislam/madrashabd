@@ -2,7 +2,11 @@ from django.contrib import admin
 from talimats.models import (
     BookDistributeToTeacher,
     Dawah,
-    ExtraActivity
+    ExtraActivity,
+    ExamAnnouncement,
+    ExamRegistration,
+    ExamTerm,
+    HallDuty
 )
 
 
@@ -22,3 +26,9 @@ class DawahAdminView(admin.ModelAdmin):
 @admin.register(ExtraActivity)
 class ExtraActivityView(admin.ModelAdmin):
     list_display = ['category', 'duration', 'start_time', 'managed_by']
+
+
+admin.site.register(ExamAnnouncement)
+admin.site.register(ExamRegistration)
+admin.site.register(ExamTerm)
+admin.site.register(HallDuty)
