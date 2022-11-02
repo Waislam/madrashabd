@@ -6,7 +6,8 @@ from talimats.models import (
     ExamAnnouncement,
     ExamRegistration,
     ExamTerm,
-    HallDuty
+    HallDuty,
+    ExamRoutine
 )
 
 
@@ -32,3 +33,5 @@ admin.site.register(ExamAnnouncement)
 admin.site.register(ExamRegistration)
 admin.site.register(ExamTerm)
 admin.site.register(HallDuty)
+admin.site.register(ExamRoutine)
+
