@@ -19,7 +19,8 @@ from .views import (
     DawahView,
     DawahDetailView,
     ExtraActivityView,
-    ExtraActivityDetailView
+    ExtraActivityDetailView,
+    ExamRoutineListView
 )
 
 urlpatterns = [
@@ -50,4 +51,6 @@ urlpatterns = [
 
     path('<madrasha_slug>/hall-duty/', HallDutyListView.as_view()),
     path('hall-duty/detail/<int:pk>/', HallNigranDetailView.as_view()),
+
+    path('<madrasha_slug>/exam-routine/', ExamRoutineListView.as_view()),
 ]

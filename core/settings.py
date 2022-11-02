@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'library',
     'committees',
     'talimats',
+    'transport',
 ]
 
 MIDDLEWARE = [
