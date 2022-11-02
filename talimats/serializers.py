@@ -15,7 +15,8 @@ from talimats.models import (
     HallDuty,
     TeacherStaffResponsibility,
     Dawah,
-    ExtraActivity
+    ExtraActivity,
+    ExamRoutine
 )
 
 
@@ -165,4 +166,10 @@ class ExamTermListSerializer(serializers.ModelSerializer):
 class HallDutySerializer(serializers.ModelSerializer):
     class Meta:
         model = HallDuty
+        fields = '__all__'
+
+
+class ExamRoutineSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamRoutine
         fields = '__all__'

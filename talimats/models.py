@@ -140,7 +140,7 @@ class ExamRoutine(models.Model):
     routine_term = models.ForeignKey(ExamTerm, on_delete=models.PROTECT, related_name='routines_terms')
 
     def __str__(self):
-        return self.routine_class
+        return self.routine_class.name
 
 
 # ================== 16. Dawah ===============#
