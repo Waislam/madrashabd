@@ -28,7 +28,7 @@ class PermanentMembers(models.Model):
         ordering = ['member_name']
 
     def __str__(self):
-        return self.member_name
+        return str(self.id)
 
 
 class OtherMembers(models.Model):
@@ -42,4 +42,4 @@ class OtherMembers(models.Model):
         ordering = ['member_name']
 
     def __str__(self):
-        return self.member_name
+        return str(self.id)
