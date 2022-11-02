@@ -17,7 +17,7 @@ class VehicleInfoListSerializers(serializers.ModelSerializer):
             'driver_name',
             'driver_number',
             'route',
-            'time',
+            'start_time',
         ]
 
         depth = 2
@@ -33,7 +33,7 @@ class VehicleInfoSerializers(serializers.ModelSerializer):
             'driver_name',
             'driver_number',
             'route',
-            'time',
+            'start_time',
         ]
 
 
@@ -45,7 +45,7 @@ class TransportDetailListSerializers(serializers.ModelSerializer):
             'madrasha',
             'student_id',
             'vehicle',
-            'start_time'
+            # 'start_time'
         ]
 
         depth = 2
@@ -59,7 +59,7 @@ class TransportDetailSerializers(serializers.ModelSerializer):
             'madrasha',
             'student_id',
             'vehicle',
-            'start_time'
+            # 'start_time'
         ]
 
 

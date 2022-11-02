@@ -11,4 +11,4 @@ class VehicleInfoFilter(django_filters.FilterSet):
 class TransportDetailFilter(django_filters.FilterSet):
     class Meta:
         model = TransportDetail
-        fields = ['vehicle', 'start_time']
+        fields = ['vehicle']
