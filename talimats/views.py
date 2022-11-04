@@ -267,6 +267,11 @@ class TeacherStaffResponsibilityDetailView(APIView):
             )
         return Response({"status": False, "message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, pk, formate=None):
+        obj = self.get_object(pk)
+        obj.delete()
+        return Response({'status': True, "message": "your object has been deleted"})
+
 
 # ====================== 16. Dawah view ================
 class DawahView(
