@@ -55,12 +55,12 @@ class TeacherSerializer(serializers.ModelSerializer):
 
         education_obj = Education.objects.create(**education)
         skill_obj = Skill.objects.create(**skill)
+        experience_obj = Experience.objects.create(**experience)
 
         # now create teacher obj
-
         teacher = Teacher.objects.create(
             present_address=present_address_obj, permanent_address=permanent_address_obj,
-            education=education_obj, skill=skill_obj, **validated_data
+            education=education_obj, experience=experience_obj, skill=skill_obj, **validated_data
         )
         return teacher
 
