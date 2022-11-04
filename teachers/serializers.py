@@ -48,8 +48,6 @@ class TeacherSerializer(serializers.ModelSerializer):
         skill = validated_data.pop('skill')
         experience = validated_data.pop('experience')
 
-        print("TeacherSerializer(): experience", experience)
-
         present_address_obj = Address.objects.create(**present_address)
         permanent_address_obj = Address.objects.create(**permanent_address)
 
@@ -59,8 +57,12 @@ class TeacherSerializer(serializers.ModelSerializer):
 
         # now create teacher obj
         teacher = Teacher.objects.create(
-            present_address=present_address_obj, permanent_address=permanent_address_obj,
-            education=education_obj, experience=experience_obj, skill=skill_obj, **validated_data
+            present_address=present_address_obj,
+            permanent_address=permanent_address_obj,
+            education=education_obj,
+            experience=experience_obj,
+            skill=skill_obj,
+            **validated_data
         )
         return teacher
 
