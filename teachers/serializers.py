@@ -1,24 +1,28 @@
 from rest_framework import serializers
 
 from accounts.serializers import CustomUserSerializer, MadrashaSerializer
-from .models import Teacher, Education, Skill
+from .models import Teacher, Education, Skill, Experience
 from students.serializers import AddressSerializer
 from accounts.models import Address
 from settingapp.serializers import DepartmentSerializer, DesignationSerializer
 
 
 class EducationSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Education
         fields = ['id', 'degree_name', 'institution_name', 'passing_year', 'result']
 
 
 class SkillSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Skill
         fields = ['id', 'skill_name']
+
+
+class ExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Experience
+        fields = ['id', 'experience_name']
 
 
 class TeacherSerializer(serializers.ModelSerializer):
@@ -26,19 +30,25 @@ class TeacherSerializer(serializers.ModelSerializer):
     permanent_address = AddressSerializer()
     education = EducationSerializer()
     skill = SkillSerializer()
+    experience = ExperienceSerializer()
 
     class Meta:
         model = Teacher
-        fields = ['id', 'user', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
-                  'marital_status', 'present_address', 'permanent_address', 'education', 'skill',
-                  'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
-                  'designation', 'starting_date', 'ending_date', 'slug']
+        fields = [
+            'id', 'user', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender',
+            'religion', 'marital_status', 'present_address', 'permanent_address', 'education', 'skill',
+            'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', "experience", 'department',
+            'designation', 'starting_date', 'ending_date', 'slug'
+        ]
 
     def create(self, validated_data):
         present_address = validated_data.pop('present_address')
         permanent_address = validated_data.pop('permanent_address')
         education = validated_data.pop('education')
         skill = validated_data.pop('skill')
+        experience = validated_data.pop('experience')
+
+        print("TeacherSerializer(): experience", experience)
 
         present_address_obj = Address.objects.create(**present_address)
         permanent_address_obj = Address.objects.create(**permanent_address)
@@ -49,9 +59,9 @@ class TeacherSerializer(serializers.ModelSerializer):
         # now create teacher obj
 
         teacher = Teacher.objects.create(
-                                         present_address=present_address_obj, permanent_address=permanent_address_obj,
-                                         education=education_obj, skill=skill_obj, **validated_data
-                                        )
+            present_address=present_address_obj, permanent_address=permanent_address_obj,
+            education=education_obj, skill=skill_obj, **validated_data
+        )
         return teacher
 
     def update(self, instance, validated_data):
@@ -117,7 +127,9 @@ class TeacherListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Teacher
-        fields = ['id', 'user', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
-                  'marital_status', 'present_address', 'permanent_address', 'education', 'skill',
-                  'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
-                  'designation', 'starting_date', 'ending_date', 'slug']
+        fields = [
+            'id', 'user', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
+            'marital_status', 'present_address', 'permanent_address', 'education', 'skill',
+            'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
+            'designation', 'starting_date', 'ending_date', 'slug'
+        ]

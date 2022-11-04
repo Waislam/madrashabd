@@ -36,21 +36,22 @@ class Education(models.Model):
     passing_year = models.CharField(max_length=255, blank=True, null=True)
     result = models.CharField(max_length=255, blank=True, null=True)
 
-    # def __str__(self):
-    # __str__ returned non-string (type NoneType)
-    #     return self.degree_name
+    def __str__(self):
+        return self.degree_name
 
 
 class Skill(models.Model):
     skill_name = models.CharField(max_length=255, blank=True, null=True)
 
-    # def __str__(self):
-    # __str__ returned non-string (type NoneType) "error"
-    #     return self.skill_name
+    def __str__(self):
+        return self.skill_name
 
 
 class Experience(models.Model):
     experience_name = models.CharField(max_length=255, blank=True, null=True)
+
+    def __str__(self):
+        return self.experience_name
 
 
 class Teacher(models.Model):
