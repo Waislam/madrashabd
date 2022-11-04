@@ -20,7 +20,6 @@ class TransportDetail(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.CASCADE, blank=True, null=True)
     student_id = models.ForeignKey(Student, on_delete=models.CASCADE, blank=True, null=True)
     vehicle = models.ForeignKey(VehicleInfo, on_delete=models.CASCADE, blank=True, null=True)
-    start_time = models.TimeField(blank=True, null=True)
 
     def __str__(self):
         return str(self.id)
