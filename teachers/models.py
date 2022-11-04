@@ -49,6 +49,10 @@ class Skill(models.Model):
     #     return self.skill_name
 
 
+class Experience(models.Model):
+    experience_name = models.CharField(max_length=255, blank=True, null=True)
+
+
 class Teacher(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT, related_name='teachers', blank=True, null=True)
     madrasha = models.ForeignKey(Madrasha, on_delete=models.SET_NULL, related_name='madrasha_teachers', null=True)
@@ -62,7 +66,8 @@ class Teacher(models.Model):
     present_address = models.OneToOneField(Address, on_delete=models.SET_NULL, related_name='present_addres', blank=True, null=True)
     permanent_address = models.OneToOneField(Address, on_delete=models.SET_NULL, related_name='permanent_addres', blank=True, null=True)
     education = models.ForeignKey(Education, on_delete=models.CASCADE, related_name='teacher_educations')
-    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='teacher_skills')
+    skill = models.ForeignKey(Skill, on_delete=models.CASCADE, related_name='teacher_skills', blank=True, null=True)
+    experience = models.ForeignKey(Experience, on_delete=models.CASCADE, related_name='teacher_experience', blank=True, null=True)
     phone_home = models.CharField(max_length=15)
     nid = models.CharField(max_length=200)
     birth_certificate = models.CharField(max_length=255)
