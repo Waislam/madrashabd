@@ -54,6 +54,9 @@ class ExamTerm(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.CASCADE, related_name="exam_term_madrasha")
     term_name = models.CharField(max_length=100)
 
+    class Meta:
+        unique_together = [['term_name', 'madrasha']]
+
     def __str__(self):
         return self.term_name
 

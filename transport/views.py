@@ -22,6 +22,7 @@ from .filters import (
 )
 
 from rest_framework.generics import mixins, GenericAPIView
+from students.models import Student
 
 
 # VehicleInfo 1. =======================================
@@ -35,7 +36,7 @@ class VehicleInfoListView(
     filter_backends = [DjangoFilterBackend, SearchFilter]
     serializer_class = VehicleInfoSerializers
     filterset_class = VehicleInfoFilter
-    search_fields = ['car_number', 'car_name']
+    search_fields = ['car_number', 'driver_name', 'driver_number']
     pagination_class = CustomPagination
 
     def get_queryset(self):
@@ -92,9 +93,9 @@ class VehicleInfoDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-# TransportDetail 2. =======================================
+# TransportListView 2. =======================================
 
-class TransportDetailListView(
+class TransportListView(
     mixins.ListModelMixin,
     mixins.CreateModelMixin,
     GenericAPIView
@@ -113,16 +114,31 @@ class TransportDetailListView(
     def get_queryset(self):
         """getting any argument/parameter from api/url"""
         madrasha_slug = self.kwargs['madrasha_slug']
-        return super(TransportDetailListView, self).get_queryset().filter(madrasha__slug=madrasha_slug)
+        return super(TransportListView, self).get_queryset().filter(madrasha__slug=madrasha_slug)
 
     def get(self, request, *args, **kwargs):
         """method to show the list of Committee """
         return self.list(request, *args, **kwargs)
 
-    def post(self, request, *args, **kwargs):
-        """Method to create Committee obj """
-        # print('kwargs', **kwargs)
-        return self.create(request, *args, **kwargs)
+    # def post(self, request, *args, **kwargs):
+    #     """Method to create Committee obj """
+    #     print("value")
+    #     # print('kwargs', **kwargs)
+    #     return self.create(request, *args, **kwargs)
+
+
+class TransportPostrequestView(APIView):
+    """creating Transport obj"""
+    def post(self, request, student_id, *args, **kwargs):
+        student = Student.objects.get(student_id=student_id)
+        # book = LibraryBook.objects.get(id=book_number)
+
+        serializer = TransportDetailSerializers(data=request.data)
+        if serializer.is_valid():
+            print("serializer data: ", serializer)
+            # student_id = serializer.validated_data['student_id']
+            # serializer.save()
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class TransportDetailView(APIView):
