@@ -131,13 +131,12 @@ class TransportPostrequestView(APIView):
     """creating Transport obj"""
     def post(self, request, student_id, *args, **kwargs):
         student = Student.objects.get(student_id=student_id)
-        # book = LibraryBook.objects.get(id=book_number)
 
         serializer = TransportDetailSerializers(data=request.data)
+        print(serializer)
         if serializer.is_valid():
-            print("serializer data: ", serializer)
-            # student_id = serializer.validated_data['student_id']
-            # serializer.save()
+            serializer.validated_data['student_id'] = student
+            serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
