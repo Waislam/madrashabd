@@ -3,6 +3,8 @@
 2. TeacherTrainingSerializer
 3. SyllabusSerializer
 4. TeacherStaffResponsibilitySerializer
+16. DawahSerializer
+17. ExtraActivitySerializer
 """
 from rest_framework import serializers
 from talimats.models import (
