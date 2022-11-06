@@ -203,24 +203,35 @@ class CustomAuthToken(ObtainAuthToken, APIView):
             return Response({'user': user})
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(data=request.data,
-                                           context={'request': request})
+        serializer = self.serializer_class(
+            data=request.data,
+            context={'request': request}
+        )
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        print("token", token)
-        user_data = CustomUser.objects.get(pk=user.pk)
+        print("token", user.groups)
+        user_data = CustomUser.objects.get(pk=user.pk).values('username', 'user_permissions', 'phone')
+        # print("user_data groups", user_data)
         user_madrasha = MadrashaUserListing.objects.get(user=user_data)
         user_mobile = user.phone
-        return Response({
-            'token': token.key,
-            'user': user_mobile,
-            'user_id': user.pk,
-            'phone': user.phone,
-            'user_madrasha_id': user_madrasha.pk,
-            'user_madrasha_slug': user_madrasha.madrasha.slug,
-            'user_madrasha_code': user_madrasha.madrasha.madrasha_code,
-        })
+        user_info = CustomUserSerializer(data=user_data)
+
+        if user_info.is_valid():
+            print("user_info.data", user_info)
+            return Response({'status': True, "data": user_info.data})
+        print("user_info.data", user_info.errors)
+        return Response({'status': False})
+            # return Response({
+            #     "user_data": user_info.data,
+            #     'token': token.key,
+            #     'user': user_mobile,
+            #     'user_id': user.pk,
+            #     'phone': user.phone,
+            #     'user_madrasha_id': user_madrasha.pk,
+            #     'user_madrasha_slug': user_madrasha.madrasha.slug,
+            #     'user_madrasha_code': user_madrasha.madrasha.madrasha_code,
+            # })
 
 
 # =========================== 6. MadrashaUserListing =============================
@@ -257,10 +268,12 @@ class AvatarUpdateView(APIView):
         return Response({'status': False, 'message': serializer.data})
 
 
-class UserDetail(mixins.RetrieveModelMixin,
-                 mixins.UpdateModelMixin,
-                 mixins.DestroyModelMixin,
-                 generics.GenericAPIView):
+class UserDetail(
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    mixins.DestroyModelMixin,
+    generics.GenericAPIView
+):
     queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
 
