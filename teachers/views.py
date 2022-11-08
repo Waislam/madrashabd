@@ -12,9 +12,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.generics import mixins, GenericAPIView
 
 
-class TeacherView(mixins.ListModelMixin,
-                  mixins.CreateModelMixin,
-                  GenericAPIView):
+class TeacherView(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    GenericAPIView
+):
     """ teacher Create and list view """
     queryset = Teacher.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
