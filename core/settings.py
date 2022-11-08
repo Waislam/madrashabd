@@ -155,3 +155,4 @@ if DEBUG:
 else:
     CSRF_TRUSTED_ORIGINS = ['http://178.128.94.215:1337', "http://178.128.94.215"]
 
+
