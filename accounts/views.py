@@ -28,7 +28,9 @@ from .serializers import (
     DivisionSerializer,
     ThanaSerializer,
     PostOfficeSerializer,
-    PostCodeSerializer
+    PostCodeSerializer,
+    CustomUserLoginSerializer,
+    MadrashaLoginSerializer
 )
 
 from rest_framework import status, generics
@@ -211,27 +213,37 @@ class CustomAuthToken(ObtainAuthToken, APIView):
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
         print("token", user.groups)
-        user_data = CustomUser.objects.get(pk=user.pk).values('username', 'user_permissions', 'phone')
+        user_data = CustomUser.objects.get(pk=user.pk)
         # print("user_data groups", user_data)
         user_madrasha = MadrashaUserListing.objects.get(user=user_data)
-        user_mobile = user.phone
-        user_info = CustomUserSerializer(data=user_data)
 
-        if user_info.is_valid():
-            print("user_info.data", user_info)
-            return Response({'status': True, "data": user_info.data})
-        print("user_info.data", user_info.errors)
-        return Response({'status': False})
-            # return Response({
-            #     "user_data": user_info.data,
-            #     'token': token.key,
-            #     'user': user_mobile,
-            #     'user_id': user.pk,
-            #     'phone': user.phone,
-            #     'user_madrasha_id': user_madrasha.pk,
-            #     'user_madrasha_slug': user_madrasha.madrasha.slug,
-            #     'user_madrasha_code': user_madrasha.madrasha.madrasha_code,
-            # })
+        user_info = CustomUserLoginSerializer(model_to_dict(user_data))
+
+        return Response({
+            'status': True,
+            "data": user_info.data,
+            "token": token.key,
+            "role": "Admin",
+            'user_madrasha_id': user_madrasha.pk,
+            'user_madrasha_slug': user_madrasha.madrasha.slug,
+            'user_madrasha_code': user_madrasha.madrasha.madrasha_code,
+        })
+
+        # if user_info.is_valid():
+        #     print("user_info.data", user_info)
+        #     return Response({'status': True, "data": user_info.data})
+        # print("user_info.data", user_info.errors)
+        # return Response({'status': False})
+        # return Response({
+        #     "user_data": user_info.data,
+        #     'token': token.key,
+        #     'user': user_mobile,
+        #     'user_id': user.pk,
+        #     'phone': user.phone,
+        #     'user_madrasha_id': user_madrasha.pk,
+        #     'user_madrasha_slug': user_madrasha.madrasha.slug,
+        #     'user_madrasha_code': user_madrasha.madrasha.madrasha_code,
+        # })
 
 
 # =========================== 6. MadrashaUserListing =============================
