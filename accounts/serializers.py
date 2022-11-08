@@ -156,7 +156,6 @@ class MadrashaLoginSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 # ================== 3. User ============
-
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
     madrasha_id = serializers.CharField(style={"input_type": "text"}, write_only=True)
