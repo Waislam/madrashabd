@@ -162,7 +162,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields = ['phone', 'password', 'password2', "madrasha_id"]
+        fields = ['id', 'phone', 'password', 'password2', "madrasha_id"]
         extra_kwargs = {
             'password': {'write_only': True},
             'madrasha_id': {'write_only': True}
@@ -180,6 +180,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         user.set_password(password)
         user.save()
         MadrashaUserListing.objects.create(user=user, madrasha_id=madrasha_id)
+
         return user
 
 
