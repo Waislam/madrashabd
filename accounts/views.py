@@ -189,7 +189,8 @@ class UserRegistrationView(APIView):
         serializer = RegistrationSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'status': True, 'data': serializer.data})
+            user = CustomUser.objects.get(phone=serializer.data.get('phone'))
+            return Response({'status': True, 'data': serializer.data, 'user_id': user.id})
         return Response({'status': False, 'message': serializer.errors})
 
 
@@ -212,11 +213,10 @@ class CustomAuthToken(ObtainAuthToken, APIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data['user']
         token, created = Token.objects.get_or_create(user=user)
-        print("token", user.groups)
         user_data = CustomUser.objects.get(pk=user.pk)
-        # print("user_data groups", user_data)
-        user_madrasha = MadrashaUserListing.objects.get(user=user_data)
 
+        user_madrasha = MadrashaUserListing.objects.get(user=user_data)
+        madrasha = Madrasha.objects.get(slug=user_madrasha.madrasha.slug)
         user_info = CustomUserLoginSerializer(model_to_dict(user_data))
 
         return Response({
@@ -224,9 +224,9 @@ class CustomAuthToken(ObtainAuthToken, APIView):
             "data": user_info.data,
             "token": token.key,
             "role": "Admin",
-            'user_madrasha_id': user_madrasha.pk,
-            'user_madrasha_slug': user_madrasha.madrasha.slug,
-            'user_madrasha_code': user_madrasha.madrasha.madrasha_code,
+            'user_madrasha_id': madrasha.pk,
+            'user_madrasha_slug': madrasha.slug,
+            'user_madrasha_code': madrasha.madrasha_code,
         })
 
         # if user_info.is_valid():
