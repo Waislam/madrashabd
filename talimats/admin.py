@@ -42,3 +42,4 @@ admin.site.register(ExamRegistration)
 admin.site.register(ExamTerm)
 admin.site.register(HallDuty)
 admin.site.register(ExamRoutine)
+
