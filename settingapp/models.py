@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import Madrasha
+# from students.models import Student
 
 
 class Department(models.Model):
@@ -19,8 +20,8 @@ class Designation(models.Model):
     name = models.CharField(max_length=150, blank=True)
     is_active = models.BooleanField(default=True)
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_designations')
-    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='department_designations', blank=True, null=True)
-
+    department = models.ForeignKey(Department, on_delete=models.CASCADE, related_name='department_designations',
+                                   blank=True, null=True)
 
     class Meta:
         unique_together = [['name', 'madrasha']]
@@ -101,7 +102,7 @@ class Session(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return self.name
+        return self.actual_year
 
 
 class Fees(models.Model):
@@ -136,3 +137,34 @@ class AdmitCardInfo(models.Model):
 
     def __str__(self):
         return self.madrasha.name
+
+
+class Building(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_buildings')
+    building_name = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.building_name
+
+
+class Room(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_rooms')
+    room_name = models.CharField(max_length=255)
+    total_seat = models.IntegerField()
+    building = models.ForeignKey(Building, on_delete=models.CASCADE, related_name='building_rooms')
+    is_active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.room_name
+
+
+class Seat(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_seats')
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='rooms_seats')
+    seat_number = models.IntegerField()
+    student = models.OneToOneField('students.student', on_delete=models.SET_NULL, related_name='student_seat', blank=True, null=True)
+    is_available = models.BooleanField(default=True)
+
+    def __str__(self):
+        return str(self.seat_number)

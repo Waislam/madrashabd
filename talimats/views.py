@@ -41,7 +41,7 @@ from talimats.serializers import (
     TeacherStaffResponsibilityListSerializer,
     TeacherTrainingListSerializer,
     DawahListSerializer,
-    ExtraActivityListSerializer,
+    ExtraActivityListSerializer
 )
 from core.pagination import CustomPagination
 
@@ -561,17 +561,21 @@ class ExamRoutineListView(
     generics.GenericAPIView
 ):
     queryset = ExamRoutine.objects.all()
+    serializer_class = ExamRoutineSerializer
 
     def get_queryset(self):
         madrasha_slug = self.kwargs['madrasha_slug']
         queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
         return queryset
 
-    def get_serializer_class(self):
-        return ExamRoutineSerializer
+    # def get_serializer_class(self):
+    #     return ExamRoutineSerializer
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+
+

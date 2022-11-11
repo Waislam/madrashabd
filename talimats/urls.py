@@ -53,4 +53,5 @@ urlpatterns = [
     path('hall-duty/detail/<int:pk>/', HallNigranDetailView.as_view()),
 
     path('<madrasha_slug>/exam-routine/', ExamRoutineListView.as_view()),
+
 ]
