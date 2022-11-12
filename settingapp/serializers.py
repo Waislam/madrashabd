@@ -45,12 +45,14 @@ class ClassListSerializer(serializers.ModelSerializer):
 
 
 class ClassGroupSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = MadrashaGroup
         fields = ('id', 'name', 'department', 'madrasha_class', 'is_active', 'madrasha')
 
 
 class ClassGroupListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = MadrashaGroup
         fields = ('id', 'name', 'department', 'madrasha_class', 'is_active', 'madrasha')
@@ -58,6 +60,7 @@ class ClassGroupListSerializer(serializers.ModelSerializer):
 
 
 class ShiftSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Shift
         fields = ('id', 'name', 'shift_time', 'department', 'madrasha_class', 'is_active', 'madrasha')

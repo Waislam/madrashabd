@@ -11,7 +11,9 @@ from talimats.models import (
     TeacherTraining,
     Syllabus,
     TeacherStaffResponsibility,
-    AcademicCalendar
+    AcademicCalendar,
+    ResultInfo,
+    SubjectMark
 )
 
 
@@ -36,9 +38,10 @@ class DawahAdminView(admin.ModelAdmin):
 class ExtraActivityView(admin.ModelAdmin):
     list_display = ['category', 'duration', 'start_time', 'managed_by']
 
-
 admin.site.register(ExamAnnouncement)
 admin.site.register(ExamRegistration)
 admin.site.register(ExamTerm)
 admin.site.register(HallDuty)
 admin.site.register(ExamRoutine)
+admin.site.register(ResultInfo)
+admin.site.register(SubjectMark)
