@@ -45,3 +45,4 @@ admin.site.register(HallDuty)
 admin.site.register(ExamRoutine)
 admin.site.register(ResultInfo)
 admin.site.register(SubjectMark)
+

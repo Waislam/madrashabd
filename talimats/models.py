@@ -7,7 +7,10 @@
 6. ExamAnnouncement
 7. ExamRegistration
 8. ExamRoutine
+9. Result Info
+10. Result
 16. Dawah
+18. Dar_ul Ekama
 """
 
 from django.db import models
@@ -143,6 +146,9 @@ class ExamRoutine(models.Model):
         return self.routine_class.name
 
 
+# ================== 9. Result Info ===============#
+
+
 # ================== 16. Dawah ===============#
 class Dawah(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT)
@@ -180,6 +186,9 @@ class HallDuty(models.Model):
 
     def __str__(self):
         return self.room_no
+
+
+#=============== 18. Dar_ul Ekama ================================
 
 
 class ResultInfo(models.Model):

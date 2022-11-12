@@ -3,6 +3,7 @@
 2. TeacherTrainingSerializer
 3. SyllabusSerializer
 4. TeacherStaffResponsibilitySerializer
+9. ResultSerializer
 16. DawahSerializer
 17. ExtraActivitySerializer
 """
@@ -175,6 +176,10 @@ class ExamRoutineSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExamRoutine
         fields = '__all__'
+
+
+# ========================= 9. ResultSerializer ===============
+
 
 
 class ClassResultFileUploadSerializer(serializers.Serializer):

@@ -48,7 +48,8 @@ from talimats.serializers import (
     DawahListSerializer,
     ExtraActivityListSerializer,
     ClassResultFileUploadSerializer,
-    SubjectMarkSerializer
+    SubjectMarkSerializer,
+    ExtraActivityListSerializer
 )
 from core.pagination import CustomPagination
 
@@ -574,8 +575,8 @@ class ExamRoutineListView(
         queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
         return queryset
 
-    def get_serializer_class(self):
-        return ExamRoutineSerializer
+    # def get_serializer_class(self):
+    #     return ExamRoutineSerializer
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
