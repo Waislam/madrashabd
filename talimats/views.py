@@ -3,6 +3,9 @@
 2. Teacher Training View
 3. Syllabus View
 """
+import csv
+import io
+
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework import mixins, generics, status
@@ -19,7 +22,9 @@ from talimats.models import (
     TeacherStaffResponsibility,
     Dawah,
     ExtraActivity,
-    ExamRoutine
+    ExamRoutine,
+    SubjectMark,
+    ResultInfo
 )
 from rest_framework.response import Response
 from talimats.serializers import (
@@ -41,6 +46,9 @@ from talimats.serializers import (
     TeacherStaffResponsibilityListSerializer,
     TeacherTrainingListSerializer,
     DawahListSerializer,
+    ExtraActivityListSerializer,
+    ClassResultFileUploadSerializer,
+    SubjectMarkSerializer,
     ExtraActivityListSerializer
 )
 from core.pagination import CustomPagination
@@ -561,7 +569,6 @@ class ExamRoutineListView(
     generics.GenericAPIView
 ):
     queryset = ExamRoutine.objects.all()
-    serializer_class = ExamRoutineSerializer
 
     def get_queryset(self):
         madrasha_slug = self.kwargs['madrasha_slug']
@@ -578,4 +585,65 @@ class ExamRoutineListView(
         return self.create(request, *args, **kwargs)
 
 
+class UpdateClassResult(generics.CreateAPIView):
+    serializer_class = ClassResultFileUploadSerializer
 
+    def post(self, request, *args, **kwargs):
+        # try:
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        file = serializer.validated_data['file']
+        exam_term = serializer.validated_data['exam_term']
+        madrasha = serializer.validated_data['madrasha']
+        student = serializer.validated_data['student']
+        student_class = serializer.validated_data['student_class']
+        year = serializer.validated_data['year']
+        subject = serializer.validated_data['subject']
+
+        decoded_file = file.read().decode()
+        # upload_products_csv.delay(decoded_file, request.user.pk)
+        io_string = io.StringIO(decoded_file)
+        reader = csv.reader(io_string)
+        header = next(reader)
+
+        result_info, _ = ResultInfo.objects.get_or_create(
+            madrasha_id=madrasha,
+            student_id=student,
+            exam_term_id=exam_term,
+            exam_year_id=year,
+            student_class_id=student_class,
+        )
+
+        subject_mark = SubjectMark.objects.filter(
+            result_info=result_info
+        ).exists()
+        print("subject_mark exist", subject_mark)
+
+        if subject_mark:
+            return Response(
+                {
+                    "status": False,
+                    "msg": "This subject result already exists !!"
+                },
+                status=status.HTTP_302_FOUND
+            )
+        else:
+            save_result = []
+            for row in reader:
+                subject_mark = SubjectMark.objects.create(
+                    result_info=result_info,
+                    madrasha_id=madrasha,
+                    student_id=student,
+                    exam_term_id=exam_term,
+                    exam_year_id=year,
+                    student_class_id=student_class,
+                    subject_id=subject,
+                    mark=int(row[1])
+                )
+
+                result_info.total_marks += int(row[1])
+                result_info.save()
+
+                save_result.append(subject_mark)
+            subject_serailiser = SubjectMarkSerializer(save_result, many=True)
+            return Response({"status": True, "save_data_list": subject_serailiser.data}, status=status.HTTP_201_CREATED)

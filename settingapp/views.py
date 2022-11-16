@@ -650,7 +650,7 @@ class SeatView(mixins.ListModelMixin, generics.GenericAPIView):
 
 
 class SeatDetailView(APIView):
-    """ Session detail, update and delete"""
+    """Seat detail, update and delete. """
 
     def get_object(self, pk):
         """get single Session obj"""
