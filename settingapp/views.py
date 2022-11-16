@@ -590,6 +590,13 @@ class RoomView(mixins.CreateModelMixin, mixins.ListModelMixin, generics.GenericA
         return self.create(request, *args, **kwargs)
 
 
+class RoomListOnBuilding(APIView):
+    def get(self, request, madrasha_slug, building_id, formate=None):
+        rooms = Room.objects.filter(madrasha__slug=madrasha_slug, building__id=building_id)
+        serializer = RoomListSerializer(rooms, many=True)
+        return Response(serializer.data)
+
+
 class RoomDetailView(APIView):
     """ Session detail, update and delete"""
 
@@ -629,7 +636,8 @@ class SeatView(mixins.ListModelMixin, generics.GenericAPIView):
 
     def get_queryset(self):
         madrasha_slug = self.kwargs['madrasha_slug']
-        queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
+        room_id = self.kwargs['room_id']
+        queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug, room__id=room_id)
         return queryset
 
     def get_serializer_class(self):

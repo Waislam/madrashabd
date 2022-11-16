@@ -153,10 +153,11 @@ class Room(models.Model):
     room_name = models.CharField(max_length=255)
     total_seat = models.IntegerField()
     building = models.ForeignKey(Building, on_delete=models.CASCADE, related_name='building_rooms')
+    floor = models.CharField(max_length=50)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
-        return self.room_name
+        return self.floor + "_" + self.room_name
 
 
 class Seat(models.Model):

@@ -42,9 +42,8 @@ class CommitteeListView(
 
     def get_queryset(self):
         """getting any argument/parameter from api/url"""
-        # madrasha_slug = self.kwargs['madrasha_slug']
-        return super(CommitteeListView, self).get_queryset()
-        # return super(CommitteeListView, self).get_queryset().filter(madrasha__slug=madrasha_slug)
+        madrasha_slug = self.kwargs['madrasha_slug']
+        return super(CommitteeListView, self).get_queryset().filter(madrasha__slug=madrasha_slug)
 
     def get(self, request, *args, **kwargs):
         """method to show the list of Committee """

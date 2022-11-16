@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'committees',
     'talimats',
     'transport',
+    'darul_ekama',
 ]
 
 MIDDLEWARE = [
