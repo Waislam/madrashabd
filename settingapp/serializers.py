@@ -146,7 +146,7 @@ class RoomsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = ['id', 'madrasha', 'room_name', 'building', 'total_seat', 'is_active']
+        fields = ['id', 'madrasha', 'room_name', 'building', 'total_seat', 'is_active', 'floor']
 
     def create(self, validated_data):
         room = Room.objects.create(**validated_data)
@@ -162,5 +162,5 @@ class RoomListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Room
-        fields = ['id', 'madrasha', 'room_name', 'building', 'total_seat', 'is_active']
+        fields = ['id', 'madrasha', 'room_name', 'building', 'total_seat', 'is_active', 'floor']
         depth = 2
