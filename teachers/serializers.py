@@ -3,7 +3,7 @@ from rest_framework import serializers
 from accounts.serializers import CustomUserSerializer, MadrashaSerializer
 from .models import Teacher, Education, Skill, Experience
 from students.serializers import AddressSerializer
-from accounts.models import Address
+from accounts.models import Address, CustomUser
 from settingapp.serializers import DepartmentSerializer, DesignationSerializer
 
 
@@ -26,6 +26,7 @@ class ExperienceSerializer(serializers.ModelSerializer):
 
 
 class TeacherSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer()
     present_address = AddressSerializer()
     permanent_address = AddressSerializer()
     education = EducationSerializer()
@@ -42,6 +43,7 @@ class TeacherSerializer(serializers.ModelSerializer):
         ]
 
     def create(self, validated_data):
+        user_object = validated_data.pop('user')
         present_address = validated_data.pop('present_address')
         permanent_address = validated_data.pop('permanent_address')
         education = validated_data.pop('education')
@@ -55,6 +57,9 @@ class TeacherSerializer(serializers.ModelSerializer):
         skill_obj = Skill.objects.create(**skill)
         experience_obj = Experience.objects.create(**experience)
 
+        ##create user
+        user_created = CustomUser.objects.create(**user_object)
+
         # now create teacher obj
         teacher = Teacher.objects.create(
             present_address=present_address_obj,
@@ -62,12 +67,14 @@ class TeacherSerializer(serializers.ModelSerializer):
             education=education_obj,
             experience=experience_obj,
             skill=skill_obj,
+            user=user_created,
             **validated_data
         )
         return teacher
 
     def update(self, instance, validated_data):
         # get all nested obj
+
         present_address = instance.present_address
         permanent_address = instance.permanent_address
         education = instance.education
