@@ -62,12 +62,12 @@ class TeacherSerializer(serializers.ModelSerializer):
 
         # now create teacher obj
         teacher = Teacher.objects.create(
+            user=user_created,
             present_address=present_address_obj,
             permanent_address=permanent_address_obj,
             education=education_obj,
             experience=experience_obj,
             skill=skill_obj,
-            user=user_created,
             **validated_data
         )
         return teacher

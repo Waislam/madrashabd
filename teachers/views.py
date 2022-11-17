@@ -24,6 +24,11 @@ class TeacherView(
     search_fields = ['teacher_id']
     pagination_class = CustomPagination
 
+    def get_queryset(self):
+        madrasha_slug = self.kwargs['madrasha_slug']
+        queryset = super(TeacherView, self).get_queryset().filter(madrasha__slug=madrasha_slug)
+        return queryset
+
     def get_serializer_class(self):
         if self.request.method == "GET":
             return TeacherListSerializer
