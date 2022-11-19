@@ -28,7 +28,7 @@ class NigraniTable(models.Model):
                                 null=True)
     building = models.ForeignKey(Building, on_delete=models.SET_NULL, related_name='building_nigrans', blank=True,
                                  null=True)
-    floor = models.CharField(max_length=3)
+    floor = models.CharField(max_length=20)
     room = models.ManyToManyField(Room, related_name='room_nigran', blank=True, null=True)
     class_nigran = models.ForeignKey(MadrashaClasses, on_delete=models.SET_NULL, related_name='class_nigrans',
                                      blank=True, null=True)
