@@ -142,6 +142,8 @@ class AdmitCardInfo(models.Model):
 class Building(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_buildings')
     building_name = models.CharField(max_length=255)
+    total_floor = models.CharField(max_length=10)
+    total_room = models.CharField(max_length=10)
     is_active = models.BooleanField(default=True)
 
     def __str__(self):
