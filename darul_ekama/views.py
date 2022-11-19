@@ -9,6 +9,7 @@ from darul_ekama.serializers import (SeatBookingSerializer,
 
                                      )
 from students.models import Student
+from teachers.models import Teacher
 
 
 # Create your views here.
@@ -42,6 +43,11 @@ class SeatBookingView(mixins.CreateModelMixin,
 class NigraniTableView(mixins.CreateModelMixin, mixins.ListModelMixin, generics.GenericAPIView):
     queryset = NigraniTable.objects.all()
 
+    def get_queryset(self):
+        madrasha_slug = self.kwargs["madrasha_slug"]
+        queryset = super(NigraniTableView, self).get_queryset().filter(madrasha__slug=madrasha_slug)
+        return queryset
+
     def get_serializer_class(self):
         if self.request.method == "GET":
             return NigraniTableListSerializer
@@ -51,6 +57,11 @@ class NigraniTableView(mixins.CreateModelMixin, mixins.ListModelMixin, generics.
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        print("teacher: ", request.data['teacher'])
+        teacher_id = request.data['teacher']
+        teacher = Teacher.objects.get(teacher_id=teacher_id).id
+        request.data['teacher'] = teacher
         return self.create(request, *args, **kwargs)
+
 
 
