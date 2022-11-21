@@ -19,7 +19,7 @@ from talimats.models import (
     TeacherStaffResponsibility,
     Dawah,
     ExtraActivity,
-    ExamRoutine, SubjectMark
+    ExamRoutine, SubjectMark, ResultInfo
 )
 
 
@@ -179,9 +179,6 @@ class ExamRoutineSerializer(serializers.ModelSerializer):
 
 
 # ========================= 9. ResultSerializer ===============
-
-
-
 class ClassResultFileUploadSerializer(serializers.Serializer):
     madrasha = serializers.CharField()
     student = serializers.CharField()
@@ -194,6 +191,12 @@ class ClassResultFileUploadSerializer(serializers.Serializer):
     class Meta:
         fields = ('file',)
 
+
+class ResultInfoListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ResultInfo
+        fields = '__all__'
+        depth = 2
 
 class SubjectMarkSerializer(serializers.ModelSerializer):
 

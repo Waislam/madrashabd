@@ -57,7 +57,6 @@ class NigraniTableView(mixins.CreateModelMixin, mixins.ListModelMixin, generics.
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        print("teacher: ", request.data['teacher'])
         teacher_id = request.data['teacher']
         teacher = Teacher.objects.get(teacher_id=teacher_id).id
         request.data['teacher'] = teacher
