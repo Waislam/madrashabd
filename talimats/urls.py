@@ -55,6 +55,5 @@ urlpatterns = [
 
     path('<madrasha_slug>/exam-routine/', ExamRoutineListView.as_view()),
 
-
     path('file-upload/', UpdateClassResult.as_view()),
 ]
