@@ -606,16 +606,12 @@ class UpdateClassResult(generics.CreateAPIView):
         reader = csv.reader(io_string)
         header = next(reader)
 
-        result_info, _ = ResultInfo.objects.get_or_create(
+        subject_mark = SubjectMark.objects.filter(
+            subject=subject,
             madrasha_id=madrasha,
-            student_id=student,
             exam_term_id=exam_term,
             exam_year_id=year,
             student_class_id=student_class,
-        )
-
-        subject_mark = SubjectMark.objects.filter(
-            result_info=result_info
         ).exists()
         print("subject_mark exist", subject_mark)
 
@@ -630,6 +626,14 @@ class UpdateClassResult(generics.CreateAPIView):
         else:
             save_result = []
             for row in reader:
+                result_info, _ = ResultInfo.objects.get_or_create(
+                    madrasha_id=madrasha,
+                    student__slug=row[0],
+                    exam_term_id=exam_term,
+                    exam_year_id=year,
+                    student_class_id=student_class,
+                )
+
                 subject_mark = SubjectMark.objects.create(
                     result_info=result_info,
                     madrasha_id=madrasha,
