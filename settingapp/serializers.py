@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from .models import (Department, Designation, MadrashaClasses,
                      MadrashaGroup, Shift, Session, Books, Fees,
-                     ExamRules)
+                     ExamRules, Building, Seat, Room)
 from accounts.serializers import MadrashaSerializer
 
 
@@ -45,12 +45,14 @@ class ClassListSerializer(serializers.ModelSerializer):
 
 
 class ClassGroupSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = MadrashaGroup
         fields = ('id', 'name', 'department', 'madrasha_class', 'is_active', 'madrasha')
 
 
 class ClassGroupListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = MadrashaGroup
         fields = ('id', 'name', 'department', 'madrasha_class', 'is_active', 'madrasha')
@@ -58,6 +60,7 @@ class ClassGroupListSerializer(serializers.ModelSerializer):
 
 
 class ShiftSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Shift
         fields = ('id', 'name', 'shift_time', 'department', 'madrasha_class', 'is_active', 'madrasha')
@@ -113,3 +116,55 @@ class ExamRulesSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExamRules
         fields = ('id', 'text_input', 'is_active', 'madrasha')
+
+
+class BuildingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Building
+        fields = "__all__"
+
+
+class BuildingListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Building
+        fields = "__all__"
+        depth = 2
+
+
+class SeatSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seat
+        fields = "__all__"
+
+
+class SeatListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seat
+        fields = "__all__"
+        depth = 2
+
+
+class RoomsSerializer(serializers.ModelSerializer):
+    # seats = SeatSerializer()
+
+    class Meta:
+        model = Room
+        fields = ['id', 'madrasha', 'room_name', 'building', 'total_seat', 'is_active', 'floor']
+
+    def create(self, validated_data):
+        room = Room.objects.create(**validated_data)
+
+        total_seat = room.total_seat
+        for seat in range(1, total_seat+1):
+            seat = Seat.objects.create(madrasha=room.madrasha, seat_number=seat, room=room)
+        return room
+
+
+class RoomListSerializer(serializers.ModelSerializer):
+    # seats = SeatSerializer()
+
+    class Meta:
+        model = Room
+        fields = ['id', 'madrasha', 'room_name', 'building', 'total_seat', 'is_active', 'floor']
+        depth = 2

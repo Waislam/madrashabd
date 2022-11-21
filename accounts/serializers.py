@@ -6,6 +6,7 @@
 5. AvatarUpdateSerializer
 
 """
+from django.contrib.auth.models import Group
 from rest_framework import serializers
 from accounts.models import (Division, District, Thana, PostOffice, PostCode, Address,
                              Madrasha, CustomUser, MadrashaUserListing)
@@ -148,30 +149,38 @@ class MadrashaSerializer(serializers.ModelSerializer):
         return instance
 
 
-# ================== 3. User ============
+class MadrashaLoginSerializer(serializers.ModelSerializer):
 
+    class Meta:
+        model = Madrasha
+        fields = "__all__"
+
+# ================== 3. User ============
 class RegistrationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(style={"input_type": "password"}, write_only=True)
+    madrasha_id = serializers.CharField(style={"input_type": "text"}, write_only=True)
 
     class Meta:
         model = CustomUser
-        fields = ['phone', 'password', 'password2', 'role']
+        fields = ['id', 'phone', 'password', 'password2', "madrasha_id"]
         extra_kwargs = {
-            'password': {'write_only': True}
+            'password': {'write_only': True},
+            'madrasha_id': {'write_only': True}
         }
 
     def save(self, **kwargs):
         phone = self.validated_data['phone']
-        role = self.validated_data['role']
         password = self.validated_data['password']
         password2 = self.validated_data['password2']
+        madrasha_id = self.validated_data['madrasha_id']
 
-        user = CustomUser(phone=phone, role=role, username=phone)
+        user = CustomUser(phone=phone, username=phone)
         if password != password2:
             raise serializers.ValidationError({'message': 'password must match'})
         user.set_password(password)
         user.save()
-        MadrashaUserListing.objects.create(user=user, madrasha_id=1)
+        MadrashaUserListing.objects.create(user=user, madrasha_id=madrasha_id)
+
         return user
 
 
@@ -205,3 +214,18 @@ class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         exclude = ["password", 'avatar']
+
+
+class GroupsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Group
+        fields = ['name']
+
+
+class CustomUserLoginSerializer(serializers.ModelSerializer):
+    groups = GroupsSerializer(many=True)
+
+    class Meta:
+        model = CustomUser
+        exclude = ['password']

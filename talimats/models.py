@@ -7,7 +7,10 @@
 6. ExamAnnouncement
 7. ExamRegistration
 8. ExamRoutine
+9. Result Info
+10. Result
 16. Dawah
+18. Dar_ul Ekama
 """
 
 from django.db import models
@@ -143,6 +146,9 @@ class ExamRoutine(models.Model):
         return self.routine_class.name
 
 
+# ================== 9. Result Info ===============#
+
+
 # ================== 16. Dawah ===============#
 class Dawah(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT)
@@ -180,3 +186,36 @@ class HallDuty(models.Model):
 
     def __str__(self):
         return self.room_no
+
+
+#=============== 18. Dar_ul Ekama ================================
+
+
+class ResultInfo(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.CASCADE, related_name='result_info_madrasha')
+    student = models.ForeignKey(Student, on_delete=models.PROTECT, related_name='result_info_student')
+    exam_year = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='result_info_session')
+    student_class = models.ForeignKey(MadrashaClasses, on_delete=models.CASCADE, related_name='result_info_class')
+    exam_term = models.ForeignKey(ExamTerm, on_delete=models.CASCADE, related_name='result_info_exam_term')
+    total_marks = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True, default=0.00)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.student.student_id
+
+
+class SubjectMark(models.Model):
+    result_info = models.ForeignKey(ResultInfo, on_delete=models.PROTECT, related_name='subject_mark_result_info')
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.CASCADE, related_name='subject_mark_madrasha')
+    student = models.ForeignKey(Student, on_delete=models.PROTECT, related_name='subject_mark_student')
+    exam_year = models.ForeignKey(Session, on_delete=models.CASCADE, related_name='subject_mark_session')
+    student_class = models.ForeignKey(MadrashaClasses, on_delete=models.CASCADE, related_name='subject_mark_class')
+    exam_term = models.ForeignKey(ExamTerm, on_delete=models.CASCADE, related_name='subject_exam_term')
+    subject = models.ForeignKey(Books, on_delete=models.CASCADE, related_name='subject_mark_books')
+    mark = models.DecimalField(max_digits=10, decimal_places=3, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.student.student_id + "-" + self.subject.name

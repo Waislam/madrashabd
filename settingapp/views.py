@@ -8,17 +8,20 @@
 7. Fees
 8. Session
 9. Exam rules
+10. Buidling
 """
 from django.shortcuts import render
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from .models import Department, Designation, MadrashaClasses, MadrashaGroup, Shift, Session, Books, ExamRules, Fees
+from rest_framework import status, mixins, generics
+from .models import Department, Designation, MadrashaClasses, MadrashaGroup, Shift, Session, Books, ExamRules, Fees, \
+    Building, Room, Seat
 from .serializers import (DepartmentSerializer, DesignationSerializer, ClassSerializer, ClassGroupSerializer,
                           ShiftSerializer,
                           BooksSerializer, SessionSerializer, ExamRulesSerializer,
-                          FeesSerializer)
+                          FeesSerializer, BuildingSerializer, SeatSerializer, SeatListSerializer)
+
 from .serializers import (DepartmentListSerializer,
                           DesignationListSerializer,
                           ClassListSerializer,
@@ -26,7 +29,10 @@ from .serializers import (DepartmentListSerializer,
                           SessionListSerializer,
                           ClassGroupListSerializer,
                           ShiftListSerializer,
-                          FeesListSerializer
+                          FeesListSerializer,
+                          BuildingListSerializer,
+                          RoomListSerializer,
+                          RoomsSerializer
                           )
 
 
@@ -506,4 +512,171 @@ class ExamRulesDetailview(APIView):
         """ delete """
         exam_rule = self.get_object(pk)
         exam_rule.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# ============== 10. Buidling =========================
+class BuildingView(mixins.CreateModelMixin, mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Building.objects.all()
+
+    def get_queryset(self):
+        madrasha_slug = self.kwargs['madrasha_slug']
+        queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
+        return queryset
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return BuildingListSerializer
+        return BuildingSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class BuildingDetailView(APIView):
+    """ Session detail, update and delete"""
+
+    def get_object(self, pk):
+        """get single Session obj"""
+
+        try:
+            return Building.objects.get(id=pk)
+        except Building.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, formate=None):
+        """details veiw for single obj"""
+        building = self.get_object(pk)
+        serializer = BuildingListSerializer(building)
+        return Response(serializer.data)
+
+    def put(self, request, pk, formate=None):
+        """update view"""
+        building = self.get_object(pk)
+        serializer = BuildingSerializer(building, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, formate=None):
+        """ delete """
+        building = self.get_object(pk)
+        building.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# ============== 11. Room =========================
+class RoomView(mixins.CreateModelMixin, mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Room.objects.all()
+
+    def get_queryset(self):
+        madrasha_slug = self.kwargs['madrasha_slug']
+        queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
+        return queryset
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return RoomListSerializer
+        return RoomsSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+class RoomListOnBuilding(APIView):
+    def get(self, request, madrasha_slug, building_id, formate=None):
+        rooms = Room.objects.filter(madrasha__slug=madrasha_slug, building__id=building_id)
+        serializer = RoomListSerializer(rooms, many=True)
+        return Response(serializer.data)
+
+
+class RoomDetailView(APIView):
+    """ Session detail, update and delete"""
+
+    def get_object(self, pk):
+        """get single Session obj"""
+
+        try:
+            return Room.objects.get(id=pk)
+        except Room.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, formate=None):
+        """details veiw for single obj"""
+        room = self.get_object(pk)
+        serializer = RoomListSerializer(room)
+        return Response(serializer.data)
+
+    def put(self, request, pk, formate=None):
+        """update view"""
+        room = self.get_object(pk)
+        serializer = RoomsSerializer(room, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, formate=None):
+        """ delete """
+        room = self.get_object(pk)
+        room.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# ============== 12. Seat =========================
+class SeatView(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = Seat.objects.all()
+
+    def get_queryset(self):
+        madrasha_slug = self.kwargs['madrasha_slug']
+        room_id = self.kwargs['room_id']
+        queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug, room__id=room_id)
+        return queryset
+
+    def get_serializer_class(self):
+        if self.request.method == "GET":
+            return SeatListSerializer
+        return SeatSerializer
+
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
+
+class SeatDetailView(APIView):
+    """Seat detail, update and delete. """
+
+    def get_object(self, pk):
+        """get single Session obj"""
+
+        try:
+            return Seat.objects.get(id=pk)
+        except Seat.DoesNotExist:
+            raise Http404
+
+    def get(self, request, pk, formate=None):
+        """details veiw for single obj"""
+        seat = self.get_object(pk)
+        serializer = SeatListSerializer(seat)
+        return Response(serializer.data)
+
+    def put(self, request, pk, formate=None):
+        """update view"""
+        seat = self.get_object(pk)
+        serializer = SeatSerializer(seat, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, formate=None):
+        """ delete """
+        seat = self.get_object(pk)
+        seat.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

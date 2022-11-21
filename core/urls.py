@@ -53,6 +53,7 @@ urlpatterns = [
     path('committee/', include('committees.urls')),
     path('talimat/', include('talimats.urls')),
     path('transport/', include('transport.urls')),
+    path('darul-ekama/', include('darul_ekama.urls')),
 
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),

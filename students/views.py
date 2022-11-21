@@ -10,8 +10,6 @@ from .pagination import CustomPagination
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 from .filters import StudentFilter
-from rest_framework.permissions import IsAuthenticated
-from .permissions import IsMadrashaAdmin
 
 
 class StudentView(
@@ -25,7 +23,7 @@ class StudentView(
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = StudentFilter
     search_fields = ["student_id"]
-    pagination_class = CustomPagination
+    # pagination_class = CustomPagination
     # permission_classes = [IsMadrashaAdmin]
 
     # def check_permissions(self):
@@ -95,7 +93,7 @@ class StudentDetailBySlugView(APIView):
 
     def get(self, request, student_id, formate=None):
         """For getting single student details"""
-        try :
+        try:
             student = self.get_object(student_id)
             serializer = StudentListSerializer(student)
             return Response({"status": True, "data": serializer.data})

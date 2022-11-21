@@ -3,6 +3,9 @@
 2. TeacherTrainingSerializer
 3. SyllabusSerializer
 4. TeacherStaffResponsibilitySerializer
+9. ResultSerializer
+16. DawahSerializer
+17. ExtraActivitySerializer
 """
 from rest_framework import serializers
 from talimats.models import (
@@ -16,7 +19,7 @@ from talimats.models import (
     TeacherStaffResponsibility,
     Dawah,
     ExtraActivity,
-    ExamRoutine
+    ExamRoutine, SubjectMark
 )
 
 
@@ -172,4 +175,28 @@ class HallDutySerializer(serializers.ModelSerializer):
 class ExamRoutineSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExamRoutine
+        fields = '__all__'
+
+
+# ========================= 9. ResultSerializer ===============
+
+
+
+class ClassResultFileUploadSerializer(serializers.Serializer):
+    madrasha = serializers.CharField()
+    student = serializers.CharField()
+    student_class = serializers.CharField()
+    exam_term = serializers.CharField()
+    subject = serializers.CharField()
+    year = serializers.CharField()
+    file = serializers.FileField()
+
+    class Meta:
+        fields = ('file',)
+
+
+class SubjectMarkSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = SubjectMark
         fields = '__all__'

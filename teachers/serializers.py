@@ -1,61 +1,80 @@
 from rest_framework import serializers
 
-from accounts.serializers import CustomUserSerializer, MadrashaSerializer
-from .models import Teacher, Education, Skill
+from accounts.serializers import CustomUserSerializer, MadrashaSerializer, AddressDetailSerializer
+from .models import Teacher, Education, Skill, Experience
 from students.serializers import AddressSerializer
-from accounts.models import Address
+from accounts.models import Address, CustomUser
 from settingapp.serializers import DepartmentSerializer, DesignationSerializer
 
 
 class EducationSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Education
         fields = ['id', 'degree_name', 'institution_name', 'passing_year', 'result']
 
 
 class SkillSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Skill
         fields = ['id', 'skill_name']
 
 
+class ExperienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Experience
+        fields = ['id', 'experience_name']
+
+
 class TeacherSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer()
     present_address = AddressSerializer()
     permanent_address = AddressSerializer()
     education = EducationSerializer()
     skill = SkillSerializer()
+    experience = ExperienceSerializer()
 
     class Meta:
         model = Teacher
-        fields = ['id', 'user', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
-                  'marital_status', 'present_address', 'permanent_address', 'education', 'skill',
-                  'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
-                  'designation', 'starting_date', 'ending_date', 'slug']
+        fields = [
+            'id', 'user', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender',
+            'religion', 'marital_status', 'present_address', 'permanent_address', 'education', 'skill',
+            'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', "experience", 'department',
+            'designation', 'starting_date', 'ending_date', 'slug'
+        ]
 
     def create(self, validated_data):
+        user_object = validated_data.pop('user')
         present_address = validated_data.pop('present_address')
         permanent_address = validated_data.pop('permanent_address')
         education = validated_data.pop('education')
         skill = validated_data.pop('skill')
+        experience = validated_data.pop('experience')
 
         present_address_obj = Address.objects.create(**present_address)
         permanent_address_obj = Address.objects.create(**permanent_address)
 
         education_obj = Education.objects.create(**education)
         skill_obj = Skill.objects.create(**skill)
+        experience_obj = Experience.objects.create(**experience)
+
+        ##create user
+        user_created = CustomUser.objects.create(**user_object)
 
         # now create teacher obj
-
         teacher = Teacher.objects.create(
-                                         present_address=present_address_obj, permanent_address=permanent_address_obj,
-                                         education=education_obj, skill=skill_obj, **validated_data
-                                        )
+            user=user_created,
+            present_address=present_address_obj,
+            permanent_address=permanent_address_obj,
+            education=education_obj,
+            experience=experience_obj,
+            skill=skill_obj,
+            **validated_data
+        )
         return teacher
 
     def update(self, instance, validated_data):
         # get all nested obj
+
         present_address = instance.present_address
         permanent_address = instance.permanent_address
         education = instance.education
@@ -108,16 +127,20 @@ class TeacherSerializer(serializers.ModelSerializer):
 class TeacherListSerializer(serializers.ModelSerializer):
     user = CustomUserSerializer()
     madrasha = MadrashaSerializer()
-    present_address = AddressSerializer()
-    permanent_address = AddressSerializer()
+    present_address = AddressDetailSerializer()
+    permanent_address = AddressDetailSerializer()
     education = EducationSerializer()
     skill = SkillSerializer()
     department = DepartmentSerializer()
     designation = DesignationSerializer()
+    experience = ExperienceSerializer()
 
     class Meta:
         model = Teacher
-        fields = ['id', 'user', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
-                  'marital_status', 'present_address', 'permanent_address', 'education', 'skill',
-                  'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
-                  'designation', 'starting_date', 'ending_date', 'slug']
+        fields = [
+            'id', 'user', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender', 'religion',
+            'marital_status', 'present_address', 'permanent_address', 'education', 'skill',
+            'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
+            'designation', 'starting_date', 'ending_date', 'slug', 'experience'
+        ]
+
