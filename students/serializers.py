@@ -9,7 +9,7 @@ from rest_framework import serializers
 from settingapp.serializers import DepartmentSerializer, ClassGroupSerializer, ShiftSerializer, SessionSerializer, \
     ClassSerializer
 from .models import Student, AcademicFess, Parent
-from accounts.models import Address
+from accounts.models import Address, CustomUser
 from accounts.serializers import AddressSerializer, CustomUserSerializer, AddressDetailSerializer, MadrashaSerializer
 
 
@@ -72,6 +72,7 @@ class StudentListSerializer(serializers.ModelSerializer):
 
 
 class StudentSerializer(serializers.ModelSerializer):
+    user = CustomUserSerializer()
     present_address = AddressSerializer()
     permanent_address = AddressSerializer()
     father_info = ParentSerializer()
@@ -101,6 +102,7 @@ class StudentSerializer(serializers.ModelSerializer):
     #     return first_name
 
     def create(self, validated_data):
+        user_field = validated_data.pop('user')
         present_address = validated_data.pop('present_address')
         permanent_address = validated_data.pop('permanent_address')
         father_info = validated_data.pop('father_info')
@@ -114,7 +116,11 @@ class StudentSerializer(serializers.ModelSerializer):
         father_info_obj = Parent.objects.create(**father_info)
         mother_info_obj = Parent.objects.create(**mother_info)
 
+        #create custom user
+        user_obj = CustomUser.objects.create(**user_field)
+
         student = Student.objects.create(
+            user=user_obj,
             present_address=present_address_obj,
             permanent_address=permanent_address_obj,
             father_info=father_info_obj, mother_info=mother_info_obj,
