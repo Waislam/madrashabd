@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from rest_framework import mixins, generics, status
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
+from students.models import Student
 from talimats.models import (
     BookDistributeToTeacher,
     TeacherTraining,
@@ -49,7 +50,7 @@ from talimats.serializers import (
     ExtraActivityListSerializer,
     ClassResultFileUploadSerializer,
     SubjectMarkSerializer,
-    ExtraActivityListSerializer
+    ExtraActivityListSerializer, ResultInfoListSerializer
 )
 from core.pagination import CustomPagination
 
@@ -586,6 +587,7 @@ class ExamRoutineListView(
 
 
 class UpdateClassResult(generics.CreateAPIView):
+    """UpLoading result file and creating Result Info table"""
     serializer_class = ClassResultFileUploadSerializer
 
     def post(self, request, *args, **kwargs):
@@ -595,7 +597,7 @@ class UpdateClassResult(generics.CreateAPIView):
         file = serializer.validated_data['file']
         exam_term = serializer.validated_data['exam_term']
         madrasha = serializer.validated_data['madrasha']
-        student = serializer.validated_data['student']
+        # student = serializer.validated_data['student']
         student_class = serializer.validated_data['student_class']
         year = serializer.validated_data['year']
         subject = serializer.validated_data['subject']
@@ -626,28 +628,58 @@ class UpdateClassResult(generics.CreateAPIView):
         else:
             save_result = []
             for row in reader:
-                result_info, _ = ResultInfo.objects.get_or_create(
-                    madrasha_id=madrasha,
-                    student__slug=row[0],
-                    exam_term_id=exam_term,
-                    exam_year_id=year,
-                    student_class_id=student_class,
-                )
+                try:
+                    print(row[0])
+                    student = Student.objects.get(slug=row[0])
+                    result_info, _ = ResultInfo.objects.get_or_create(
+                        madrasha_id=madrasha,
+                        student=student,
+                        exam_term_id=exam_term,
+                        exam_year_id=year,
+                        student_class_id=student_class,
+                    )
 
-                subject_mark = SubjectMark.objects.create(
-                    result_info=result_info,
-                    madrasha_id=madrasha,
-                    student_id=student,
-                    exam_term_id=exam_term,
-                    exam_year_id=year,
-                    student_class_id=student_class,
-                    subject_id=subject,
-                    mark=int(row[1])
-                )
+                    subject_mark = SubjectMark.objects.create(
+                        result_info=result_info,
+                        madrasha_id=madrasha,
+                        student=student,
+                        exam_term_id=exam_term,
+                        exam_year_id=year,
+                        student_class_id=student_class,
+                        subject_id=subject,
+                        mark=int(row[1])
+                    )
 
-                result_info.total_marks += int(row[1])
-                result_info.save()
+                # all_marks = SubjectMark.objects.filter(
+                #     result_info=result_info,
+                # )
+                #
+                # print(all_marks)
 
-                save_result.append(subject_mark)
+
+                    result_info.total_marks += int(row[1])
+                    result_info.save()
+
+                    save_result.append(subject_mark)
+                except:
+                    pass
+
+
+
             subject_serailiser = SubjectMarkSerializer(save_result, many=True)
             return Response({"status": True, "save_data_list": subject_serailiser.data}, status=status.HTTP_201_CREATED)
+
+
+class ResultInfoListView(mixins.ListModelMixin, generics.GenericAPIView):
+    queryset = ResultInfo.objects.all()
+    serializer_class = ResultInfoListSerializer
+
+    def get_queryset(self):
+        madrasha_slug = self.kwargs['madrasha_slug']
+        queryset = super(ResultInfoListView, self).get_queryset().filter(madrasha__slug=madrasha_slug)
+        return queryset
+
+    def get(self, request, *args, **kwargs):
+        # print("self: ", self.get_object())
+
+        return self.list(request, *args, **kwargs)
