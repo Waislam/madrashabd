@@ -215,6 +215,13 @@ class CustomUserSerializer(serializers.ModelSerializer):
         exclude = ["password", 'avatar']
 
 
+class CustomUserListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CustomUser
+        exclude = ["password"]
+
+
 class GroupsSerializer(serializers.ModelSerializer):
 
     class Meta:
