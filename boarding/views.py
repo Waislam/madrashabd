@@ -6,7 +6,13 @@ from .models import BazarList
 from .serializers import BazarListSerializer
 from .filters import BazarListFilter
 from .pagination import CustomPagination
+from rest_framework.views import APIView
 
+from rest_framework.response import Response
+
+from students.models import Student
+
+from .models import KhabarDistribution
 
 class BazarListView(
     mixins.ListModelMixin,
@@ -34,3 +40,25 @@ class BazarListView(
         """Method to create Teacher obj """
         # print('kwargs', **kwargs)
         return self.create(request, *args, **kwargs)
+
+
+class KhabarDistributionView(APIView):
+
+    def post(self, request, madrasha_slug, student_id, date, meal_id):
+
+        try:
+            student = Student.objects.get(student_id=student_id)
+            date = "1996-03-13"
+            khabar = KhabarDistribution.objects.create(
+                madrasha_id=1,
+                student=student,
+                date=date,
+                is_breakfast=True
+            )
+            return Response({"status": True}, status=status.HTTP_400_BAD_REQUEST)
+
+        except:
+            return Response({"status": False}, status=status.HTTP_400_BAD_REQUEST)
+
+
+

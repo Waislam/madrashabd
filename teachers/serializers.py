@@ -1,7 +1,17 @@
 from rest_framework import serializers
 
-from accounts.serializers import CustomUserSerializer, MadrashaSerializer, AddressDetailSerializer
-from .models import Teacher, Education, Skill, Experience
+from accounts.serializers import (
+    CustomUserSerializer,
+    MadrashaSerializer,
+    AddressDetailSerializer,
+    CustomUserListSerializer
+)
+from .models import (
+    Teacher,
+    Education,
+    Skill,
+    Experience
+)
 from students.serializers import AddressSerializer
 from accounts.models import Address, CustomUser
 from settingapp.serializers import DepartmentSerializer, DesignationSerializer
@@ -125,7 +135,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 
 class TeacherListSerializer(serializers.ModelSerializer):
-    user = CustomUserSerializer()
+    user = CustomUserListSerializer()
     madrasha = MadrashaSerializer()
     present_address = AddressDetailSerializer()
     permanent_address = AddressDetailSerializer()
@@ -143,4 +153,3 @@ class TeacherListSerializer(serializers.ModelSerializer):
             'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
             'designation', 'starting_date', 'ending_date', 'slug', 'experience'
         ]
-
