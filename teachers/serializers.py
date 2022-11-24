@@ -26,7 +26,7 @@ class ExperienceSerializer(serializers.ModelSerializer):
 
 
 class TeacherSerializer(serializers.ModelSerializer):
-    # user = CustomUserSerializer()
+    user = CustomUserSerializer()
     present_address = AddressSerializer()
     permanent_address = AddressSerializer()
     education = EducationSerializer()
