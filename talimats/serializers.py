@@ -198,6 +198,7 @@ class ResultInfoListSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 2
 
+
 class SubjectMarkSerializer(serializers.ModelSerializer):
 
     class Meta:
