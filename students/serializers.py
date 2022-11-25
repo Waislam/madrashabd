@@ -10,7 +10,8 @@ from settingapp.serializers import DepartmentSerializer, ClassGroupSerializer, S
     ClassSerializer
 from .models import Student, AcademicFess, Parent
 from accounts.models import Address, CustomUser
-from accounts.serializers import AddressSerializer, CustomUserSerializer, AddressDetailSerializer, MadrashaSerializer
+from accounts.serializers import AddressSerializer, CustomUserSerializer, AddressDetailSerializer, MadrashaSerializer, \
+    CustomUserListSerializer
 
 
 # ================= 2. ParentSerializer =====================
@@ -40,7 +41,7 @@ class AcademicFeesSerializer(serializers.ModelSerializer):
 
 
 class StudentListSerializer(serializers.ModelSerializer):
-    user = CustomUserSerializer()
+    user = CustomUserListSerializer()
     madrasha = MadrashaSerializer()
     present_address = AddressDetailSerializer()
     permanent_address = AddressDetailSerializer()
