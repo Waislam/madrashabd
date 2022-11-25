@@ -198,10 +198,9 @@ class AvatarUpdateSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CustomUser
-        fields =['avatar']
+        fields = ['avatar']
 
     def update(self, instance, validated_data):
-
         instance.avatar = validated_data.get('avatar', instance.avatar)
         instance.pk = validated_data.get('user_id', instance.pk)
         instance.save()
@@ -236,3 +235,4 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         exclude = ['password']
+
