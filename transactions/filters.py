@@ -7,7 +7,7 @@ class StudentIncomeFilter(django_filters.FilterSet):
 
     class Meta:
         model = StudentIncome
-        fields = ['student_class_id']
+        fields = ['student']
 
 
 class OtherIncomeFilter(django_filters.FilterSet):

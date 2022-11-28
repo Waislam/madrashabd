@@ -315,9 +315,14 @@ class BooksView(APIView):
             return Response(serializer.data)
         return Response({'message': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
-    def get(self, request, madrasha_slug, formate=None):
+    def get(self, request, madrasha_slug, formate=None, **kwargs):
         """ showing a list of Books objects"""
-        books = Books.objects.filter(madrasha__slug=madrasha_slug)
+
+        try:
+            class_id = self.kwargs["class_id"]
+            books = Books.objects.filter(madrasha__slug=madrasha_slug, madrasha_class__id=class_id)
+        except:
+            books = Books.objects.filter(madrasha__slug=madrasha_slug)
         serializer = BooksListSerializer(books, many=True)
         return Response(serializer.data)
 

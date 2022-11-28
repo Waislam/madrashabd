@@ -2,14 +2,17 @@ from django.shortcuts import render
 from rest_framework import mixins, generics
 
 from darul_ekama.models import SeatBooking, NigraniTable
-from darul_ekama.serializers import (SeatBookingSerializer,
-                                     SeatBookingListSerializer,
-                                     NigraniTableListSerializer,
-                                     NigraniTableSerializer,
-
-                                     )
+from darul_ekama.serializers import (
+    SeatBookingSerializer,
+    SeatBookingListSerializer,
+    NigraniTableListSerializer,
+    NigraniTableSerializer
+)
+from settingapp.models import Seat
 from students.models import Student
 from teachers.models import Teacher
+from rest_framework.views import APIView
+from rest_framework import status
 
 
 # Create your views here.
@@ -36,8 +39,32 @@ class SeatBookingView(mixins.CreateModelMixin,
     def post(self, request, *args, **kwargs):
         student_id = request.data['students']
         student = Student.objects.get(student_id=student_id)
+
+        seat = Seat.objects.get(pk=request.data['seat'])
+        seat.student = student
+        seat.save()
         request.data['students'] = student.id
         return self.create(request, *args, **kwargs)
+
+from django.http import Http404
+from rest_framework.response import Response
+
+
+class SeatBooingDetail(APIView):
+
+    def get_object(self, pk):
+        try:
+            return SeatBooking.objects.get(pk=pk)
+        except SeatBooking.DoesNotExist:
+            raise Http404
+
+    def delete(self, request, pk, formate=None):
+        seat_booking = self.get_object(pk)
+        seat_booking.seat.student = None
+        seat_booking.seat.is_available = True
+        seat_booking.seat.save()
+        seat_booking.delete()
+        return Response({"status": True, "msg": "Successfully deleted"}, status=status.HTTP_204_NO_CONTENT)
 
 
 class NigraniTableView(mixins.CreateModelMixin, mixins.ListModelMixin, generics.GenericAPIView):
@@ -57,11 +84,7 @@ class NigraniTableView(mixins.CreateModelMixin, mixins.ListModelMixin, generics.
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        print("teacher: ", request.data['teacher'])
         teacher_id = request.data['teacher']
         teacher = Teacher.objects.get(teacher_id=teacher_id).id
         request.data['teacher'] = teacher
         return self.create(request, *args, **kwargs)
-
-
-

@@ -36,6 +36,6 @@ urlpatterns = [
     path('madrasha/', MadrashaView.as_view()),
     path('madrasha/detail/<slug:slug>/', MadrashaDetailView.as_view()),
     path('madrasha-admin/', UserRegistrationView.as_view()),
-    path('mu-listing/', MadrashaUserListingView.as_view()),  # madrashauser listing
+    path('mu-listing/', MadrashaUserListingView.as_view()),
     path('avatar/<int:pk>/', AvatarUpdateView.as_view()),
 ]
