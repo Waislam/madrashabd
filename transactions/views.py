@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import Http404
 from rest_framework.response import Response
 
+from students.models import Student
 from .serializers import (IncomeCategorySerializer, IncomeSubCategorySerializer, StudentIncomeSerializer,
                           OtherIncomeSerializer,
                           OtherIncomeListSerializer, StudentIncomeListSerializer, AllExpenseListSerializer,
@@ -96,7 +97,7 @@ class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.U
     queryset = StudentIncome.objects.all()
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = StudentIncomeFilter
-    search_fields = ["student_class_id", ""]
+    search_fields = ["student", ""]
     pagination_class = CustomPagination
 
     def get_queryset(self):
@@ -119,6 +120,9 @@ class StudentIncomeView(mixins.CreateModelMixin, mixins.ListModelMixin, mixins.U
     def post(self, request, *args, **kwargs):
         """Method to create Income from student obj"""
         # self.serializer_class = StudentSerializer
+        student = request.data["student"]
+        student_id = Student.objects.get(student_id=student).id
+        request.data["student"]=student_id
         return self.create(request, *args, **kwargs)
 
 

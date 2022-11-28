@@ -138,7 +138,7 @@ class CustomUser(PermissionsMixin, AbstractBaseUser):
     first_name = models.CharField(max_length=100)
     last_name = models.CharField(max_length=100)
     phone = models.CharField(max_length=15, unique=True)
-    email = models.EmailField(unique=True, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
     role = models.ForeignKey(Role, on_delete=models.PROTECT, related_name='user_roles', null=True, blank=True)
     avatar = models.ImageField(upload_to='user-image', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
