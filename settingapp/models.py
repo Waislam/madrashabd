@@ -171,3 +171,9 @@ class Seat(models.Model):
 
     def __str__(self):
         return str(self.seat_number)
+
+
+# =================== KhabarTakingGroup ================
+class KhabarTakingGroup(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_khabar_dist_group')
+    # class_of_group = models.One(MadrashaClasses, on_delete=models.CASCADE, related_name='khabar_groups_of_class')

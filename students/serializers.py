@@ -34,7 +34,6 @@ class ParentSerializer(serializers.ModelSerializer):
 # ================= 3. StudentSerializer =====================
 
 class AcademicFeesSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = AcademicFess
         fields = '__all__'
@@ -56,7 +55,8 @@ class StudentListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
+        fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age',
+                  'birth_certificate',
                   'student_nid',
                   'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
                   'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
@@ -83,7 +83,8 @@ class StudentSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
+        fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age',
+                  'birth_certificate',
                   'student_nid',
                   'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
                   'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
@@ -117,7 +118,7 @@ class StudentSerializer(serializers.ModelSerializer):
         father_info_obj = Parent.objects.create(**father_info)
         mother_info_obj = Parent.objects.create(**mother_info)
 
-        #create custom user
+        # create custom user
         user_obj = CustomUser.objects.create(**user_field)
 
         student = Student.objects.create(
@@ -129,7 +130,36 @@ class StudentSerializer(serializers.ModelSerializer):
         )
         return student
 
+
+class StudentSerializerUpdate(serializers.ModelSerializer):
+    """
+    This serializer is working to update student without updating user
+    """
+    present_address = AddressSerializer()
+    permanent_address = AddressSerializer()
+    father_info = ParentSerializer()
+    mother_info = ParentSerializer()
+
+    class Meta:
+        model = Student
+        fields = ['id', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
+                  'student_nid',
+                  'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
+                  'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
+                  'yearly_income', 'guardian_contact',
+                  'guardian_email', 'other_contact_person', 'other_contact_person_relation',
+                  'other_contact_person_contact', 'sibling_id', 'previous_institution_name',
+                  'previous_institution_contact',
+                  'previous_started_at', 'previous_ending_at', 'previous_ending_class', 'previous_ending_result',
+                  'board_exam_name', 'board_exam_registration', 'board_exam_roll', 'board_exam_result',
+                  'admitted_department',
+                  'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
+                  'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
+                  'eslahi_murobbi_name', 'slug']
+
     def update(self, instance, validated_data):
+        print("instance detail: ", instance.student_id)
+
         present_address = instance.present_address
         permanent_address = instance.permanent_address
         father_info = instance.father_info
@@ -165,8 +195,7 @@ class StudentSerializer(serializers.ModelSerializer):
         parent_info_method(father_info, 'father_info')
         parent_info_method(mother_info, 'mother_info')
 
-        # get updated instance value
-        instance.user = validated_data.get('user', instance.user)
+        # # get updated instance value
         instance.student_id = validated_data.get('student_id', instance.student_id)
         instance.student_roll_id = validated_data.get('student_roll_id', instance.student_roll_id)
         instance.date_of_birth = validated_data.get('date_of_birth', instance.date_of_birth)
