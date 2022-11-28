@@ -618,7 +618,7 @@ class UpdateClassResult(generics.CreateAPIView):
             exam_year_id=year,
             student_class_id=student_class,
         ).exists()
-        print("subject_mark exist", subject_mark)
+        # print("subject_mark exist", subject_mark)
 
         if subject_mark:
             return Response(

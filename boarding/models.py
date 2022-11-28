@@ -9,25 +9,38 @@ MEASUREMENT_CHOICE = (
 )
 
 
-class BazarItem(models.Model):
-    madrasha = models.ForeignKey(Madrasha, on_delete=models.SET_NULL, related_name='bazarItem_madrasha', null=True)
+# class BazarList(models.Model):
+#     madrasha = models.ForeignKey(Madrasha, on_delete=models.SET_NULL, related_name='bazarList_madrasha', null=True)
+#     date = models.DateField(blank=True, null=True)
+#     total_cost = models.CharField(max_length=250, blank=True, null=True)
+
+    # def __str__(self):
+    #     return str(self.date)
+
+
+# class BazarItem(models.Model):
+#     madrasha = models.ForeignKey(Madrasha, on_delete=models.CASCADE, related_name='bazarItem_madrasha')
+#     bazar_list = models.ForeignKey(BazarList, on_delete=models.CASCADE, related_name='bazarlist_items', blank=True, null=True)
+#     bazar_item_name = models.CharField(max_length=250)
+#     quantity = models.CharField(max_length=250)
+#     measurement = models.CharField(max_length=10, choices=MEASUREMENT_CHOICE, default='Kg')
+#     amount = models.CharField(max_length=250)
+#     consumption = models.CharField(max_length=250)
+#     total_stock = models.CharField(max_length=250, blank=True, null=True)
+
+
+class DailyBazar(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.CASCADE, related_name='bazarItem_madrasha')
     bazar_item_name = models.CharField(max_length=250)
     quantity = models.CharField(max_length=250)
-    measurement = models.CharField(
-        max_length=10,
-        choices=MEASUREMENT_CHOICE,
-        default='Kg'
-    )
+    measurement = models.CharField(max_length=10, choices=MEASUREMENT_CHOICE, default='Kg')
     amount = models.CharField(max_length=250)
     consumption = models.CharField(max_length=250)
     total_stock = models.CharField(max_length=250, blank=True, null=True)
+    date = models.DateField()
 
-
-class BazarList(models.Model):
-    madrasha = models.ForeignKey(Madrasha, on_delete=models.SET_NULL, related_name='bazarList_madrasha', null=True)
-    item = models.ForeignKey(BazarItem, on_delete=models.SET_NULL, related_name='bazarList_item', null=True)
-    date = models.DateField(blank=True, null=True)
-    total_cost = models.CharField(max_length=250, blank=True, null=True)
+    def __str__(self):
+        return self.bazar_item_name
 
 
 class KhabarDistribution(models.Model):
