@@ -1,6 +1,7 @@
 from rest_framework import serializers
 # from .models import BazarList, BazarItem
 from accounts.serializers import MadrashaSerializer
+from boarding.models import DailyBazar
 
 
 # class BazarItemSerializer(serializers.ModelSerializer):
@@ -41,5 +42,18 @@ from accounts.serializers import MadrashaSerializer
 #         # return bazar_list
 #         return "something"
 
+class DailyBazarSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DailyBazar
+        fields = '__all__'
+
+
+class DailyBazarListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = DailyBazar
+        fields = '__all__'
+        depth = 2
 
 
