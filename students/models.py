@@ -54,9 +54,9 @@ class Parent(models.Model):
     parent_date_of_birth = models.DateField(blank=True, null=True)
     parent_nid = models.CharField(max_length=255)
     occupation = models.CharField(max_length=50, default='null', choices=OCCUPATION_CHOICE)
-    organization_with_designation = models.CharField(max_length=255)
+    organization_with_designation = models.CharField(max_length=255, blank=True, null=True)
     education = models.CharField(max_length=200, default='literate', choices=EDUCATION_CHOICE)
-    contact_number = models.CharField(max_length=15)
+    contact_number = models.CharField(max_length=15, blank=True, null=True)
     parent_email = models.EmailField(blank=True, null=True)
 
 
@@ -112,6 +112,7 @@ class Student(models.Model):
 
     student_blood_group = models.CharField(max_length=20, blank=True, null=True)
     special_body_sign = models.CharField(max_length=255, blank=True, null=True)
+    # academic_fees = models.ForeignKey(AcademicFess, on_delete=models.SET_NULL, related_name='student_fees_info', blank=True, null=True)
     academic_fees = models.CharField(max_length=255, blank=True, null=True)
     talimi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
     eslahi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)

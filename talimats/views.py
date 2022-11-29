@@ -53,6 +53,7 @@ from talimats.serializers import (
     ExtraActivityListSerializer, ResultInfoListSerializer
 )
 from core.pagination import CustomPagination
+from teachers.models import Teacher
 
 
 # ====================== 1. Book Distribution to teacher view ================
@@ -247,6 +248,8 @@ class TeacherStaffResponsibilityView(
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
+        teacher_id = Teacher.objects.get(teacher_id=request.data["teacher_staff"]).id
+        request.data["teacher_staff"] = teacher_id
         return self.create(request, *args, **kwargs)
 
 
@@ -615,7 +618,7 @@ class UpdateClassResult(generics.CreateAPIView):
             exam_year_id=year,
             student_class_id=student_class,
         ).exists()
-        print("subject_mark exist", subject_mark)
+        # print("subject_mark exist", subject_mark)
 
         if subject_mark:
             return Response(
