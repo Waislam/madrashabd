@@ -83,6 +83,16 @@ class ThanaListViewWithDependency(generics.ListAPIView):
         return queryset
 
 
+class PostOfficeListViewWithDependency(generics.ListAPIView):
+    serializer_class = PostOfficeSerializer
+
+    def get_queryset(self):
+        queryset = PostOffice.objects.all()
+        district = self.kwargs.get('district')
+        if district is not None:
+            queryset = queryset.filter(district__pk=district)
+        return queryset
+
 # class PostOfficeList(APIView):
 #     def post(self, request):
 #         district = request.data['district']
@@ -116,6 +126,16 @@ class PostCodeListView(ListAPIView):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_class = PostCodeFilter
 
+
+class PostCodeListViewWithDependency(generics.ListAPIView):
+    serializer_class = PostCodeSerializer
+
+    def get_queryset(self):
+        queryset = PostCode.objects.all()
+        post_office = self.kwargs.get('post_office')
+        if post_office is not None:
+            queryset = queryset.filter(post_office__pk=post_office)
+        return queryset
 
 # ==================== 2. individual address ============
 
