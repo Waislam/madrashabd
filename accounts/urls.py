@@ -13,7 +13,7 @@ from .views import (
     MadrashaUserListingView,
     AvatarUpdateView,
     UserDetail,
-    ThanaListViewWithDependency
+    ThanaListViewWithDependency, PostOfficeListViewWithDependency, PostCodeListViewWithDependency
 )
 
 urlpatterns = [
@@ -29,7 +29,9 @@ urlpatterns = [
     path('thana/<district>/', ThanaListViewWithDependency.as_view()),
 
     path('post-office/', PostOfficeListView.as_view()),
+    path('post-office/<district>/', PostOfficeListViewWithDependency.as_view()),
     path('post-code/', PostCodeListView.as_view()),
+    path('post-code/<post_office>/', PostCodeListViewWithDependency.as_view()),
     path('address/<int:pk>/', AddressDetail.as_view()),
 
     # madrasha path

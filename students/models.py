@@ -9,7 +9,8 @@ from settingapp.models import *
 
 # Create your models here.
 User = get_user_model()
-OCCUPATION_CHOICE =(
+OCCUPATION_CHOICE = (
+    ('null', ''),
     ('teacher', 'Teacher'),
     ('farmer', 'Farmer'),
     ('doctor', 'Doctor'),
@@ -29,6 +30,7 @@ EDUCATION_CHOICE = (
 )
 
 RELATION_CHOICE = (
+    ('null', ''),
     ('father', 'Father'),
     ('mother', 'Mother'),
     ('brother', 'Brother'),
@@ -38,13 +40,14 @@ RELATION_CHOICE = (
     ('cousin', 'Cousin')
 )
 BOARD_EXAM_CHOICE = (
+    ('null', ''),
     ('befak', 'Befak'),
     ('haya', 'Haya')
 )
 
 
 class AcademicFess(models.Model):
-    food_bill_percent = models.DecimalField(max_digits=10, decimal_places=2 )
+    food_bill_percent = models.DecimalField(max_digits=10, decimal_places=2)
     monthly_tution_percent = models.DecimalField(max_digits=10, decimal_places=2)
     scholarship_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
@@ -70,17 +73,23 @@ class Student(models.Model):
     birth_certificate = models.CharField(max_length=255, blank=True, null=True)
     student_nid = models.CharField(max_length=255, blank=True, null=True)
     passport_number = models.CharField(max_length=255, blank=True, null=True)
-    nationality = models.CharField(max_length=20, default='bangladeshi', choices=NATIONALITY_CHOICE, blank=True, null=True)
+    nationality = models.CharField(max_length=20, default='bangladeshi', choices=NATIONALITY_CHOICE, blank=True,
+                                   null=True)
     religion = models.CharField(max_length=20, default='islam', choices=RELIGION_CHOICE, blank=True, null=True)
     gender = models.CharField(max_length=20, default='male', choices=GENDER_CHOICE, blank=True, null=True)
-    present_address = models.OneToOneField(Address, on_delete=models.SET_NULL, related_name='student_present_addres', blank=True, null=True)
-    permanent_address = models.OneToOneField(Address, on_delete=models.SET_NULL, related_name='student_permanent_addres', blank=True, null=True)
-    father_info = models.OneToOneField(Parent, on_delete=models.SET_NULL, related_name='student_father', blank=True, null=True)
-    mother_info = models.OneToOneField(Parent, on_delete=models.SET_NULL, related_name='student_mother', blank=True, null=True)
+    present_address = models.OneToOneField(Address, on_delete=models.SET_NULL, related_name='student_present_addres',
+                                           blank=True, null=True)
+    permanent_address = models.OneToOneField(Address, on_delete=models.SET_NULL,
+                                             related_name='student_permanent_addres', blank=True, null=True)
+    father_info = models.OneToOneField(Parent, on_delete=models.SET_NULL, related_name='student_father', blank=True,
+                                       null=True)
+    mother_info = models.OneToOneField(Parent, on_delete=models.SET_NULL, related_name='student_mother', blank=True,
+                                       null=True)
 
     guardian_name = models.CharField(max_length=150, blank=True, null=True)
-    guardian_relation = models.CharField(max_length=20, default='father', choices=RELATION_CHOICE, blank=True, null=True)
-    guardian_occupation = models.CharField(max_length=20, default='null', choices=OCCUPATION_CHOICE, blank=True, null=True)
+    guardian_relation = models.CharField(max_length=20, default='null', choices=RELATION_CHOICE, blank=True, null=True)
+    guardian_occupation = models.CharField(max_length=20, default='null', choices=OCCUPATION_CHOICE, blank=True,
+                                           null=True)
     yearly_income = models.CharField(max_length=255, blank=True, null=True)
     guardian_contact = models.CharField(max_length=15, blank=True, null=True)
     guardian_email = models.EmailField(blank=True, null=True)
@@ -103,12 +112,16 @@ class Student(models.Model):
     board_exam_result = models.CharField(max_length=50, blank=True, null=True)
 
     admitted_department = models.ForeignKey(Department, on_delete=models.PROTECT, related_name='department_students')
-    admitted_class = models.ForeignKey(MadrashaClasses, on_delete=models.SET_NULL, related_name='class_students', blank=True, null=True)
-    admitted_group = models.ForeignKey(MadrashaGroup, on_delete=models.SET_NULL, related_name='group_students', blank=True, null=True)
-    admitted_shift = models.ForeignKey(Shift, on_delete=models.SET_NULL, related_name='shift_students', blank=True, null=True)
+    admitted_class = models.ForeignKey(MadrashaClasses, on_delete=models.SET_NULL, related_name='class_students',
+                                       blank=True, null=True)
+    admitted_group = models.ForeignKey(MadrashaGroup, on_delete=models.SET_NULL, related_name='group_students',
+                                       blank=True, null=True)
+    admitted_shift = models.ForeignKey(Shift, on_delete=models.SET_NULL, related_name='shift_students', blank=True,
+                                       null=True)
 
     admitted_roll = models.CharField(max_length=20, blank=True, null=True)
-    admitted_session = models.ForeignKey(Session, on_delete=models.SET_NULL, related_name='session_students', blank=True, null=True)
+    admitted_session = models.ForeignKey(Session, on_delete=models.SET_NULL, related_name='session_students',
+                                         blank=True, null=True)
 
     student_blood_group = models.CharField(max_length=20, blank=True, null=True)
     special_body_sign = models.CharField(max_length=255, blank=True, null=True)
