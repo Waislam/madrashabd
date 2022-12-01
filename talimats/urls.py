@@ -21,7 +21,7 @@ from .views import (
     ExtraActivityView,
     ExtraActivityDetailView,
     ExamRoutineListView,
-    UpdateClassResult, ResultInfoListView
+    UpdateClassResult, ResultInfoListView, ExamRoutineCreateView
 )
 
 urlpatterns = [
@@ -54,6 +54,7 @@ urlpatterns = [
     path('hall-duty/detail/<int:pk>/', HallNigranDetailView.as_view()),
 
     path('<madrasha_slug>/exam-routine/', ExamRoutineListView.as_view()),
+    path('<madrasha_slug>/create/exam-routine/', ExamRoutineCreateView.as_view()),
 
     path('file-upload/', UpdateClassResult.as_view()),
     path('<madrasha_slug>/result-info/', ResultInfoListView.as_view()),

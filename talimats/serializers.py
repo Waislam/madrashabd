@@ -19,7 +19,7 @@ from talimats.models import (
     TeacherStaffResponsibility,
     Dawah,
     ExtraActivity,
-    ExamRoutine, SubjectMark, ResultInfo
+    ExamRoutine, SubjectMark, ResultInfo, ExamDate
 )
 
 
@@ -172,10 +172,34 @@ class HallDutySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+# ========== exam routine section ==================
+class ExamDateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ExamDate
+        fields = '__all__'
+
+
+class ExamDateListSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = ExamDate
+        fields = '__all__'
+        depth = 2
+
+
 class ExamRoutineSerializer(serializers.ModelSerializer):
+    # exam_date = ExamDateSerializer()
     class Meta:
         model = ExamRoutine
         fields = '__all__'
+
+
+class ExamRoutineListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamRoutine
+        fields = '__all__'
+        depth = 2
 
 
 # ========================= 9. ResultSerializer ===============
