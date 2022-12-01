@@ -228,3 +228,4 @@ class SubjectMarkSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubjectMark
         fields = '__all__'
+        depth = 2

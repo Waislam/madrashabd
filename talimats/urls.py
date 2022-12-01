@@ -21,7 +21,7 @@ from .views import (
     ExtraActivityView,
     ExtraActivityDetailView,
     ExamRoutineListView,
-    UpdateClassResult, ResultInfoListView, ExamRoutineCreateView
+    UpdateClassResult, ResultInfoListView, ExamRoutineCreateView, SubjectMarkView
 )
 
 urlpatterns = [
@@ -58,5 +58,6 @@ urlpatterns = [
 
     path('file-upload/', UpdateClassResult.as_view()),
     path('<madrasha_slug>/result-info/', ResultInfoListView.as_view()),
+    path('<result_info_id>/subject-mark/', SubjectMarkView.as_view()),
 
 ]
