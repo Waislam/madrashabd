@@ -683,6 +683,20 @@ class ResultInfoListView(mixins.ListModelMixin, generics.GenericAPIView):
         return queryset
 
     def get(self, request, *args, **kwargs):
-        # print("self: ", self.get_object())
+        return self.list(request, *args, **kwargs)
 
+
+class SubjectMarkView(
+    mixins.ListModelMixin,
+    generics.GenericAPIView
+):
+    queryset = SubjectMark.objects.all()
+    serializer_class = SubjectMarkSerializer
+
+    def get_queryset(self):
+        result_info_id = self.kwargs['result_info_id']
+        queryset = super().get_queryset().filter(result_info_id=result_info_id)
+        return queryset
+
+    def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
