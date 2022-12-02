@@ -134,13 +134,20 @@ class ExamRegistration(models.Model):
 
 
 # ================== 8. ExamRoutine ===============#
-class ExamRoutine(models.Model):
-    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='exam_routine')
-    routine_class = models.ForeignKey(MadrashaClasses, on_delete=models.CASCADE, related_name='exam_routine_class')
+class ExamDate(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT)
     exam_start_date_time = models.DateTimeField()
     exam_finish_date_time = models.DateTimeField()
-    exam_subject = models.ForeignKey(Books, on_delete=models.PROTECT, related_name='routines_books')
     routine_term = models.ForeignKey(ExamTerm, on_delete=models.PROTECT, related_name='routines_terms')
+
+    def __str__(self):
+        return str(self.exam_start_date_time)
+
+
+class ExamRoutine(models.Model):
+    routine_class = models.ForeignKey(MadrashaClasses, on_delete=models.CASCADE, related_name='exam_routine_class')
+    exam_subject = models.ForeignKey(Books, on_delete=models.PROTECT, related_name='routines_books')
+    exam_date = models.ForeignKey(ExamDate, on_delete=models.CASCADE, related_name='date_exams')
 
     def __str__(self):
         return self.routine_class.name
@@ -188,7 +195,7 @@ class HallDuty(models.Model):
         return self.room_no
 
 
-#=============== 18. Dar_ul Ekama ================================
+# =============== 18. Dar_ul Ekama ================================
 
 
 class ResultInfo(models.Model):

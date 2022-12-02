@@ -11,6 +11,8 @@ from rest_framework.views import APIView
 from rest_framework import mixins, generics, status
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
+
+from accounts.models import Madrasha
 from students.models import Student
 from talimats.models import (
     BookDistributeToTeacher,
@@ -25,7 +27,7 @@ from talimats.models import (
     ExtraActivity,
     ExamRoutine,
     SubjectMark,
-    ResultInfo
+    ResultInfo, ExamDate
 )
 from rest_framework.response import Response
 from talimats.serializers import (
@@ -50,7 +52,8 @@ from talimats.serializers import (
     ExtraActivityListSerializer,
     ClassResultFileUploadSerializer,
     SubjectMarkSerializer,
-    ExtraActivityListSerializer, ResultInfoListSerializer
+    ExtraActivityListSerializer, ResultInfoListSerializer, ExamRoutineListSerializer, ExamDateSerializer,
+    ExamDateListSerializer
 )
 from core.pagination import CustomPagination
 from teachers.models import Teacher
@@ -572,20 +575,56 @@ class ExamRoutineListView(
     mixins.ListModelMixin,
     generics.GenericAPIView
 ):
-    queryset = ExamRoutine.objects.all()
+    queryset = ExamDate.objects.all()
+    serializer_class = ExamDateListSerializer
+
+    def get_queryset(self):
+        madrasha_slug = self.kwargs['madrasha_slug']
+        queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
+        # list_query = []
+        # for item in queryset:
+        #     list_query.append(item.date_exams.all())
+        #
+        # result = ExamDate.objects.filter(pk__in=list_query)
+        # print("typeOf", type(result))
+
+        # return list_query
+        return queryset
+
+    # def get_serializer_class(self):
+    #     if self.request.method == "GET":
+    #         return ExamDateListSerializer
+    #     return ExamDateSerializer
+
+    def get(self, request, *args, **kwargs):
+        # for item in self.list:
+        #     print("item: ", item)
+        return self.list(request, *args, **kwargs)
+
+
+class ExamRoutineCreateView(mixins.CreateModelMixin, generics.GenericAPIView):
+    queryset = ExamDate.objects.all()
+    serializer_class = ExamRoutineSerializer
 
     def get_queryset(self):
         madrasha_slug = self.kwargs['madrasha_slug']
         queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
         return queryset
 
-    # def get_serializer_class(self):
-    #     return ExamRoutineSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
     def post(self, request, *args, **kwargs):
+        data = request.data
+        madrasha = Madrasha.objects.get(id=data['madrasha'])
+        routine_term = ExamTerm.objects.get(id=data['routine_term'])
+
+        obj, created = ExamDate.objects.get_or_create(
+            madrasha=madrasha,
+            exam_start_date_time=data['exam_start_date_time'],
+            exam_finish_date_time=data['exam_finish_date_time'],
+            routine_term=routine_term
+        )
+
+        data['exam_date'] = obj.id
+
         return self.create(request, *args, **kwargs)
 
 
@@ -653,12 +692,11 @@ class UpdateClassResult(generics.CreateAPIView):
                         mark=int(row[1])
                     )
 
-                # all_marks = SubjectMark.objects.filter(
-                #     result_info=result_info,
-                # )
-                #
-                # print(all_marks)
-
+                    # all_marks = SubjectMark.objects.filter(
+                    #     result_info=result_info,
+                    # )
+                    #
+                    # print(all_marks)
 
                     result_info.total_marks += int(row[1])
                     result_info.save()
@@ -666,8 +704,6 @@ class UpdateClassResult(generics.CreateAPIView):
                     save_result.append(subject_mark)
                 except:
                     pass
-
-
 
             subject_serailiser = SubjectMarkSerializer(save_result, many=True)
             return Response({"status": True, "save_data_list": subject_serailiser.data}, status=status.HTTP_201_CREATED)

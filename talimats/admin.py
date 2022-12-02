@@ -13,7 +13,7 @@ from talimats.models import (
     TeacherStaffResponsibility,
     AcademicCalendar,
     ResultInfo,
-    SubjectMark
+    SubjectMark, ExamDate
 )
 
 
@@ -43,6 +43,7 @@ admin.site.register(ExamRegistration)
 admin.site.register(ExamTerm)
 admin.site.register(HallDuty)
 admin.site.register(ExamRoutine)
+admin.site.register(ExamDate)
 admin.site.register(ResultInfo)
 admin.site.register(SubjectMark)
 
