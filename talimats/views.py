@@ -581,6 +581,14 @@ class ExamRoutineListView(
     def get_queryset(self):
         madrasha_slug = self.kwargs['madrasha_slug']
         queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
+        # list_query = []
+        # for item in queryset:
+        #     list_query.append(item.date_exams.all())
+        #
+        # result = ExamDate.objects.filter(pk__in=list_query)
+        # print("typeOf", type(result))
+
+        # return list_query
         return queryset
 
     # def get_serializer_class(self):
@@ -589,7 +597,6 @@ class ExamRoutineListView(
     #     return ExamDateSerializer
 
     def get(self, request, *args, **kwargs):
-        # print("self: ", self.list)
         # for item in self.list:
         #     print("item: ", item)
         return self.list(request, *args, **kwargs)
@@ -607,7 +614,7 @@ class ExamRoutineCreateView(mixins.CreateModelMixin, generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         data = request.data
         madrasha = Madrasha.objects.get(id=data['madrasha'])
-        routine_term=ExamTerm.objects.get(id=data['routine_term'])
+        routine_term = ExamTerm.objects.get(id=data['routine_term'])
 
         obj, created = ExamDate.objects.get_or_create(
             madrasha=madrasha,
