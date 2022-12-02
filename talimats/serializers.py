@@ -173,21 +173,6 @@ class HallDutySerializer(serializers.ModelSerializer):
 
 
 # ========== exam routine section ==================
-class ExamDateSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = ExamDate
-        fields = '__all__'
-
-
-class ExamDateListSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = ExamDate
-        fields = '__all__'
-        depth = 2
-
-
 class ExamRoutineSerializer(serializers.ModelSerializer):
     # exam_date = ExamDateSerializer()
     class Meta:
@@ -198,6 +183,21 @@ class ExamRoutineSerializer(serializers.ModelSerializer):
 class ExamRoutineListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExamRoutine
+        fields = '__all__'
+        depth = 2
+
+
+class ExamDateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExamDate
+        fields = '__all__'
+
+
+class ExamDateListSerializer(serializers.ModelSerializer):
+    exam_routine = ExamRoutineSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = ExamDate
         fields = '__all__'
         depth = 2
 
@@ -224,7 +224,6 @@ class ResultInfoListSerializer(serializers.ModelSerializer):
 
 
 class SubjectMarkSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = SubjectMark
         fields = '__all__'

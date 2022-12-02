@@ -581,26 +581,45 @@ class ExamRoutineListView(
     def get_queryset(self):
         madrasha_slug = self.kwargs['madrasha_slug']
         queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
-        # list_query = []
-        # for item in queryset:
-        #     list_query.append(item.date_exams.all())
-        #
-        # result = ExamDate.objects.filter(pk__in=list_query)
-        # print("typeOf", type(result))
-
-        # return list_query
         return queryset
 
-    # def get_serializer_class(self):
-    #     if self.request.method == "GET":
-    #         return ExamDateListSerializer
-    #     return ExamDateSerializer
 
     def get(self, request, *args, **kwargs):
         # for item in self.list:
         #     print("item: ", item)
         return self.list(request, *args, **kwargs)
 
+
+# class ExamRoutineListView(
+#     mixins.CreateModelMixin,
+#     mixins.ListModelMixin,
+#     generics.GenericAPIView
+# ):
+#     queryset = ExamRoutine.objects.all()
+#     serializer_class = ExamRoutineListSerializer
+#
+#     def get_queryset(self):
+#         madrasha_slug = self.kwargs['madrasha_slug']
+#         queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
+#         list_query = []
+#         for item in queryset:
+#             list_query.append(item.date_exams.all())
+#
+#         result = ExamDate.objects.filter(pk__in=list_query)
+#         print("typeOf", type(result))
+#
+#         # return list_query
+#         return queryset
+#
+#     # def get_serializer_class(self):
+#     #     if self.request.method == "GET":
+#     #         return ExamDateListSerializer
+#     #     return ExamDateSerializer
+#
+#     def get(self, request, *args, **kwargs):
+#         # for item in self.list:
+#         #     print("item: ", item)
+#         return self.list(request, *args, **kwargs)
 
 class ExamRoutineCreateView(mixins.CreateModelMixin, generics.GenericAPIView):
     queryset = ExamDate.objects.all()
