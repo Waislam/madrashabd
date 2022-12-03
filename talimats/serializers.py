@@ -184,7 +184,7 @@ class ExamRoutineListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ExamRoutine
         fields = '__all__'
-        depth = 2
+        # depth = 2
 
 
 class ExamDateSerializer(serializers.ModelSerializer):
@@ -194,12 +194,12 @@ class ExamDateSerializer(serializers.ModelSerializer):
 
 
 class ExamDateListSerializer(serializers.ModelSerializer):
-    exam_routine = ExamRoutineSerializer(read_only=True, many=True)
+    exam_routine = ExamRoutineListSerializer(read_only=True, many=True)
 
     class Meta:
         model = ExamDate
-        fields = '__all__'
-        depth = 2
+        fields = ['id', 'madrasha', 'exam_start_date_time', 'exam_finish_date_time', 'exam_routine', 'routine_term']
+        # depth = 2
 
 
 # ========================= 9. ResultSerializer ===============

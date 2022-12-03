@@ -571,7 +571,6 @@ class HallNigranDetailView(APIView):
 
 
 class ExamRoutineListView(
-    mixins.CreateModelMixin,
     mixins.ListModelMixin,
     generics.GenericAPIView
 ):
@@ -583,10 +582,7 @@ class ExamRoutineListView(
         queryset = super().get_queryset().filter(madrasha__slug=madrasha_slug)
         return queryset
 
-
     def get(self, request, *args, **kwargs):
-        # for item in self.list:
-        #     print("item: ", item)
         return self.list(request, *args, **kwargs)
 
 
