@@ -12,12 +12,15 @@ User = get_user_model()
 OCCUPATION_CHOICE = (
     ('null', ''),
     ('teacher', 'Teacher'),
+    ('alim', 'Alim'),
     ('farmer', 'Farmer'),
     ('doctor', 'Doctor'),
     ('police', 'Police'),
     ('businessman', 'Businessman'),
     ('govt-employee', 'Govt. employee'),
     ('non-govt-employee', 'Non govt. employee'),
+    ('govt-employee', 'Govt. employee'),
+    ('house-wife', 'House Wife'),
     ('other', 'Other'),
 )
 EDUCATION_CHOICE = (
@@ -41,8 +44,10 @@ RELATION_CHOICE = (
 )
 BOARD_EXAM_CHOICE = (
     ('null', ''),
-    ('befak', 'Befak'),
-    ('haya', 'Haya')
+    ('haya', 'Al Haiatul Ulya'),
+    ('befak_arabia', 'Befaq(Arabia)'),
+    ('befak_dinia', 'Befaq(Dinia)'),
+    ('tanjimul madares', 'Tanjimul Madares')
 )
 
 
@@ -55,7 +60,7 @@ class AcademicFess(models.Model):
 class Parent(models.Model):
     parent_name = models.CharField(max_length=150)
     parent_date_of_birth = models.DateField(blank=True, null=True)
-    parent_nid = models.CharField(max_length=255)
+    parent_nid = models.CharField(max_length=255, blank=True, null=True)
     occupation = models.CharField(max_length=50, default='null', choices=OCCUPATION_CHOICE)
     organization_with_designation = models.CharField(max_length=255, blank=True, null=True)
     education = models.CharField(max_length=200, default='literate', choices=EDUCATION_CHOICE)
