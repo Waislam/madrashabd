@@ -71,7 +71,7 @@ class Teacher(models.Model):
     experience = models.ForeignKey(Experience, on_delete=models.CASCADE, related_name='teacher_experience', blank=True, null=True)
     phone_home = models.CharField(max_length=15)
     nid = models.CharField(max_length=200)
-    birth_certificate = models.CharField(max_length=255)
+    birth_certificate = models.CharField(max_length=255, blank=True, null=True)
     nationality = models.CharField(max_length=20, default='bangladeshi', choices=NATIONALITY_CHOICE)
     blood_group = models.CharField(max_length=15, blank=True)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, related_name='department_teachers', blank=True, null=True)

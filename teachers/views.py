@@ -19,10 +19,10 @@ class TeacherView(
 ):
     """ teacher Create and list view """
     queryset = Teacher.objects.all()
-    filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_class = TeacherFilter
-    search_fields = ['teacher_id']
-    pagination_class = CustomPagination
+    # filter_backends = [DjangoFilterBackend, SearchFilter]
+    # filterset_class = TeacherFilter
+    # search_fields = ['teacher_id']
+    # pagination_class = CustomPagination
 
     def get_queryset(self):
         madrasha_slug = self.kwargs['madrasha_slug']
