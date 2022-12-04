@@ -20,9 +20,9 @@ class StudentView(
     """Student Create and list view"""
 
     queryset = Student.objects.all()
-    filter_backends = [DjangoFilterBackend, SearchFilter]
-    filterset_class = StudentFilter
-    search_fields = ["student_id"]
+    # filter_backends = [DjangoFilterBackend, SearchFilter]
+    # filterset_class = StudentFilter
+    # search_fields = ["student_id"]
     # pagination_class = CustomPagination
     # permission_classes = [IsMadrashaAdmin]
 
