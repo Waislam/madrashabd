@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import Http404
-from .serializers import TeacherSerializer, TeacherListSerializer
+from .serializers import TeacherSerializer, TeacherListSerializer, TeacherUpdateSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -62,7 +62,7 @@ class TeacherDetailView(APIView):
     def put(self, request, slug, formate=None):
         """update single teacher"""
         teacher = self.get_object(slug)
-        serializer = TeacherSerializer(teacher, data=request.data)
+        serializer = TeacherUpdateSerializer(teacher, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response({'status': True, 'data': serializer.data})

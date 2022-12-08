@@ -107,7 +107,6 @@ class MadrashaSerializer(serializers.ModelSerializer):
         model = Madrasha
         fields = ['id', 'name', 'madrasha_code', 'madrasha_address', 'madrasha_logo', 'created_by', 'updated_by', 'active_status', 'slug']
 
-
     def create(self, validated_data):
         address_data = validated_data['madrasha_address']
         madrasha_name = validated_data['name']
@@ -154,6 +153,7 @@ class MadrashaLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = Madrasha
         fields = "__all__"
+
 
 # ================== 3. User ============
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -214,6 +214,11 @@ class CustomUserSerializer(serializers.ModelSerializer):
         model = CustomUser
         exclude = ["password", 'avatar']
 
+class CustomUserUpdateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = CustomUser
+        exclude = ["password", 'avatar']
 
 class CustomUserListSerializer(serializers.ModelSerializer):
 
