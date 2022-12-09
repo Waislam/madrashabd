@@ -97,6 +97,7 @@ class AddressDetailSerializer(serializers.ModelSerializer):
         model = Address
         fields = ['id', 'division', 'district', 'thana', 'post_office', 'post_code', 'address_info']
 
+
 # ============ 2. madrasha serializer =============
 
 
@@ -105,7 +106,8 @@ class MadrashaSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Madrasha
-        fields = ['id', 'name', 'madrasha_code', 'madrasha_address', 'madrasha_logo', 'created_by', 'updated_by', 'active_status', 'slug']
+        fields = ['id', 'name', 'madrasha_code', 'madrasha_address', 'madrasha_logo', 'created_by', 'updated_by',
+                  'active_status', 'slug']
 
     def create(self, validated_data):
         address_data = validated_data['madrasha_address']
@@ -133,12 +135,17 @@ class MadrashaSerializer(serializers.ModelSerializer):
         madrasha_address = instance.madrasha_address
 
         # Save madrasha address
-        madrasha_address.division = validated_data.get('madrasha_address').get('division', instance.madrasha_address.division)
-        madrasha_address.district = validated_data.get('madrasha_address').get('district', instance.madrasha_address.district)
-        madrasha_address.post_office = validated_data.get('madrasha_address').get('post_office', instance.madrasha_address.post_office)
-        madrasha_address.post_code = validated_data.get('madrasha_address').get('post_code', instance.madrasha_address.post_code)
+        madrasha_address.division = validated_data.get('madrasha_address').get('division',
+                                                                               instance.madrasha_address.division)
+        madrasha_address.district = validated_data.get('madrasha_address').get('district',
+                                                                               instance.madrasha_address.district)
+        madrasha_address.post_office = validated_data.get('madrasha_address').get('post_office',
+                                                                                  instance.madrasha_address.post_office)
+        madrasha_address.post_code = validated_data.get('madrasha_address').get('post_code',
+                                                                                instance.madrasha_address.post_code)
         madrasha_address.thana = validated_data.get('madrasha_address').get('thana', instance.madrasha_address.thana)
-        madrasha_address.address_info = validated_data.get('madrasha_address').get('address_info', instance.madrasha_address.address_info)
+        madrasha_address.address_info = validated_data.get('madrasha_address').get('address_info',
+                                                                                   instance.madrasha_address.address_info)
         madrasha_address.save()
         # get other fields of instance and save it
         instance.created_by = validated_data.get('created_by', instance.created_by)
@@ -149,7 +156,6 @@ class MadrashaSerializer(serializers.ModelSerializer):
 
 
 class MadrashaLoginSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Madrasha
         fields = "__all__"
@@ -187,7 +193,6 @@ class RegistrationSerializer(serializers.ModelSerializer):
 # ================== 4. MadrashaUserlisting  ============
 
 class MadrashaUserListingSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = MadrashaUserListing
         fields = ['user', 'madrasha']
@@ -195,7 +200,6 @@ class MadrashaUserListingSerializer(serializers.ModelSerializer):
 
 # =================== 5. AvatarUpdateSerializer =================
 class AvatarUpdateSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = CustomUser
         fields = ['avatar']
@@ -209,26 +213,24 @@ class AvatarUpdateSerializer(serializers.ModelSerializer):
 
 # ============ 2. customuser serializer =============
 class CustomUserSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = CustomUser
         exclude = ["password", 'avatar']
+
 
 class CustomUserUpdateSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = CustomUser
-        exclude = ["password", 'avatar']
+        fields = ["first_name", 'last_name', 'email']
+
 
 class CustomUserListSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = CustomUser
         exclude = ["password"]
 
 
 class GroupsSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Group
         fields = ['name']
@@ -240,4 +242,3 @@ class CustomUserLoginSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
         exclude = ['password']
-
