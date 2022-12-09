@@ -4,7 +4,7 @@ from accounts.serializers import (
     CustomUserSerializer,
     MadrashaSerializer,
     AddressDetailSerializer,
-    CustomUserListSerializer
+    CustomUserListSerializer, CustomUserUpdateSerializer
 )
 from .models import (
     Teacher,
@@ -135,6 +135,7 @@ class TeacherSerializer(serializers.ModelSerializer):
 
 
 class TeacherUpdateSerializer(serializers.ModelSerializer):
+    user = CustomUserUpdateSerializer()
     present_address = AddressSerializer()
     permanent_address = AddressSerializer()
     education = EducationSerializer()
@@ -144,7 +145,7 @@ class TeacherUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Teacher
         fields = [
-            'id', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender',
+            'id', 'user', 'madrasha', 'teacher_id', 'father_name', 'mother_name', 'date_of_birth', 'gender',
             'religion', 'marital_status', 'present_address', 'permanent_address', 'education', 'skill', 'experience',
             'phone_home', 'nid', 'birth_certificate', 'nationality', 'blood_group', 'department',
             'designation', 'starting_date', 'ending_date', 'slug'
@@ -152,6 +153,7 @@ class TeacherUpdateSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         # get all nested obj
+        user = instance.user
         present_address = instance.present_address
         permanent_address = instance.permanent_address
         education = instance.education
@@ -180,6 +182,10 @@ class TeacherUpdateSerializer(serializers.ModelSerializer):
         education.result = validated_data.get('education').get('result', education.result)
         education.save()
 
+        user.first_name = validated_data.get('user').get('first_name', user.first_name)
+        user.last_name = validated_data.get('user').get('last_name', user.last_name)
+        user.email = validated_data.get('user').get('email', user.email)
+        user.save()
         # try:
         skill.skill_name = validated_data.get('skill').get('skill_name', skill.skill_name)
         skill.save()

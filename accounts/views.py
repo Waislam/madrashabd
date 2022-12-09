@@ -244,6 +244,7 @@ class CustomAuthToken(ObtainAuthToken, APIView):
             "data": user_info.data,
             "token": token.key,
             "role": "Admin",
+            # 'user_madrasha_id': madrasha.pk,
             'user_madrasha_id': madrasha.pk,
             'user_madrasha_slug': madrasha.slug,
             'user_madrasha_code': madrasha.madrasha_code,
