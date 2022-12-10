@@ -31,6 +31,7 @@ class BookDistributeToTeacher(models.Model):
     class_name = models.ForeignKey(MadrashaClasses, on_delete=models.SET_NULL, related_name="book_to_class", blank=True,
                                    null=True)
     class_time = models.TimeField()
+    end_time = models.TimeField(null=True, default=None)
 
     def __str__(self):
         return self.kitab_name
@@ -186,7 +187,10 @@ class ExtraActivity(models.Model):
 
 class HallDuty(models.Model):
     madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='hall_duty_madrasha')
-    duty_date = models.DateTimeField()
+    duty_date = models.DateTimeField(blank=True, null=True)
+    date = models.DateField(null=True, default=None)
+    start_time = models.TimeField(blank=True, null=True)
+    end_time = models.TimeField(blank=True, null=True)
     chief_of_hall = models.CharField(max_length=255)
     assistant_of_hall = models.CharField(max_length=255, null=True, blank=True)
     room_no = models.CharField(max_length=100)
