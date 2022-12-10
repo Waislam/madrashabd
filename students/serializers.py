@@ -11,7 +11,7 @@ from settingapp.serializers import DepartmentSerializer, ClassGroupSerializer, S
 from .models import Student, AcademicFess, Parent
 from accounts.models import Address, CustomUser
 from accounts.serializers import AddressSerializer, CustomUserSerializer, AddressDetailSerializer, MadrashaSerializer, \
-    CustomUserListSerializer
+    CustomUserListSerializer, CustomUserUpdateSerializer
 
 
 # ================= 2. ParentSerializer =====================
@@ -57,10 +57,9 @@ class StudentListSerializer(serializers.ModelSerializer):
         model = Student
         fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age',
                   'birth_certificate',
-                  'student_nid',
-                  'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
-                  'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
-                  'yearly_income', 'guardian_contact',
+                  'student_nid', 'passport_number', 'nationality', 'religion', 'gender', 'present_address',
+                  'permanent_address', 'father_info', 'mother_info', 'guardian_name', 'guardian_relation',
+                  'guardian_occupation', 'yearly_income', 'guardian_contact',
                   'guardian_email', 'other_contact_person', 'other_contact_person_relation',
                   'other_contact_person_contact', 'sibling_id', 'previous_institution_name',
                   'previous_institution_contact',
@@ -68,8 +67,8 @@ class StudentListSerializer(serializers.ModelSerializer):
                   'board_exam_name', 'board_exam_registration', 'board_exam_roll', 'board_exam_result',
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
-                  'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
-                  'eslahi_murobbi_name', 'slug']
+                  'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
+                  'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -96,8 +95,8 @@ class StudentSerializer(serializers.ModelSerializer):
                   'board_exam_name', 'board_exam_registration', 'board_exam_roll', 'board_exam_result',
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
-                  'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
-                  'eslahi_murobbi_name', 'slug']
+                  'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
+                  'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
 
     # def user_first_name(self, obj):
     #     first_name = obj.user.first_name
@@ -135,6 +134,7 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
     """
     This serializer is working to update student without updating user
     """
+    user = CustomUserUpdateSerializer()
     present_address = AddressSerializer()
     permanent_address = AddressSerializer()
     father_info = ParentSerializer()
@@ -142,7 +142,7 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
 
     class Meta:
         model = Student
-        fields = ['id', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
+        fields = ['id', 'user', 'madrasha', 'student_id', 'student_roll_id', 'date_of_birth', 'age', 'birth_certificate',
                   'student_nid',
                   'passport_number', 'nationality', 'religion', 'gender', 'present_address', 'permanent_address',
                   'father_info', 'mother_info', 'guardian_name', 'guardian_relation', 'guardian_occupation',
@@ -154,12 +154,13 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
                   'board_exam_name', 'board_exam_registration', 'board_exam_roll', 'board_exam_result',
                   'admitted_department',
                   'admitted_class', 'admitted_group', 'admitted_shift', 'admitted_roll', 'admitted_session',
-                  'student_blood_group', 'special_body_sign', 'academic_fees', 'talimi_murobbi_name',
-                  'eslahi_murobbi_name', 'slug']
+                  'student_blood_group', 'special_body_sign', 'academic_fees', 'monthly_tution_fee', 'boarding_feee',
+                  'talimi_murobbi_name', 'eslahi_murobbi_name', 'slug']
 
     def update(self, instance, validated_data):
-        print("instance detail: ", instance.student_id)
+        # print("instance detail: ", instance.student_id)
 
+        user = instance.user
         present_address = instance.present_address
         permanent_address = instance.permanent_address
         father_info = instance.father_info
@@ -194,6 +195,11 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
         address_method(permanent_address, 'permanent_address')
         parent_info_method(father_info, 'father_info')
         parent_info_method(mother_info, 'mother_info')
+
+        user.first_name = validated_data.get('user').get('first_name', user.first_name)
+        user.last_name = validated_data.get('user').get('last_name', user.last_name)
+        user.email = validated_data.get('user').get('email', user.email)
+        user.save()
 
         # # get updated instance value
         instance.student_id = validated_data.get('student_id', instance.student_id)
@@ -239,7 +245,10 @@ class StudentSerializerUpdate(serializers.ModelSerializer):
         instance.student_blood_group = validated_data.get('student_blood_group', instance.student_blood_group)
         instance.special_body_sign = validated_data.get('special_body_sign', instance.special_body_sign)
         instance.academic_fees = validated_data.get('academic_fees', instance.academic_fees)
+        instance.monthly_tution_fee = validated_data.get('monthly_tution_fee', instance.monthly_tution_fee)
+        instance.boarding_feee = validated_data.get('boarding_feee', instance.boarding_feee)
         instance.talimi_murobbi_name = validated_data.get('talimi_murobbi_name', instance.talimi_murobbi_name)
+        instance.eslahi_murobbi_name = validated_data.get('eslahi_murobbi_name', instance.eslahi_murobbi_name)
         instance.slug = validated_data.get('slug', instance.slug)
 
         instance.save()

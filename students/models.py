@@ -6,6 +6,7 @@ from django.contrib.auth import get_user_model
 from teachers.models import RELIGION_CHOICE, GENDER_CHOICE, NATIONALITY_CHOICE
 from accounts.models import Address, Madrasha
 from settingapp.models import *
+from datetime import date
 
 # Create your models here.
 User = get_user_model()
@@ -132,6 +133,8 @@ class Student(models.Model):
     special_body_sign = models.CharField(max_length=255, blank=True, null=True)
     # academic_fees = models.ForeignKey(AcademicFess, on_delete=models.SET_NULL, related_name='student_fees_info', blank=True, null=True)
     academic_fees = models.CharField(max_length=255, blank=True, null=True)
+    monthly_tution_fee = models.CharField(max_length=50, blank=True, null=True)
+    boarding_feee = models.CharField(max_length=50, blank=True, null=True)
     talimi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
     eslahi_murobbi_name = models.CharField(max_length=150, blank=True, null=True)
     slug = models.SlugField(unique=True, blank=True)
@@ -160,6 +163,20 @@ class Student(models.Model):
         if not self.slug:
             self.slug = self.student_id
         super().save(*args, **kwargs)
+
+
+class FessInfo(models.Model):
+    madrasha = models.ForeignKey(Madrasha, on_delete=models.PROTECT, related_name='madrasha_student_fees_info')
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
+    fee_name = models.CharField(max_length=255, blank=True, null=True)
+    for_month = models.CharField(max_length=100, blank=True, null=True)
+    for_exam_term = models.CharField(max_length=100, blank=True, null=True)
+    amount = models.CharField(max_length=20, blank=True, null=True)
+    paid_date = models.DateField(default=date.today)
+    is_paid = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.fee_name
 
 
 class MealInfo(models.Model):
